@@ -20,7 +20,7 @@ def mongodb_uri() -> str:
     password = os.getenv("MONGODB_PASSWORD")
     if not username or not password:
         raise RuntimeError("MONGODB_URI or MONGODB_USERNAME/MONGODB_PASSWORD is required")
-    host = os.getenv("MONGODB_HOST", "soil-rag.dzecwut.mongodb.net")
+    host = os.getenv("MONGODB_HOST", "soil-rag-cluster.dzecwut.mongodb.net")
     from urllib.parse import quote_plus
     return f"mongodb+srv://{quote_plus(username)}:{quote_plus(password)}@{host}/"
 

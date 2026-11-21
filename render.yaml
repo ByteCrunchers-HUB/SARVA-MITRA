@@ -30,9 +30,7 @@ services:
         value: openai/gpt-oss-120b
       - key: ML_ENGINE_URL
         sync: false
-      - key: MONGODB_USERNAME
-        sync: false
-      - key: MONGODB_PASSWORD
+      - key: MONGODB_URI
         sync: false
       - key: GROQ_API_KEY
         sync: false
