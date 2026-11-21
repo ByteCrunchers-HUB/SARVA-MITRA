@@ -26,6 +26,8 @@ services:
         value: rag_vector_index
       - key: RAG_EMBEDDING_MODEL
         value: sentence-transformers/all-MiniLM-L6-v2
+      - key: RAG_USE_VECTOR_SEARCH
+        value: "true"
       - key: GROQ_MODEL
         value: openai/gpt-oss-120b
       - key: ML_ENGINE_URL

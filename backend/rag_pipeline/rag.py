@@ -5,6 +5,7 @@ import re
 
 from langchain_core.documents import Document
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 from groq import APIError
 
 try:
@@ -17,6 +18,7 @@ try:
         MONGODB_COLLECTION,
         MONGODB_VECTOR_INDEX,
         mongodb_uri,
+        RAG_USE_VECTOR_SEARCH,
     )
 except ImportError:
     from config import (
@@ -28,7 +30,13 @@ except ImportError:
         MONGODB_COLLECTION,
         MONGODB_VECTOR_INDEX,
         mongodb_uri,
+        RAG_USE_VECTOR_SEARCH,
     )
+
+try:
+    from .embeddings import FastEmbedEmbeddings
+except ImportError:
+    from embeddings import FastEmbedEmbeddings
 
 
 _embeddings = None
@@ -68,15 +76,12 @@ class RAGPipeline:
     def __init__(self, collection_name: str | None = None) -> None:
         self.collection_name = collection_name
         self.last_retrieval = {"query": "", "matches": [], "documents_sent": []}
-        global _embeddings
-        if _embeddings is None:
-            from langchain_huggingface import HuggingFaceEmbeddings
-            _embeddings = HuggingFaceEmbeddings(
-                model_name=EMBEDDING_MODEL,
-                encode_kwargs={"normalize_embeddings": True},
-                model_kwargs={"device": "cpu"},
-            )
-        self.embeddings = _embeddings
+        self.embeddings = None
+        if RAG_USE_VECTOR_SEARCH:
+            global _embeddings
+            if _embeddings is None:
+                _embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
+            self.embeddings = _embeddings
         if not GROQ_API_KEY or "replace_with_" in GROQ_API_KEY:
             raise RuntimeError("Set GROQ_API_KEY in the root .env")
         from langchain_groq import ChatGroq
@@ -84,7 +89,15 @@ class RAGPipeline:
         self.master_prompt = (DOCS_DIR / "23_master_prompt.txt").read_text(encoding="utf-8")
 
     def retrieve(self, readings: dict, ml_output: int, crop: str, location: str, question: str) -> list[Document]:
-        with MongoClient(mongodb_uri()) as client:
+        if not RAG_USE_VECTOR_SEARCH:
+            raise RuntimeError("Vector search is disabled. Set RAG_USE_VECTOR_SEARCH=true")
+
+        with MongoClient(
+            mongodb_uri(),
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000,
+            socketTimeoutMS=10000,
+        ) as client:
             collection = client[MONGODB_DATABASE][self.collection_name or MONGODB_COLLECTION]
             parent_ids: list[str] = []
             matches: list[dict] = []
@@ -98,10 +111,10 @@ class RAGPipeline:
                     "20_soil_salinity_ec_tomato",
                 ]
             else:
-                namespace = f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}"
-                store = _stores.get(namespace)
-                if store is None:
+                try:
                     from langchain_mongodb import MongoDBAtlasVectorSearch
+
+                    namespace = f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}"
                     store = MongoDBAtlasVectorSearch.from_connection_string(
                         connection_string=mongodb_uri(),
                         namespace=namespace,
@@ -110,42 +123,44 @@ class RAGPipeline:
                         text_key="text",
                         embedding_key="embedding",
                     )
-                    _stores[namespace] = store
-                query = build_query(readings, ml_output, crop, location, question)
-                self.last_retrieval["query"] = query
-                excluded = {
-                    "19_heat_stress_fruit_set_tomato",
-                    "20_soil_salinity_ec_tomato",
-                    "22_healthy_state_betterments",
-                    "24_field_hygiene",
-                }
-                for rank, (doc, distance) in enumerate(
-                    store.similarity_search_with_score(query, k=20),
-                    start=1,
-                ):
-                    parent_id = metadata_value(doc.metadata, "parent_id") or metadata_value(doc.metadata, "doc_id")
-                    if not parent_id or parent_id in parent_ids or parent_id in excluded:
-                        continue
-                    crops = metadata_value(doc.metadata, "crops", [])
-                    if crop.lower() not in {"", "unknown"} and isinstance(crops, list) and crops:
-                        if not any(crop.lower() in str(value).lower() for value in crops):
+                    query = build_query(readings, ml_output, crop, location, question)
+                    self.last_retrieval["query"] = query
+                    excluded = {
+                        "19_heat_stress_fruit_set_tomato",
+                        "20_soil_salinity_ec_tomato",
+                        "22_healthy_state_betterments",
+                        "24_field_hygiene",
+                    }
+                    for rank, (doc, distance) in enumerate(
+                        store.similarity_search_with_score(query, k=20),
+                        start=1,
+                    ):
+                        parent_id = metadata_value(doc.metadata, "parent_id") or metadata_value(doc.metadata, "doc_id")
+                        if not parent_id or parent_id in parent_ids or parent_id in excluded:
                             continue
-                    if not parent_is_compatible(parent_id, doc.page_content, crop):
-                        continue
-                    parent_ids.append(parent_id)
-                    distance_float = float(distance) if isinstance(distance, (int, float)) else None
-                    matches.append({
-                        "rank": rank,
-                        "doc_id": parent_id,
-                        "parent_id": parent_id,
-                        "filename": metadata_value(doc.metadata, "filename", "unknown"),
-                        "section": metadata_value(doc.metadata, "section", "unknown"),
-                        "retrieval_type": "vector_similarity",
-                        "distance": distance_float,
-                        "similarity_score": max(0.0, min(1.0, 1.0 - distance_float)) if distance_float is not None else None,
-                    })
-                    if len(parent_ids) >= 4:
-                        break
+                        crops = metadata_value(doc.metadata, "crops", [])
+                        if crop.lower() not in {"", "unknown"} and isinstance(crops, list) and crops:
+                            if not any(crop.lower() in str(value).lower() for value in crops):
+                                continue
+                        if not parent_is_compatible(parent_id, doc.page_content, crop):
+                            continue
+                        parent_ids.append(parent_id)
+                        distance_float = float(distance) if isinstance(distance, (int, float)) else None
+                        matches.append({
+                            "rank": rank,
+                            "doc_id": parent_id,
+                            "parent_id": parent_id,
+                            "filename": metadata_value(doc.metadata, "filename", "unknown"),
+                            "section": metadata_value(doc.metadata, "section", "unknown"),
+                            "retrieval_type": "vector_similarity",
+                            "distance": distance_float,
+                            "similarity_score": max(0.0, min(1.0, 1.0 - distance_float)) if distance_float is not None else None,
+                        })
+                        if len(parent_ids) >= 4:
+                            break
+                except (PyMongoError, OSError, RuntimeError, TimeoutError, ValueError) as exc:
+                    raise RuntimeError(f"Vector retrieval failed: {exc}") from exc
+
                 parent_ids.insert(0, "02_weather_thresholds_by_disease")
                 if any(key in readings for key in ("soil_moisture_pct", "soil_moisture")):
                     parent_ids.append("21_soil_moisture_effects_by_disease")

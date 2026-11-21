@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_mongodb import MongoDBAtlasVectorSearch
 
 try:
@@ -22,6 +21,11 @@ except ImportError:
         mongodb_uri,
     )
 
+try:
+    from .embeddings import FastEmbedEmbeddings
+except ImportError:
+    from embeddings import FastEmbedEmbeddings
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -29,11 +33,7 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=4)
     parser.add_argument("--collection")
     args = parser.parse_args()
-    embeddings = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        encode_kwargs={"normalize_embeddings": True},
-        model_kwargs={"device": "cpu"},
-    )
+    embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
     store = MongoDBAtlasVectorSearch.from_connection_string(
         connection_string=mongodb_uri(),
         namespace=f"{MONGODB_DATABASE}.{args.collection or MONGODB_COLLECTION}",

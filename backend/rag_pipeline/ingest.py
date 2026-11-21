@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from pathlib import PurePosixPath
 
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings
 from pymongo import MongoClient
 
 try:
@@ -25,6 +24,11 @@ except ImportError:
         MONGODB_COLLECTION,
         mongodb_uri,
     )
+
+try:
+    from .embeddings import FastEmbedEmbeddings
+except ImportError:
+    from embeddings import FastEmbedEmbeddings
 
 
 EXCLUDED = {"00_README_manifest", "01_dataset_columns_reference", "23_master_prompt"}
@@ -106,11 +110,7 @@ def main() -> None:
     args = parser.parse_args()
 
     documents = load_documents()
-    embeddings = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        encode_kwargs={"normalize_embeddings": True},
-        model_kwargs={"device": "cpu"},
-    )
+    embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
     parents = []
     children = []
     for document in documents:

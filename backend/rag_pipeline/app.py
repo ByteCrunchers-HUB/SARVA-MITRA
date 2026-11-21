@@ -12,9 +12,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 try:
-    from .config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL
+    from .config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL, RAG_USE_VECTOR_SEARCH
+    from .config import MONGODB_DATABASE, MONGODB_COLLECTION
+    from .config import GROQ_API_KEY, mongodb_uri
 except ImportError:
-    from config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL
+    from config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL, RAG_USE_VECTOR_SEARCH
+    from config import MONGODB_DATABASE, MONGODB_COLLECTION
+    from config import GROQ_API_KEY, mongodb_uri
 
 
 class ChatMessage(BaseModel):
@@ -102,6 +106,30 @@ def health():
 @app.get("/ready")
 def ready():
     return {"status": "ready", "mode": "stateless"}
+
+
+@app.get("/diagnostics")
+def diagnostics():
+    mongo_configured = False
+    try:
+        mongo_configured = bool(mongodb_uri())
+    except RuntimeError:
+        mongo_configured = False
+    ml_status = "unknown"
+    try:
+        response = httpx.get(f"{ML_ENGINE_URL}/health", timeout=8)
+        ml_status = f"reachable:{response.status_code}"
+    except httpx.RequestError as exc:
+        ml_status = f"unreachable:{type(exc).__name__}"
+    return {
+        "vector_search": RAG_USE_VECTOR_SEARCH,
+        "mongodb_configured": mongo_configured,
+        "groq_configured": bool(GROQ_API_KEY),
+        "ml_engine_url": ML_ENGINE_URL,
+        "ml_status": ml_status,
+        "mongodb_database": MONGODB_DATABASE,
+        "mongodb_collection": MONGODB_COLLECTION,
+    }
 
 
 def ml_output(prediction: dict | None, explicit: int | None) -> int:
