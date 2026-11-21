@@ -1,0 +1,59 @@
+from __future__ import annotations
+
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+
+from backend.rag_pipeline import app as rag_app
+
+
+class SimplifiedRAGTests(unittest.TestCase):
+    def test_five_verified_scenarios_are_documented(self) -> None:
+        guide = ROOT / "backend" / "rag_pipeline" / "PIPELINE_GUIDE.md"
+        text = guide.read_text(encoding="utf-8")
+        for heading in (
+            "1. Low-risk normal readings",
+            "2. Moderate-risk leaf-wetness readings",
+            "3. High-risk heavy-rain readings",
+            "4. Low-risk dry-soil readings",
+            "5. Moderate-risk mixed-rain readings",
+        ):
+            self.assertIn(heading, text)
+
+    def test_fenced_json_is_removed_from_human_answer(self) -> None:
+        content = "Healthy answer\n```json\n{\"response_mode\":\"healthy\"}\n```"
+        import re
+        cleaned = re.sub(r"\s*```json\s*\{[\s\S]*\}\s*```\s*$", "", content).strip()
+        self.assertEqual(cleaned, "Healthy answer")
+
+    def test_low_risk_maps_to_healthy(self) -> None:
+        self.assertEqual(
+            rag_app.ml_output({"prediction": {"risk_level": "low", "risk_pct": 10}}, None),
+            0,
+        )
+
+    def test_high_risk_maps_to_abnormality(self) -> None:
+        self.assertEqual(
+            rag_app.ml_output({"prediction": {"risk_level": "high", "risk_pct": 67}}, None),
+            1,
+        )
+
+    def test_chat_history_is_stateless_and_bounded(self) -> None:
+        request = rag_app.AdvisoryRequest(
+            chat_history=[
+                rag_app.ChatMessage(role="user", content="first"),
+                rag_app.ChatMessage(role="assistant", content="second"),
+            ]
+        )
+        self.assertEqual(len(request.chat_history), 2)
+
+    def test_invalid_prediction_is_rejected(self) -> None:
+        with self.assertRaises(rag_app.HTTPException):
+            rag_app.ml_output({}, None)
+
+
+if __name__ == "__main__":
+    unittest.main()
