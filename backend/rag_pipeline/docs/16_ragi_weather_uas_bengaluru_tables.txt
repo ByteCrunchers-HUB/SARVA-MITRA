@@ -1,0 +1,27 @@
+DOC_ID: 16_ragi_weather_uas_bengaluru_tables
+TITLE: UAS Bengaluru crop-weather tables for Kharif ragi (blast and pests)
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: temperature_c (mean and minimum); humidity_pct (morning and evening); cloudy days; rainfall_mm (weekly)
+EMBED: yes
+
+SOURCE AND ORIGIN
+- (OBS, KA) The tables are from the AICRP on Agrometeorology, University of Agricultural Sciences, Bengaluru, for Kharif ragi of medium (120-day) duration [S1][S2][S3]. This is Karnataka-origin data.
+
+WEATHER FACTS (as extracted, with uncertainty)
+- (FAV, KA) Zone 6 (Mysore district, Southern Dry Zone), sowing window 1: the "congenial weather for pest and disease" columns give mean temperature of roughly 11-28.5°C across weeks (ranges such as 19.8-26.6°C, 18-26.8°C and 16.2-26.5°C), morning humidity of 90-94%, evening humidity of 58-66%, and more than 3 cloudy days [S1].
+- (OBS, KA) In the same table, percent incidence of blast across weeks ranged from about 8% to 45%, and neck and finger blast from about 5% to 96% [S1]. Sowing window 2 shows similar values, with neck and finger blast of 4.8-96.25% [S2].
+- (FAV, KA) Zone 5 (Bengaluru district, Eastern Dry Zone): the table lists weekly minimum temperature of about 15-19.6°C, and neck and finger blast incidence of 4.8-96.25% across weeks [S3]. Leaf folder is favoured at 25-29°C with humidity above 80%, and stem borer at 25-29°C with humidity of 83-95% [S3].
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, KA) The source PDFs are tables. Snippets were extracted as text, and the exact week-by-week alignment could not be fully recovered. The "11-28.5°C" range may mix minimum and mean temperature values. Use all values as rough ranges only and verify against the PDFs before turning any value into a rule [S1][S2][S3].
+- (WEAK, KA) The Bengaluru-district (Zone 5) page did not show a congenial-weather block in the text retrieved, so the humidity and cloud figures above come from the Mysore (Zone 6) tables, not from Bengaluru district [S1][S3].
+- UNAVAILABLE: A single clean threshold for ragi blast risk from UAS Bengaluru is not available in this corpus.
+- CORPUS RULE: These are weather patterns recorded alongside disease and pest incidence. A match with sensor readings shows risk only. It does not confirm blast or any pest.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Zone 6 Mysore district, Karnataka; [S2] UAS Bengaluru, Zone 6 Mysore district, Karnataka; [S3] UAS Bengaluru, Zone 5 Bengaluru district, Karnataka.
+
+REFERENCES
+[S1] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, sowing window 1, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
+[S2] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, sowing window 2, https://www.old.uasbangalore.edu.in/images/attachments/crop_weather/zone-6-(mysore)-ragi- (sowing-window-2).pdf
+[S3] UAS Bengaluru, AICRP on Agrometeorology, Zone 5 (Bangalore district) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-5-(bangalore -disrtict)- ragi.pdf

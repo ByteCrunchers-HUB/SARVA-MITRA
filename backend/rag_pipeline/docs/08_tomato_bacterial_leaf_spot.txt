@@ -1,0 +1,31 @@
+DOC_ID: 08_tomato_bacterial_leaf_spot
+TITLE: Bacterial leaf spot of tomato and chilli - moist weather with splashing rain
+CROPS: tomato; chilli
+SENSOR_SIGNALS: rainfall_mm (splashing rain); humidity_pct; leaf_wet (persistent dew)
+EMBED: yes
+
+WEATHER FACTS
+- (FAV, IN) Moist weather and splattering rain favour the disease on tomato, with high humidity or persistent dew [S1][S2].
+- (FAV, IN) For chilli bacterial leaf spot, the NIPHM source lists moderate temperature, high relative humidity and intermittent rain as favourable [S3].
+
+IDENTIFICATION
+- (OBS, IN) Bacteria survive on infected plant debris, on and inside seed, and on nightshade-family weeds such as Solanum nigrum. Secondary spread is by rain splash [S1].
+- (OBS, IN) For chilli, primary infection is seed-borne and spread is by rain splash [S3].
+
+FIELD INSPECTION
+- UNAVAILABLE: The retrieved sources did not give usable symptom descriptions for bacterial leaf spot. Do not describe symptoms from memory. Refer the farmer to the KVK.
+
+MANAGEMENT
+- UNAVAILABLE: No management statements were extracted for this disease in the retrieved sources.
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, IN) The NIPHM/Vikaspedia page text was partly scrambled when retrieved. Only statements clearly tied to bacterial leaf spot are repeated here. No temperature threshold could be reliably extracted. The original page should be read before relying on more detail [S1][S3].
+- CORPUS RULE: Matching sensor readings show that conditions favour bacterial leaf spot. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] NIPHM/DPPQS (India); [S2] TNAU (Tamil Nadu), India; [S3] NIPHM/DPPQS (India).
+
+REFERENCES
+[S1] NIPHM / Directorate of Plant Protection via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en
+[S2] TNAU Agritech, tomato disease page, https://agritech.tnau.ac.in/crop_protection/tomato_diseases_11.html
+[S3] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en

@@ -1,0 +1,35 @@
+DOC_ID: 12_tomato_leaf_curl_virus_whitefly
+TITLE: Tomato leaf curl virus spread by whitefly
+CROPS: tomato; chilli
+SENSOR_SIGNALS: none reliable. The sources give no sensor threshold. Use only when the farmer reports curling leaves.
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, IN) The virus is carried by the whitefly Bemisia tabaci. Primary spread is by whiteflies and secondary spread is by movement of infected plants [S1].
+- (OBS, IN) Whitefly damage on its own includes chlorotic spots, yellowing, and downward curling and drying of leaves [S2].
+- (WEAK, INTL) A research paper states that vector activity, virus multiplication and symptom development are affected by weather during and after infection, but gives no thresholds [S3].
+- (OBS, IN) A TNAU advisory also reports leaf curl in chilli [S4].
+
+SYMPTOMS
+- (INSP, IN) Severe stunting, downward rolling and crinkling of leaves, older leaves leathery and brittle, short internodes, and a bushy look with more side branches [S1].
+
+FIELD INSPECTION
+- (INSP, IN) Look for whiteflies on the plants and for the curling and stunting described above [S1][S2].
+- CORPUS NOTE: Whitefly feeding alone can also curl leaves [S2]. Field inspection and KVK confirmation are needed to tell virus from whitefly damage.
+
+MANAGEMENT
+- (OBS, IN) TNAU lists: uproot and destroy leaf-curl plants, use nitrogen and irrigation judiciously, remove the weed host Abutilon indicum, and use yellow sticky traps [S2].
+- (OBS, IN) A TNAU advisory for chilli leaf curl also recommends yellow sticky traps and names insecticide options [S4]. Trap numbers, products, doses and timing are not included here. Ask the TNAU or Karnataka KVK for local, approved recommendations.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No reliable sensor threshold exists in the retrieved sources for this disease. Sensor readings must not be used to suggest it.
+- CORPUS RULE: A virus cannot be confirmed from sensor readings.
+
+SOURCE GEOGRAPHY
+[S1] TNAU (Tamil Nadu), India; [S2] TNAU (Tamil Nadu), India; [S3] Virology Journal (study location not verified); [S4] TNAU (Tamil Nadu), India.
+
+REFERENCES
+[S1] TNAU Agritech, Tomato leaf curl, https://agritech.tnau.ac.in/crop_protection/tomato_diseases_6.html
+[S2] TNAU Agritech, Whitefly, https://agritech.tnau.ac.in/crop_protection/tomato/tomato_4.html
+[S3] Al Abdallat et al. 2010, Virology Journal 7:84, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2874538/
+[S4] TNAU pest and disease surveillance report (April), https://agritech.tnau.ac.in/crop_protection/pdf/2017/PDSR%20newspaper%20april.pdf

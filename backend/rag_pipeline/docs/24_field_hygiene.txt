@@ -1,0 +1,55 @@
+DOC_ID: 24_field_hygiene
+TITLE: Field hygiene practices named by sources (debris, weeds, tools, seed, water)
+CROPS: tomato; chilli; ragi (finger millet)
+SENSOR_SIGNALS: none (practices apply regardless of readings); leaf_wet and soil_moisture_pct matter only for when to avoid working in the field
+EMBED: yes
+
+CORPUS NOTE: This is a new document. The ID 24_field_hygiene was added in this rebuild because no existing ID covered this topic. Please confirm the ID before loading.
+
+DEBRIS AND PLANT WASTE
+- (OBS, IN) Remove and destroy infected plant debris [S1].
+- (OBS, INTL) Several tomato pathogens survive on crop debris, seed and nightshade-family weeds [S2][S3]. Destroy debris after the crop [S4].
+- (OBS, IN) For chilli, remove and burn decaying infected plant parts [S5].
+
+WEEDS AND ALTERNATE HOSTS
+- (OBS, IN) Nightshade-family weeds such as Solanum nigrum can carry bacteria that cause leaf spot [S6].
+- (OBS, IN) Remove the weed host Abutilon indicum as part of whitefly and leaf curl management [S7].
+- (OBS, INTL) Control host weeds [S4].
+
+TOOLS, STRUCTURES AND SOIL MOVEMENT
+- (OBS, INTL) Clean structures, crates, tools and stakes. Stop soil moving between fields on equipment and shoes [S8][S9].
+- (OBS, INTL) Avoid working in wet plantings and among wet plants [S2][S9].
+
+SEED, SEEDLINGS AND NURSERY
+- (OBS, INTL) Start with disease-free seed [S3].
+- (OBS, INTL) Pathogen-free soil, irrigation water, transplants and tools are important for soil-borne bacteria [S10].
+- (OBS, INTL) Use clean, sterilised trays and clean potting mix for seedlings [S11].
+- (OBS, IN) Use disease-free seed for chilli [S12].
+
+ROTATION (ragi)
+- (OBS, SEC) For ragi, suggested rotations are ragi-groundnut-maize, ragi-chickpea-wheat and ragi-cowpea/pigeonpea-sorghum [S13].
+
+SCOUTING
+- (OBS, INTL) Scout low-lying, shaded and hard-to-spray areas more often [S14].
+
+EVIDENCE QUALITY AND LIMITS
+- CORPUS NOTE: These are general sanitation practices reported by sources written mainly for tomato in other countries and by Indian sources for chilli and ragi. No Karnataka-specific protocol is available in this corpus. Hot-water seed treatment and chemical seed treatment are mentioned by some sources, but their settings, products and doses are not included here. Ask the KVK.
+
+SOURCE GEOGRAPHY
+[S1] TNAU (Tamil Nadu), India; [S2] Michigan State University (Hausbeck) and Florida, USA; [S3] Michigan State University (Hausbeck), USA; [S4] Wisconsin, USA; [S5] TNAU (Tamil Nadu), India; [S6] NIPHM (India); [S7] TNAU (Tamil Nadu), India; [S8] South Australia; [S9] Missouri, USA; [S10] Florida, USA; [S11] Wisconsin, USA; [S12] TNAU (Tamil Nadu), India; [S13] TNAU-affiliated college course material, India; [S14] Manitoba, Canada.
+
+REFERENCES
+[S1] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S2] University of Florida IFAS, Early Blight of Tomato, https://ipm.ifas.ufl.edu/pdfs/Early_Blight.pdf
+[S3] Michigan State University (Hausbeck), Organic Management of Early Blight on Tomato, https://www.canr.msu.edu/hausbeck/Uploads/PDF/FS_Organic-Management-of-Early-Blight-on-Tomato.pdf
+[S4] University of Wisconsin Vegetable Pathology, Tomato Septoria Leaf Spot, https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
+[S5] TNAU Agritech, chilli grey mould, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_3.html
+[S6] NIPHM via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en
+[S7] TNAU Agritech, Whitefly, https://agritech.tnau.ac.in/crop_protection/tomato/tomato_4.html
+[S8] Primary Industries and Regions SA, Fusarium wilt of tomato, https://pir.sa.gov.au/crops-and-plants/weeds-and-plant-pests/plant-pests/pests-and-diseases-of-significant-concern/fusarium_wilt_of_tomato
+[S9] Missouri Botanical Garden, Fusarium wilt of tomato, https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/cankers/fusarium-wilt-of-tomato.aspx
+[S10] UF/IFAS, Bacterial Wilt, https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
+[S11] University of Wisconsin PDDC, Damping-off, https://pddc.wisc.edu/2015/07/19/damping-off/
+[S12] TNAU Agritech, Chilli anthracnose, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html
+[S13] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast
+[S14] Manitoba Agriculture, Late Blight in Potatoes, https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html

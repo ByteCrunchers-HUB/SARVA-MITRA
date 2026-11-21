@@ -1,0 +1,41 @@
+DOC_ID: 18_blossom_end_rot_tomato
+TITLE: Blossom-end rot of tomato - a physiological disorder, not an infection
+CROPS: tomato
+SENSOR_SIGNALS: soil_moisture_pct (swings between dry and wet); temperature_c (heat spells); soil_ec_dsm (salinity); sunlight_wm2 (very bright sun after cloudy weather)
+EMBED: yes
+
+IDENTIFICATION
+- (PHYS, INTL) Blossom-end rot (BER) is a physiological problem. It is not caused by fungi or bacteria and does not spread from plant to plant [S1]. Fungicides and insecticides do not control it [S2].
+- (PHYS, INTL) Symptom: a tan, water-soaked area at the blossom end of the fruit that turns black and leathery and can reach a third of the fruit [S3].
+
+CAUSES AND FACTORS
+- (PHYS, INTL, WEAK) The cause is commonly given as a local calcium shortage in the fruit, driven by water stress. Ontario states it is primarily caused by dry soil conditions rather than lack of calcium in the soil, and some scientists doubt that low fruit calcium is the trigger [S4]. Illinois notes the cause is poorly understood and two views exist [S5].
+- (FAV, INTL) Factors listed: dry or fluctuating soil moisture, overwatering, root damage, waterlogged or cold soil, high temperature and intense sun after cooler overcast weather, high ammonium or high nitrogen, high salinity, high potassium or magnesium, susceptible varieties, and stress during rapid fruit growth [S3][S4][S5][S6].
+- (FAV, INTL) Root rots, nematodes and soil compaction can add to it [S2]. Rapid growth followed by sudden hot, dry conditions causes BER [S2].
+- (FAV, INTL, drip study) In a drip-irrigation study, irrigation-water salinity of 3-4 dS/m clearly raised BER [S7].
+
+FIELD INSPECTION
+- (INSP, INTL) Look at the blossom end (the end away from the stem) of fruit for tan, water-soaked areas turning black and leathery [S3].
+
+MANAGEMENT
+- (OBS, INTL) Water deeply and on a regular schedule, especially in hot weather [S2]. Keep soil consistently moist and never let it dry out [S8].
+- (OBS, INTL) Foliar calcium sprays are not effective because calcium moves poorly to fruit [S5][S8].
+- (OBS, INTL) Soil test, plant in well-drained soil, fertilise moderately to avoid salt build-up and excessive growth, mulching may help, and lime where soil calcium is low. Choose less susceptible varieties [S3][S5].
+- (WEAK, INTL) Trellising and pruning can increase BER by adding stress [S3].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka measurement of soil moisture or temperature thresholds for BER is available in this corpus. The 3-4 dS/m figure is for irrigation water, not soil.
+- CORPUS RULE: Moisture swings, heat or high soil_ec_dsm show conditions linked to BER. BER itself is identified only by looking at the fruit.
+
+SOURCE GEOGRAPHY
+[S1] Oregon, USA; [S2] California, USA; [S3] Washington, USA; [S4] Ontario, Canada; [S5] Illinois, USA; [S6] Oregon, USA; [S7] PLoS ONE drip-irrigation study (location not verified); [S8] United Kingdom (RHS).
+
+REFERENCES
+[S1] Oregon State University Extension, FS 139 Blossom-end Rot of Tomatoes, https://extension.oregonstate.edu/es/catalog/fs-139-blossom-end-rot-tomatoes
+[S2] UC ANR Stanislaus Sprout, Prevent Blossom-End Rot by Watering Deeply and Regularly, https://ucanr.edu/blog/stanislaus-sprout/article/prevent-blossom-end-rot-watering-deeply-and-regularly
+[S3] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S4] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
+[S5] University of Illinois Extension, Blossom End Rot, https://extension.illinois.edu/blogs/good-growing/2019-07-23-blossom-end-rot
+[S6] Oregon State University Extension, FS 139 (second page), https://extension.oregonstate.edu/es/catalog/pub/fs-139-blossom-end-rot-tomatoes
+[S7] PLoS ONE 2015, saline water drip irrigation and BER, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4634986/
+[S8] Royal Horticultural Society, Blossom end rot, https://www.rhs.org.uk/problems/blossom-end-rot
