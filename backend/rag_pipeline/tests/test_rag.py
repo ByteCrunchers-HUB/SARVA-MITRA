@@ -11,6 +11,12 @@ from backend.rag_pipeline import app as rag_app
 
 
 class SimplifiedRAGTests(unittest.TestCase):
+    def test_predict_and_advice_endpoint_exists(self) -> None:
+        from backend.rag_pipeline.app import app
+        paths = app.openapi()["paths"]
+        self.assertIn("/predict-and-advice", paths)
+        self.assertIn("/v1/advisory", paths)
+
     def test_five_verified_scenarios_are_documented(self) -> None:
         guide = ROOT / "backend" / "rag_pipeline" / "PIPELINE_GUIDE.md"
         text = guide.read_text(encoding="utf-8")

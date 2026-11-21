@@ -47,6 +47,37 @@ class AdvisoryRequest(BaseModel):
     session_id: str | None = None
     collection_name: str | None = None
 
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "device_id": "sample-device",
+                    "location": "Vijayawada",
+                    "lat": 16.51,
+                    "lon": 80.52,
+                    "target_date": "2000-01-09",
+                    "crop": "tomato",
+                    "question": "What should I inspect after heavy rain?",
+                    "history": [
+                        {"date": "2000-01-01", "soil_moisture_pct": 50, "sunlight_wm2": 257.64, "rainfall_mm": 0.71, "leaf_wet_days": 1},
+                        {"date": "2000-01-02", "soil_moisture_pct": 49, "sunlight_wm2": 222.80, "rainfall_mm": 0.74, "leaf_wet_days": 1},
+                        {"date": "2000-01-03", "soil_moisture_pct": 56, "sunlight_wm2": 204.51, "rainfall_mm": 10.56, "leaf_wet_days": 1},
+                        {"date": "2000-01-04", "soil_moisture_pct": 56, "sunlight_wm2": 127.55, "rainfall_mm": 4.44, "leaf_wet_days": 1},
+                        {"date": "2000-01-05", "soil_moisture_pct": 51, "sunlight_wm2": 220.25, "rainfall_mm": 1.07, "leaf_wet_days": 1},
+                        {"date": "2000-01-06", "soil_moisture_pct": 50, "sunlight_wm2": 242.01, "rainfall_mm": 0.11, "leaf_wet_days": 1},
+                        {"date": "2000-01-07", "soil_moisture_pct": 59, "sunlight_wm2": 99.19, "rainfall_mm": 8.90, "leaf_wet_days": 1},
+                        {"date": "2000-01-08", "soil_moisture_pct": 57, "sunlight_wm2": 119.10, "rainfall_mm": 35.31, "leaf_wet_days": 1},
+                    ],
+                    "readings": {
+                        "temperature_c": 25.86,
+                        "humidity_pct": 79.15
+                    },
+                    "chat_history": []
+                }
+            ]
+        }
+    }
+
     @field_validator("chat_history")
     @classmethod
     def limit_history(cls, value: list[ChatMessage]) -> list[ChatMessage]:
@@ -170,3 +201,12 @@ def advisory(request: AdvisoryRequest):
         "retrieval_context": pipeline.last_retrieval,
         "chat_history": updated,
     }
+
+
+@app.post("/predict-and-advice")
+def predict_and_advice(request: AdvisoryRequest):
+    if request.ml_prediction is not None:
+        return advisory(request)
+    prediction = call_ml_engine(request)
+    combined = request.model_copy(update={"ml_prediction": prediction})
+    return advisory(combined)

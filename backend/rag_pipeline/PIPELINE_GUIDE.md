@@ -397,3 +397,98 @@ Mode: `abnormality`
 - Sensors do not confirm a disease.
 - Every disease possibility is linked to retrieved corpus DOC_IDs.
 - The API remains stateless; no server-side chat database is used.
+
+## Render deployment
+
+The repository includes `render.yaml` for two web services:
+
+1. `sarva-mitra-ml` from `backend/ml_engine/Dockerfile`
+2. `sarva-mitra-rag` from `backend/rag_pipeline/Dockerfile`
+
+Set these RAG environment values in Render:
+
+```dotenv
+MONGODB_URI=<mongodb-atlas-uri>
+GROQ_API_KEY=<groq-api-key>
+ML_ENGINE_URL=https://<sarva-mitra-ml>.onrender.com
+MONGODB_DATABASE=soil-rag-db
+MONGODB_COLLECTION=soil-rag-collection
+MONGODB_VECTOR_INDEX=rag_vector_index
+RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+GROQ_MODEL=openai/gpt-oss-120b
+CHAT_HISTORY_LIMIT=12
+```
+
+Swagger testing:
+
+- ML: `https://<sarva-mitra-ml>.onrender.com/docs`
+- RAG: `https://<sarva-mitra-rag>.onrender.com/docs`
+
+The RAG Swagger `/predict-and-advice` request includes a valid eight-day
+history example. The endpoint calls `/predict` on the ML service and then
+calls RAG retrieval and Groq before returning one combined response.
+
+## Swagger and demo endpoints
+
+When deployed, open:
+
+- RAG Swagger: `https://<rag-service>.onrender.com/docs`
+- RAG health: `https://<rag-service>.onrender.com/health`
+- ML Swagger: `https://<ml-service>.onrender.com/docs`
+- ML health: `https://<ml-service>.onrender.com/health`
+
+Use `/predict-and-advice` for the simplest demo. It accepts ML history and
+calls both services internally:
+
+```json
+{
+  "device_id": "sample-device",
+  "location": "Vijayawada",
+  "lat": 16.51,
+  "lon": 80.52,
+  "target_date": "2000-01-09",
+  "crop": "tomato",
+  "question": "What should I inspect after heavy rain?",
+  "history": [
+    {
+      "date": "2000-01-01",
+      "soil_moisture_pct": 50,
+      "sunlight_wm2": 257.64,
+      "rainfall_mm": 0.71,
+      "leaf_wet_days": 1
+    }
+  ],
+  "readings": {
+    "temperature_c": 25.86,
+    "humidity_pct": 79.15
+  }
+}
+```
+
+For `/predict-and-advice`, the history must contain at least eight consecutive
+daily records. The target date must be one day after the final history date.
+The RAG endpoint can still accept an already-computed `ml_prediction` through
+`/v1/advisory` or `/advisory`.
+
+## Render environment variables
+
+ML service:
+
+```dotenv
+SARVA_MODEL_PATH=models/sarva_mitra_risk_model.joblib
+```
+
+RAG service:
+
+```dotenv
+MONGODB_URI=mongodb+srv://<username>:<password>@<host>/<database>
+MONGODB_DATABASE=soil-rag-db
+MONGODB_COLLECTION=soil-rag-collection
+MONGODB_VECTOR_INDEX=rag_vector_index
+GROQ_API_KEY=<groq-key>
+GROQ_MODEL=openai/gpt-oss-120b
+RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+ML_ENGINE_URL=https://<ml-service>.onrender.com
+CHAT_HISTORY_LIMIT=12
+CORS_ORIGINS=*
+```
