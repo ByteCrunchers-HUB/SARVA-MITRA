@@ -1,0 +1,51 @@
+DOC_ID: 22_healthy_state_betterments
+TITLE: Practices the sources recommend to keep crops healthy (use when disease = 0)
+TYPE: advice compiled only from statements in the retrieved sources. Pick the ones that match the farmer's current readings; do not dump all.
+SENSOR_SIGNALS: any; match the tip to the value (humidity, leaf_wet, soil moisture, EC, temperature)
+
+IF HUMIDITY OR LEAF WETNESS IS OFTEN HIGH
+- Use drip irrigation instead of overhead; avoid working in wet plants [S1]. Water at the base and avoid wetting foliage [S2]. Water in late morning when soil is dry [S3]. Avoid overhead and night-time irrigation to cut late blight risk [S4].
+- Keep plant spacing for air flow; prune the lowest 3-4 leaf branches once plants are established and fruiting [S2][S5]. Do not strip leaves above the fruit, which risks sunscald [S6]. Pruning or trellising can add stress and raise blossom-end rot [S7].
+- Scout low, shaded and damp spots first; use weather-based risk models to time checks [S4][S8].
+
+IF SOIL IS WET
+- Improve drainage, use raised beds, avoid overwatering [S3]. Manage soil moisture to reduce bacterial wilt [S9]. Do not move wet soil on tools or shoes [S10].
+
+IF SOIL IS DRY OR WATERING IS UNEVEN
+- Water deeply on a regular schedule, especially in hot weather; keep soil evenly moist [S11][S12]. Mulch may help [S7]. Plants under stress suffer more early blight [S13].
+
+IF SOIL EC IS RISING
+- Keep irrigation water below about 4 dS/m and watch root-zone EC against the tomato threshold of about 2.5 dS/m [S14][S15]. Use drip irrigation when water is salty [S16]. Fertilise moderately to avoid salt build-up [S7].
+
+IF TEMPERATURE IS HIGH
+- Sustained heat above about 29 C by day and 21 C at night can cause flower drop; heat-tolerant varieties help [S17]. See file 19.
+
+NUTRITION
+- Avoid too much nitrogen: it favours powdery mildew [S18], Fusarium wilt (with low potassium) [S10] and blossom-end rot [S7]. Soil-test calcium and potassium [S7][S10].
+
+FIELD HYGIENE AND PLANTING
+- Use disease-free seed and seedlings; remove crop debris; control nightshade-family weeds; rotate crops [S5][S13][S19]. Clean tools, stakes and crates [S10]. Hot-water seed treatment is mentioned for early blight (50 C for 25 minutes) [S19].
+- Choose resistant or tolerant varieties recommended locally [S19][S20]. For ragi, early sowing, resistant varieties and rotation with legumes are listed (file 15).
+- Whitefly and leaf curl: remove infected plants and weed hosts; yellow sticky traps (file 12).
+
+SOURCES
+[S1] UMN Extension, Early blight on tomato: https://extension.umn.edu/disease-management/early-blight-tomato
+[S2] UMD Extension, Septoria leaf spot: https://extension.umd.edu/resource/septoria-leaf-spot-tomatoes
+[S3] Mississippi State Univ. Extension: https://extension.msstate.edu/node/6440
+[S4] Manitoba Agriculture, Late Blight in Potatoes: https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html
+[S5] Univ. of Wisconsin Vegetable Pathology, Septoria: https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
+[S6] Missouri Botanical Garden, Septoria: https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/fungal-spots/septoria-leaf-spot-of-tomato.aspx
+[S7] WSU HortSense, BER: https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S8] Oregon State/USPEST late blight model: https://instar.biossys.oregonstate.edu/risk/ptlb_app
+[S9] Jiang et al., soil moisture and bacterial wilt: https://journal.hep.com.cn/sel/EN/10.1007/s42832-021-0086-2
+[S10] Missouri Botanical Garden, Fusarium wilt of tomato: https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/cankers/fusarium-wilt-of-tomato.aspx
+[S11] UC ANR Stanislaus Sprout, BER: https://ucanr.edu/blog/stanislaus-sprout/article/prevent-blossom-end-rot-watering-deeply-and-regularly
+[S12] RHS, Blossom end rot: https://www.rhs.org.uk/problems/blossom-end-rot
+[S13] MSU (Hausbeck), early blight organic management: https://www.canr.msu.edu/hausbeck/Uploads/PDF/FS_Organic-Management-of-Early-Blight-on-Tomato.pdf
+[S14] UC ANR tomato salinity data: https://ucanr.edu/media/307064
+[S15] PLoS ONE 2015, saline drip irrigation: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4634986/
+[S16] Malash et al. 2008 (AGRIS): https://agris.fao.org/search/en/records/65df8f7f0f3e94b9e5d9ddb4
+[S17] UMN Extension, heat and vegetable garden: https://extension.umn.edu/planting-and-growing-guides/how-excessive-heat-affects-vegetable-garden
+[S18] Pacific Pests, Pathogens and Weeds, tomato powdery mildew: https://apps.lucidcentral.org/pppw_v10/pdf/web_full/tomato_powdery_mildew_314.pdf
+[S19] MSU (Hausbeck) and UF/IFAS early blight sources: https://ipm.ifas.ufl.edu/pdfs/Early_Blight.pdf
+[S20] ICAR Indian Farming (Oct 2025), finger millet: https://epubs.icar.org.in/index.php/IndFarm/article/download/174434/64149/505234

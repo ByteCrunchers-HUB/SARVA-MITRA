@@ -1,0 +1,31 @@
+DOC_ID: 03_late_blight_tomato_potato
+TITLE: Late blight (Phytophthora infestans) - cool, wet, humid weather
+CROPS: tomato, potato
+SENSOR_SIGNALS: temperature about 10-21 C (infection possible to ~27 C); humidity above 80-90%; leaf_wet = 1 for 10+ hours; dew, fog, rainfall; cloudy; night irrigation
+
+WEATHER FACTS
+- Favourable: cool 10-21 C (50-70 F) with humidity above 80% from heavy dew, fog or rain, and long leaf wetness [S1].
+- Risk is highest with frequent rain, heavy dew or fog, long leaf wetness, high humidity, and overhead or night irrigation [S2].
+- A research risk model counts "spores forming" after 10 consecutive hours of leaf wetness or humidity above 90% when temperature is above 10 C [S3].
+- Spore production is favoured at 18-21 C (65-70 F) with humidity near 100% [S4]. Spores last far less when humidity is below 95%; at 80% they survive only about 5 hours [S4].
+- Leaf wetness for more than 10-12 hours at 15-21 C (60-70 F) favours spore formation and spread. Spores survive up to about 1 hour in sunny dry conditions and up to about 4 hours in cloudy weather [S5].
+- A Michigan study states favourable conditions as air temperature of 7-27 C with 10 or more hours of leaf wetness [S6].
+- Hot, dry conditions turn lesions brown and papery [S1].
+
+SYMPTOMS
+- Water-soaked dark green patches; under humidity above 80% they turn purple to black with white spore growth [S1]. Lesions are not limited by leaf veins, may look greasy, and can destroy a leaf in days; white mildew-like growth shows on the underside in humid mornings; badly hit plants may smell [S2].
+- Affects leaves, stems, branches, tubers and fruit [S4].
+
+MANAGEMENT (as stated by sources)
+- Management is preventive; there is no economic threshold [S2]. Scout low-lying, shaded and hard-to-spray areas more often [S2][S7].
+- Protectant fungicide goes on before infection, when weather is favourable or the disease is nearby; a broad-spectrum contact fungicide suits preventative sprays [S1]. Sources name copper (also for organic growers), mancozeb and chlorothalonil [S4]. Rotate fungicide modes of action [S7]. Follow label and local advice for product and dose.
+- Weather-based forecasting tools help time sprays [S2][S3].
+
+SOURCES
+[S1] UF/IFAS, Late Blight on Potato and Tomato: https://edis.ifas.ufl.edu/publication/PP301/pdf
+[S2] Manitoba Agriculture, Late Blight in Potatoes: https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html
+[S3] Oregon State Univ./USPEST, Potato/Tomato Late Blight Risk: https://instar.biossys.oregonstate.edu/risk/ptlb_app
+[S4] Penn State Extension, Late Blight Update (30 Jul 2025): https://extension.psu.edu/late-blight-update-july-30-2025
+[S5] UMass Extension, Tomato Leaf Blights: https://www.umass.edu/agriculture-food-environment/vegetable/fact-sheets/tomato-leaf-blights
+[S6] Michigan State Univ. thesis (K. Baker), potato late blight risk: https://d.lib.msu.edu/etd/31454/FULL_TEXT/view
+[S7] Manitoba Agriculture, late blight print page: https://gov.mb.ca/agriculture/crops/plant-diseases/print,late-blight-potatoes.html

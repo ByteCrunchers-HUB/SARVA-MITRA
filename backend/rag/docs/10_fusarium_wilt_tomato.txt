@@ -1,0 +1,24 @@
+DOC_ID: 10_fusarium_wilt_tomato
+TITLE: Fusarium wilt of tomato (Fusarium oxysporum f. sp. lycopersici)
+CROPS: tomato
+SENSOR_SIGNALS: temperature (soil) about 27-32 C, optimum about 28 C; low or dry soil moisture; light sandy, acidic soil; alternating cool and warm soil temperature with humidity
+
+FACTS
+- TNAU lists favourable conditions as alternating low and high soil temperature with high humidity, optimum temperature 28 C, and light sandy soil, low soil moisture and low pH [S1].
+- The South Australian agriculture department also names warm temperatures around 28 C, dry weather and acidic soil, and notes that fast-growing plants fertilised with ammonium nitrate are especially prone; root-knot nematodes raise the chance of infection even in resistant plants [S2]. INRAE likewise gives about 28 C and sandy acidic soils, and says nematode attack or oxygen-poor soil can sensitise plants [S3].
+- Symptoms are most common at 27-32 C (80-90 F); the disease develops faster with high nitrogen and low potassium, and in sandy soils [S4].
+- The fungus survives in soil or debris for up to ten years (TNAU and INRAE say more than ten) [S1][S3][S4]. It spreads by seed, seedlings raised in infested soil, wind-blown soil, surface water and implements [S1][S2].
+- CONTRAST with bacterial wilt (file 09): bacterial wilt is favoured by high soil moisture; sources link Fusarium wilt to low soil moisture and dry weather.
+
+SYMPTOMS
+- Yellowing starting on lower leaves, often on one side of the plant or leaf, then leaf curling, browning and drying; brown streaking inside the stem base; stunting [S2][S4].
+
+MANAGEMENT (as stated by sources)
+- Remove and destroy infected plant debris [S1]. Clean structures, crates, tools and stakes; stop soil moving between fields on equipment and shoes [S2][S4]. Avoid working in wet plantings [S4].
+- Avoid too much nitrogen with low potassium; test soil [S4]. Use seed treatment (TNAU names carbendazim) [S1]. Follow label.
+
+SOURCES
+[S1] TNAU Agritech, Fusarium rot of tomato: https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S2] Primary Industries and Regions SA, Fusarium wilt of tomato: https://pir.sa.gov.au/crops-and-plants/weeds-and-plant-pests/plant-pests/pests-and-diseases-of-significant-concern/fusarium_wilt_of_tomato
+[S3] INRAE Ephytia, Tomato biology and epidemiology: https://ephytia.inrae.fr/en/C/5217/Tomato-Biology-epidemiology
+[S4] Missouri Botanical Garden, Fusarium wilt of tomato: https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/cankers/fusarium-wilt-of-tomato.aspx

@@ -1,0 +1,19 @@
+DOC_ID: 12_tomato_leaf_curl_virus_whitefly
+TITLE: Tomato leaf curl virus spread by whitefly
+CROPS: tomato; chilli leaf curl is also reported
+SENSOR_SIGNALS: none reliable. The sources give no sensor thresholds; this disease depends on whitefly presence. Use only when the farmer reports curling leaves.
+
+FACTS
+- Symptoms: severe stunting, downward rolling and crinkling of leaves, older leaves leathery and brittle, short internodes, bushy look with more side branches [S1].
+- The virus is carried by the whitefly Bemisia tabaci; primary spread is by whiteflies and secondary spread by movement of infected plants [S1].
+- Whitefly damage includes chlorotic spots, yellowing and downward curling and drying of leaves [S2].
+- Vector activity, virus multiplication and symptom development are affected by the weather during and after infection (research paper, no thresholds given) [S3].
+
+MANAGEMENT (as stated by TNAU)
+- Uproot and destroy leaf-curl plants; use nitrogen and irrigation judiciously; remove the weed host Abutilon indicum; use yellow sticky traps (12 per hectare) [S2]. A TNAU advisory for chilli leaf curl also recommends yellow sticky traps (15 per hectare) with insecticide choices; product and dose must come from TNAU/KVK labels [S4].
+
+SOURCES
+[S1] TNAU Agritech, Tomato leaf curl: https://agritech.tnau.ac.in/crop_protection/tomato_diseases_6.html
+[S2] TNAU Agritech, Whitefly: https://agritech.tnau.ac.in/crop_protection/tomato/tomato_4.html
+[S3] Al Abdallat et al. 2010, Virology Journal 7:84: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2874538/
+[S4] TNAU pest and disease surveillance report: https://agritech.tnau.ac.in/crop_protection/pdf/2017/PDSR%20newspaper%20april.pdf

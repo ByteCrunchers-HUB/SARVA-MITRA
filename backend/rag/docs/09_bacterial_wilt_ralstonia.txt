@@ -1,0 +1,28 @@
+DOC_ID: 09_bacterial_wilt_ralstonia
+TITLE: Bacterial wilt (Ralstonia solanacearum) - hot, wet soil
+CROPS: tomato, brinjal, chilli/pepper, potato, ginger and other hosts
+SENSOR_SIGNALS: soil_moisture_pct high for days; temperature about 29-35 C; recent heavy rain or irrigation
+
+FACTS
+- It is one of the most devastating tomato diseases in tropical and subtropical regions; the bacterium lives in soil and has a very wide host range [S1].
+- Favoured by high temperature (about 29-35 C, 85-95 F) and high soil moisture. Infested soil and surface or irrigation water are the main sources; the bacterium enters roots, usually through wounds [S2].
+- In a lab study, wilt was lower in drier soil (20-30% of maximum water-holding capacity) and the pathogen survived less in dry soil [S3]. A field study found disease outcome was positively linked to soil moisture, and suggested managing soil moisture could reduce losses [S4].
+- Warm months increase incidence; in a China field study shifting transplanting time to avoid the hottest period reduced wilt [S1][S5]. Higher temperature also raised wilt severity in some resistant tomatoes [S5][S6]. Cold-water irrigation reduced wilt in a pot study [S7].
+- Chemical control is often ineffective because the bacteria sit deep in soil [S6]. The UF/IFAS sheet states no known resistance in commercial cultivars (US context) [S2]; research on temperature-stable resistance genes is ongoing [S6].
+
+SYMPTOMS
+- Rapid and complete wilting of normal-looking grown plants [S8].
+
+MANAGEMENT (as stated by sources)
+- Pathogen-free soil, irrigation water, transplants and tools are important [S2].
+- Managing soil moisture and planting date may reduce loss [S4][S5].
+
+SOURCES
+[S1] Wei et al. 2015, PLoS ONE, transplantation time and bacterial wilt: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4595502/
+[S2] UF/IFAS, Bacterial Wilt: https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
+[S3] Islam & Toyama 2004, Microbes and Environments 19:244-247: https://www.jstage.jst.go.jp/article/jsme2/19/3/19_3_244/_article/-char/en
+[S4] Jiang et al., soil moisture and bacterial wilt: https://journal.hep.com.cn/sel/EN/10.1007/s42832-021-0086-2
+[S5] Wei et al., seasonal biocontrol efficiency and temperature: https://pmc.ncbi.nlm.nih.gov/articles/PMC5638076
+[S6] Plants (MDPI) 2022, temperature-independent resistance: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9460693/
+[S7] Cold-water irrigation study, Archives of Phytopathology: https://informahealthcare.com/doi/full/10.1080/09670874.2011.617134
+[S8] NIPHM via Vikaspedia, tomato diseases: https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en

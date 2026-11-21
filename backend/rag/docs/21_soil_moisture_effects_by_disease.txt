@@ -1,0 +1,25 @@
+DOC_ID: 21_soil_moisture_effects_by_disease
+TITLE: How soil moisture links to different problems (sourced statements side by side)
+TYPE: cross-reference. Each line repeats a statement from the file named.
+SENSOR_SIGNALS: soil_moisture_pct high for days, or low
+
+HIGH OR WET SOIL
+- Bacterial wilt: disease outcome rises with soil moisture; wilt was lower at 20-30% of maximum water-holding capacity (file 09).
+- Damping-off by Pythium/Phytophthora: cool, wet, poorly drained soil; overwatering (file 11).
+- Chilli damping-off and Fusarium wilt of chilli: high soil moisture with warm temperature (files 11, 14).
+- Gray mold on tomato: most severe in acidic sandy soil with high soil moisture (file 07).
+- Blossom-end rot: waterlogged soil, overwatering and root damage can contribute (file 18).
+
+LOW OR DRY SOIL
+- Fusarium wilt of tomato: TNAU lists low soil moisture, light sandy soil and low pH; dry weather also favours it (file 10).
+- Blossom-end rot: Ontario states it is primarily caused by dry soil conditions; swings between dry and wet are a trigger (file 18).
+- Damping-off by Rhizoctonia/Fusarium can occur in warm, dry conditions (file 11).
+- Early blight is mainly a disease of stressed or ageing plants (file 04).
+
+LEAF-LEVEL WETNESS (not soil)
+- Late blight needs long leaf wetness (file 03); powdery mildew does not and is harmed by free water (file 06).
+
+TARGET MOISTURE LEVELS
+- The retrieved sources give no universal soil_moisture_pct target. Ask the team for crop and soil-type targets or a local KVK recommendation rather than inventing one.
+
+SOURCES: see the files named in brackets.

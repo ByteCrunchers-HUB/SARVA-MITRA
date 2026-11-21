@@ -1,0 +1,21 @@
+DOC_ID: 13_chilli_anthracnose_dieback_fruit_rot
+TITLE: Chilli anthracnose, dieback and fruit rot (Colletotrichum)
+CROPS: chilli
+SENSOR_SIGNALS: temperature about 28-30 C; humidity 95-100% (morning humidity 84-97%); rainfall at frequent intervals, especially when fruits start to ripen
+
+FACTS
+- TNAU: favourable temperature 28 C and humidity 95%; high humidity when rain occurs after fruits start to ripen [S1].
+- NIPHM: temperature 28 C with humidity above 97%, humid weather with frequent rainfall, and intercropping with turmeric (another host) [S2].
+- A Haryana (CCSHAU) study found disease development was highest at 30 C and 100% humidity in the lab. In the field, maximum temperature 30.6-35.9 C, minimum 21.7-26.5 C, morning humidity 84.3-97% and evening humidity 54.3-58.3% suited the disease; minimum and maximum temperature together explained 85% of severity [S3].
+- Spread: seed-borne; airborne spores and rain; flies and other insects carry spores between fruits [S1].
+- Symptoms: black circular spots on ripening fruit; badly affected fruit turn straw or white and lose pungency; brownish-black spots on leaves; dieback of branches [S1][S2].
+
+MANAGEMENT (as stated by sources)
+- Use disease-free seed; seed treatment (thiram or zineb named); three sprays of captan at set stages (before flowering, fruit formation, and a fortnight later) per TNAU; biocontrol agents such as Pseudomonas fluorescens and Bacillus subtilis were effective in studies [S1].
+- A TNAU advisory suggests mancozeb 2-3 times at 15-day intervals to prevent dieback and fruit rot [S4]. Doses must come from the label and local KVK.
+
+SOURCES
+[S1] TNAU Agritech, Chilli anthracnose: https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html
+[S2] NIPHM via Vikaspedia, chilli diseases: https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S3] CCSHAU thesis (2008), epidemiology of chilli anthracnose: https://krishikosh.egranth.ac.in/items/3cf485d8-7cd8-4f8e-9097-9e8c9c205d93
+[S4] TNAU CPPS Pest Surveillance Report, Sept 2023: https://agritech.tnau.ac.in/crop_protection/pdf/2023/CPPS-PSR-September 2023-.pdf

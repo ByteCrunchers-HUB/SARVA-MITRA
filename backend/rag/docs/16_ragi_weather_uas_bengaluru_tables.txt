@@ -1,0 +1,15 @@
+DOC_ID: 16_ragi_weather_uas_bengaluru_tables
+TITLE: UAS Bengaluru crop-weather tables for Kharif ragi (blast and pests)
+CROPS: ragi, Karnataka
+SENSOR_SIGNALS: mean temperature, morning/evening humidity, number of cloudy days, weekly rainfall
+
+FACTS
+- Source: AICRP on Agrometeorology, University of Agricultural Sciences, Bengaluru; Kharif ragi, medium (120-day) duration.
+- Zone 6 (Mysore district, Southern Dry Zone), sowing window 1: "congenial weather for pest and disease" columns give mean temperature roughly 11-28.5 C across weeks (ranges such as 19.8-26.6, 18-26.8, 16.2-26.5), morning humidity 90-94%, evening humidity 58-66%, and more than 3 cloudy days. Percent incidence of blast across weeks ranged from about 8% to 45%, and neck and finger blast from about 5% to 96% (sowing window 2 shows similar values, 4.8-96.25%) [S1][S2].
+- Zone 5 (Bengaluru district, Eastern Dry Zone): table lists weekly minimum temperature about 15-19.6 C; neck and finger blast incidence 4.8-96.25% across weeks; leaf folder favoured at 25-29 C with humidity above 80%; stem borer at 25-29 C with humidity 83-95% [S3].
+- COMPILER NOTE: the PDF snippets are tables; the exact week-by-week alignment could not be fully recovered. Use these as ranges, and ask the team to read the PDFs for week-level detail. The Bengaluru-district page did not show a congenial-weather block in the text retrieved, so the humidity/cloud figures above come from the Mysore zone tables.
+
+SOURCES
+[S1] UAS Bengaluru, Zone 6 Mysore ragi (window 1): https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
+[S2] UAS Bengaluru, Zone 6 Mysore ragi (window 2): https://www.old.uasbangalore.edu.in/images/attachments/crop_weather/zone-6-(mysore)-ragi- (sowing-window-2).pdf
+[S3] UAS Bengaluru, Zone 5 Bangalore district ragi: https://mail.uasbangalore.edu.in/images/crop_weather/zone-5-(bangalore -disrtict)- ragi.pdf

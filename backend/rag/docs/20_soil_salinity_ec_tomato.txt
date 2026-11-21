@@ -1,0 +1,23 @@
+DOC_ID: 20_soil_salinity_ec_tomato
+TITLE: Soil salinity (electrical conductivity) and tomato yield
+CROPS: tomato (moderately sensitive to salt); the threshold idea applies to other crops with different numbers
+SENSOR_SIGNALS: soil_ec_dsm above about 2.5; rising trend; also high-EC irrigation water
+
+FACTS
+- Every crop tolerates some salt in the root zone; the highest level with no yield loss is the "salinity threshold", and above it yield falls in proportion to salt level. Soil salinity is expressed as the EC of a saturated soil extract (ECe) in dS/m (same as mmhos/cm) [S1][S2].
+- Tomato threshold is 2.5 dS/m, with about 9.9% yield loss per dS/m above it (classic Maas-Hoffman values) [S2][S3]. Other studies report thresholds of about 2.97 and 3.31 dS/m with slopes of 11-15% per dS/m [S3].
+- Tomato is moderately sensitive; growth and yield begin to decline when nutrient-solution EC exceeds about 2.5-4.0 dS/m. Moderate salinity can improve fruit sugar quality while lowering yield [S4].
+- Irrigation water up to 2.5 dS/m did not have major harmful effects on marketable yield in one study; potassium fertiliser helped reduce the harm and blossom-end rot [S3].
+- In drip irrigation, water of 4.5 dS/m cut yield about 10-12% compared with 1.2 dS/m [S5]. In a three-year study, keeping irrigation water salinity under 4 dS/m and soil matric potential above -20 kPa helped maintain yield; BER rose at 3-4 dS/m, and 5.5 dS/m cut yield by roughly 12-31% [S6].
+- Drip irrigation with careful management was recommended when saline water must be used, since fruit yield per unit of water was higher [S7].
+- Salinity also reduces leaf area and chlorophyll at high levels [S6]. Salinity links to blossom-end rot (file 18).
+- COMPILER NOTE (not from a source): lab values are ECe on a saturated paste. A field sensor reading depends on soil moisture and sensor type, so treat it as a trend indicator and confirm with a lab test.
+
+SOURCES
+[S1] UC Davis, Water quality guidelines: vegetable and row crops: https://www.lawr.ucdavis.edu/water-quality-guidelines-vegetable-and-row-crops
+[S2] UC ANR, tomato salinity data: https://ucanr.edu/media/307064
+[S3] Misr J. Ag. Eng. (2009), tomato salinity and potassium in Siwa: https://journals.ekb.eg/article_109866_3a81539f3c0f39443ac41e2d28d283a9.pdf
+[S4] Scientific Reports (2019), tomato under three salinity levels: https://link.springer.com/10.1038/s41598-019-42805-7
+[S5] Agronomy (MDPI) 2023, tomato salinity threshold and slope: https://mdpi.com/2073-4395/13/1/36
+[S6] PLoS ONE 2015, saline drip irrigation, tomato yield and BER: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4634986/
+[S7] Malash et al. 2008 (FAO AGRIS record): https://agris.fao.org/search/en/records/65df8f7f0f3e94b9e5d9ddb4

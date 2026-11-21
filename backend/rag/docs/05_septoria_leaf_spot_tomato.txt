@@ -1,0 +1,28 @@
+DOC_ID: 05_septoria_leaf_spot_tomato
+TITLE: Septoria leaf spot (Septoria lycopersici)
+CROPS: tomato and other nightshade-family plants
+SENSOR_SIGNALS: temperature about 15-27 C (best 20-25 C); high humidity; leaf wetness or long dew; heat with humidity; poor airflow
+
+WEATHER FACTS
+- Favourable: high humidity, moderate temperature 20-25 C (68-77 F), high dew point or wet conditions, poor airflow [S1].
+- Long high humidity with 15-27 C (60-80 F) and leaf wetness are ideal [S2].
+- Heat waves with long stretches of high temperature and humidity, or repeated periods of wet foliage such as long morning dew, favour it [S3].
+- A growth-chamber study found most lesions at 20-25 C, though lesions still formed at 10 C. With humidity of 50-60% and no dew, lesion numbers were similar to 16 hours of dew on inoculated leaves, so low levels can occur even under unfavourable conditions [S4].
+- Spreads by splashing rain, equipment, workers or insects; survives on tomato debris, solanaceous weeds and can be seed-borne [S3].
+
+SYMPTOMS
+- Many small circular spots on the lowest, oldest leaves, with dark margins and tan to grey centres with tiny black dots; spreads upward; leaves yellow, brown and wither [S2]. Fruit infection is rare [S2]; it does not directly affect fruit [S5].
+- It can be harder to control than early blight [S3].
+
+MANAGEMENT (as stated by sources)
+- Remove lower growth, keep spacing, control host weeds, destroy debris, avoid over-irrigating [S1]. Water at the base; prune the lowest 3-4 leaf branches once plants are established [S6].
+- If caught early remove infected lower leaves; removing leaves above fruit weakens the plant and exposes fruit to sunscald [S2].
+- Preventative sprays with copper or chlorothalonil are named; follow label [S1].
+
+SOURCES
+[S1] Univ. of Wisconsin Vegetable Pathology, Tomato Septoria Leaf Spot: https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
+[S2] Missouri Botanical Garden, Septoria leaf spot of tomato: https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/fungal-spots/septoria-leaf-spot-of-tomato.aspx
+[S3] UConn Extension (J. Boucher), Septoria Leaf Spot on Tomatoes in 2015: https://ipm.cahnr.uconn.edu/problems-with-septoria-leaf-spot-on-tomatoes-in-2015
+[S4] Elmer & Ferrandino, Plant Disease 79:287-290 (1995): https://apsnet.org/publications/plantdisease/backissues/Documents/1995Abstracts/PD_79_287.htm
+[S5] Ohio State Univ. Extension, HYG-3112: https://www.maine.gov/DACF/php/gotpests/diseases/factsheets/septoria-ohio.pdf
+[S6] Univ. of Maryland Extension, Septoria Leaf Spot on Tomatoes: https://extension.umd.edu/resource/septoria-leaf-spot-tomatoes

@@ -1,0 +1,23 @@
+DOC_ID: 01_dataset_columns_reference
+TITLE: Meaning of the 8 sensor columns and the disease label
+TYPE: project metadata (not an agricultural source)
+
+COMPILER NOTE: This file describes the team's CSV only. It makes no agronomy claims.
+
+timestamp: date and time of reading (sample rows are 3-hourly or irregular, 1-3 Jan 2023).
+location: place of the sensor (sample: Bengaluru).
+soil_moisture_pct: soil water content in percent.
+temperature_c: air temperature in degrees Celsius.
+humidity_pct: relative humidity of air in percent.
+leaf_wet: 0 or 1, whether the leaf surface is wet.
+sunlight_wm2: solar radiation in watts per square metre. Zero at night.
+sunlight_lux: light in lux. In the sample, lux is about 120 times W/m2 (for example 413.7 W/m2 with 49,640 lux), so the two columns carry the same information.
+rainfall_mm: rainfall in millimetres.
+soil_ec_dsm: soil electrical conductivity in dS/m (a salt indicator). 1 dS/m = 1 mmhos/cm = 1000 microsiemens/cm [S1].
+disease: 0 or 1 output of the ML model (1 = disease or disease-favourable conditions flagged).
+
+HOW TO REASON
+Use consecutive readings, not one row. Night and early-morning rows matter for dew and leaf wetness. Then retrieve the disease files whose weather signals match (see 02_weather_thresholds_by_disease).
+
+SOURCES
+[S1] Univ. of California ANR, salinity slides (units): https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/california_waterfix/exhibits/docs/Islands/II_14.pdf
