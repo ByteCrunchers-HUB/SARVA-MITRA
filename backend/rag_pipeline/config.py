@@ -29,6 +29,9 @@ MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "soil-rag-db")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "soil-rag-collection")
 MONGODB_VECTOR_INDEX = os.getenv("MONGODB_VECTOR_INDEX", "rag_vector_index")
 EMBEDDING_MODEL = os.getenv("RAG_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+HF_TOKEN = os.getenv("HF_TOKEN")
+if HF_TOKEN:
+    os.environ["HF_TOKEN"] = HF_TOKEN
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 ML_ENGINE_URL = os.getenv("ML_ENGINE_URL", "https://sarvamitra.onrender.com").rstrip("/")

@@ -6,16 +6,15 @@ from typing import Literal
 from uuid import uuid4
 
 import httpx
+import time
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 try:
     from .config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL
-    from .rag import RAGPipeline
 except ImportError:
     from config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL
-    from rag import RAGPipeline
 
 
 class ChatMessage(BaseModel):
@@ -100,6 +99,11 @@ def health():
     return {"status": "ok", "chat_mode": "stateless", "ml_engine_url": ML_ENGINE_URL}
 
 
+@app.get("/ready")
+def ready():
+    return {"status": "ready", "mode": "stateless"}
+
+
 def ml_output(prediction: dict | None, explicit: int | None) -> int:
     if explicit in (0, 1):
         return explicit
@@ -138,16 +142,28 @@ def call_ml_engine(request: AdvisoryRequest) -> dict:
             for row in sorted(request.history, key=lambda row: row.date)
         ],
     }
-    try:
-        response = httpx.post(f"{ML_ENGINE_URL}/predict", json=payload, timeout=30)
-        response.raise_for_status()
-        return response.json()
-    except httpx.TimeoutException as exc:
-        raise HTTPException(504, "ML engine timed out") from exc
-    except httpx.RequestError as exc:
-        raise HTTPException(502, f"Unable to reach ML engine: {exc}") from exc
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(502, {"message": "ML engine returned an error", "detail": exc.response.text}) from exc
+    last_error: Exception | None = None
+    for attempt in range(2):
+        try:
+            response = httpx.post(f"{ML_ENGINE_URL}/predict", json=payload, timeout=30)
+            response.raise_for_status()
+            return response.json()
+        except httpx.TimeoutException as exc:
+            last_error = exc
+        except httpx.RequestError as exc:
+            last_error = exc
+        except httpx.HTTPStatusError as exc:
+            raise HTTPException(
+                502,
+                {
+                    "message": "ML engine returned an error",
+                    "status_code": exc.response.status_code,
+                    "detail": exc.response.text,
+                },
+            ) from exc
+        if attempt == 0:
+            time.sleep(2)
+    raise HTTPException(504, f"ML engine timed out after retry: {last_error}")
 
 
 @app.post("/v1/advisory")
@@ -173,6 +189,10 @@ def advisory(request: AdvisoryRequest):
 
     chat_history = [{"role": item.role, "content": item.content} for item in request.chat_history]
     try:
+        try:
+            from .rag import RAGPipeline
+        except ImportError:
+            from rag import RAGPipeline
         pipeline = RAGPipeline(request.collection_name)
         answer, structured = pipeline.answer(
             readings=readings,

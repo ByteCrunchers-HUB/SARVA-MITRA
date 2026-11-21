@@ -4,10 +4,6 @@ import json
 import re
 
 from langchain_core.documents import Document
-from langchain_groq import ChatGroq
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_mongodb import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
 from groq import APIError
 
@@ -33,6 +29,10 @@ except ImportError:
         MONGODB_VECTOR_INDEX,
         mongodb_uri,
     )
+
+
+_embeddings = None
+_stores = {}
 
 
 def build_query(readings: dict, ml_output: int, crop: str, location: str, question: str) -> str:
@@ -68,13 +68,18 @@ class RAGPipeline:
     def __init__(self, collection_name: str | None = None) -> None:
         self.collection_name = collection_name
         self.last_retrieval = {"query": "", "matches": [], "documents_sent": []}
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name=EMBEDDING_MODEL,
-            encode_kwargs={"normalize_embeddings": True},
-            model_kwargs={"device": "cpu"},
-        )
+        global _embeddings
+        if _embeddings is None:
+            from langchain_huggingface import HuggingFaceEmbeddings
+            _embeddings = HuggingFaceEmbeddings(
+                model_name=EMBEDDING_MODEL,
+                encode_kwargs={"normalize_embeddings": True},
+                model_kwargs={"device": "cpu"},
+            )
+        self.embeddings = _embeddings
         if not GROQ_API_KEY or "replace_with_" in GROQ_API_KEY:
             raise RuntimeError("Set GROQ_API_KEY in the root .env")
+        from langchain_groq import ChatGroq
         self.llm = ChatGroq(api_key=GROQ_API_KEY, model=GROQ_MODEL, temperature=0)
         self.master_prompt = (DOCS_DIR / "23_master_prompt.txt").read_text(encoding="utf-8")
 
@@ -93,14 +98,19 @@ class RAGPipeline:
                     "20_soil_salinity_ec_tomato",
                 ]
             else:
-                store = MongoDBAtlasVectorSearch.from_connection_string(
-                    connection_string=mongodb_uri(),
-                    namespace=f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}",
-                    embedding=self.embeddings,
-                    index_name=MONGODB_VECTOR_INDEX,
-                    text_key="text",
-                    embedding_key="embedding",
-                )
+                namespace = f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}"
+                store = _stores.get(namespace)
+                if store is None:
+                    from langchain_mongodb import MongoDBAtlasVectorSearch
+                    store = MongoDBAtlasVectorSearch.from_connection_string(
+                        connection_string=mongodb_uri(),
+                        namespace=namespace,
+                        embedding=self.embeddings,
+                        index_name=MONGODB_VECTOR_INDEX,
+                        text_key="text",
+                        embedding_key="embedding",
+                    )
+                    _stores[namespace] = store
                 query = build_query(readings, ml_output, crop, location, question)
                 self.last_retrieval["query"] = query
                 excluded = {
@@ -190,6 +200,7 @@ class RAGPipeline:
 
     def answer(self, readings: dict, ml_output: int, crop: str, location: str,
                question: str, chat_history: list[dict], ml_prediction: dict) -> tuple[str, dict]:
+        from langchain_core.messages import HumanMessage, SystemMessage
         documents = self.retrieve(readings, ml_output, crop, location, question)
         if not documents:
             raise RuntimeError("No relevant documents found")

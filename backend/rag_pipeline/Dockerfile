@@ -19,6 +19,9 @@ COPY docs ./rag_pipeline/docs
 
 ENV PYTHONUNBUFFERED=1
 ENV RAG_API_HOST=0.0.0.0
+ENV HF_HOME=/tmp/huggingface
+ENV TRANSFORMERS_CACHE=/tmp/huggingface
+ENV SENTENCE_TRANSFORMERS_HOME=/tmp/huggingface
 
 EXPOSE 8001
 
