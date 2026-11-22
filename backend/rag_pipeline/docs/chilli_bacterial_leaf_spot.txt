@@ -1,0 +1,53 @@
+DOC_ID: chilli_bacterial_leaf_spot
+TITLE: Bacterial leaf spot of chilli (Xanthomonas) - symptoms, weather, inspection, management
+CROPS: chilli
+SENSOR_SIGNALS: rainfall_mm; humidity_pct; leaf_wet; temperature_c
+EMBED: yes
+
+CORPUS NOTE: This document covers chilli-specific bacterial leaf spot. Tomato bacterial leaf spot is in 08_tomato_bacterial_leaf_spot.txt. The pathogens are related Xanthomonas species but symptoms and primary infection sources differ.
+
+IDENTIFICATION
+- (OBS, IN) Caused by Xanthomonas campestris pv. vesicatoria (syn. X. euvesicatoria, X. perforans). ICAR characterization of 31 isolates from five Indian states (including Karnataka) confirmed X. euvesicatoria as the primary pathogen in India [S1][S2].
+- (OBS, IN) Primary infection is seed-borne. Bacteria also survive on infected plant debris and on nightshade-family weeds. Secondary spread is by rain splash and wind-driven rain [S3][S4].
+
+WEATHER FACTS
+- (FAV, IN) NIPHM lists moderate temperature, high relative humidity and intermittent rain as favourable [S3].
+- (FAV, IN) TNAU: favourable temperature 28°C with humidity above 95% for powdery mildew; for bacterial leaf spot, high humidity and intermittent rain are key [S4][S5].
+- (FAV, IN) Optimum temperature for disease development: 25-30°C with humidity above 85% [S6].
+- UNAVAILABLE: No Karnataka-measured temperature or humidity threshold is present in this corpus. Values are from TNAU (Tamil Nadu) and NIPHM (India).
+
+SYMPTOMS (chilli)
+- (INSP, IN) Leaf: Small circular to irregular, dark brown or black greasy spots. As spots enlarge, centres become lighter surrounded by a dark band of tissue. Spots coalesce into irregular lesions; severely affected leaves turn chlorotic and drop [S4].
+- (INSP, IN) Fruit: Round, raised water-soaked spots with a PALE YELLOW BORDER (yellow halo). Spots turn brown with a depressed centre showing shiny bacterial ooze. This yellow halo on fruit is a key diagnostic feature distinguishing bacterial from fungal fruit spots [S4][S5].
+- (INSP, IN) Stem: Elongated dark lesions may appear on stems and petioles [S4].
+
+FIELD INSPECTION
+- (INSP, IN) Check leaves for small greasy dark spots with a distinct dark band around lighter centres [S4].
+- (INSP, IN) Check ripening fruit for ROUND RAISED WATER-SOAKED SPOTS WITH A PALE YELLOW BORDER - this is the most diagnostic field sign [S4][S5].
+- (INSP, IN) Check for shiny bacterial ooze in the centre of older fruit spots [S4].
+- (INSP, IN) Scout low-lying and poorly drained areas first [S7].
+- CORPUS NOTE: The yellow halo on fruit spots is the key field distinction from fungal anthracnose (which has black circular spots without a yellow halo) and Alternaria/Cercospora. However, only field inspection and KVK/agriculture officer confirmation can identify the disease. Sensor readings cannot confirm it.
+
+MANAGEMENT
+- (OBS, IN) Use disease-free seed; seed treatment with Thiram or Captan (settings not given here, ask KVK) [S4][S5].
+- (OBS, IN) Remove and destroy infected plant debris after harvest [S3].
+- (OBS, IN) Control nightshade-family weeds (Solanum nigrum) that carry the bacteria [S3].
+- (OBS, IN) Avoid overhead and night-time irrigation; use drip irrigation to reduce leaf wetness [S3][S7].
+- (OBS, IN) Sources describe copper-based bactericides and streptocycline as options used in India; product names, doses and timing are not included here. Ask the KVK or agriculture officer for approved products [S4][S5].
+- (OBS, IN) Practice crop rotation; avoid planting chilli or tomato in the same field consecutively [S3].
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, IN) The NIPHM/Vikaspedia page text was partly scrambled when retrieved. Only statements clearly tied to chilli bacterial leaf spot are repeated here [S3].
+- CORPUS RULE: Matching sensor readings (rainfall, high humidity, leaf wetness, moderate-warm temperature) show that conditions favour chilli bacterial leaf spot. They do not confirm it. Field inspection of leaves and fruit (especially the yellow halo on fruit) is required.
+
+SOURCE GEOGRAPHY
+[S1] ICAR-Indian Journal of Agricultural Sciences (Karnataka, TN, HP, UK, Haryana isolates); [S2] PMC Pan-global study; [S3] NIPHM (India); [S4] TNAU (Tamil Nadu), India; [S5] BigHaat/extension summary; [S6] Illinois, USA (extrapolated); [S7] Manitoba, Canada (general scouting).
+
+REFERENCES
+[S1] ICAR Indian Journal of Agricultural Sciences, Characterization of Xanthomonas species causing bacterial leaf spot of pepper in India, https://epubs.icar.org.in/index.php/IJAgS/article/view/76514
+[S2] PMC, Pan-global study of bacterial leaf spot of chilli caused by Xanthomonas spp., https://pmc.ncbi.nlm.nih.gov/articles/PMC9460788/
+[S3] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S4] TNAU Agritech, Chilli diseases - bacterial leaf spot, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_4.html
+[S5] BigHaat Kisan Vedika, Leaf Spot in Chilli: Fungal, Bacterial and Control, https://www.bighaat.com/kisan-vedika/blogs/leaf-spot-in-chilli-causes-symptoms-management
+[S6] Illinois Extension, Bacterial Diseases of Solanaceous Crops, https://extension.illinois.edu/plant-problems/bacterial-diseases-solanaceous-crops
+[S7] Manitoba Agriculture, Late Blight in Potatoes (scouting advice), https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html

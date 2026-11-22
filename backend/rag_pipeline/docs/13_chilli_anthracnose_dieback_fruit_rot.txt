@@ -1,0 +1,38 @@
+DOC_ID: 13_chilli_anthracnose_dieback_fruit_rot
+TITLE: Chilli anthracnose, dieback and fruit rot (Colletotrichum) - conditions that favour it
+CROPS: chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm (frequent rain, especially as fruit ripens)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, IN) Spread is by seed, airborne spores and rain. Flies and other insects carry spores between fruits [S1].
+- (OBS, IN) NIPHM lists intercropping with turmeric (another host) as a favouring factor [S2].
+
+WEATHER FACTS
+- (FAV, IN) TNAU: favourable temperature 28°C and humidity 95%, and high humidity when rain occurs after fruits start to ripen [S1].
+- (FAV, IN) NIPHM: temperature 28°C with humidity above 97%, and humid weather with frequent rainfall [S2].
+- (FAV, IN, Haryana) A CCSHAU study found disease development was highest at 30°C and 100% humidity in the laboratory. In the field, maximum temperature 30.6-35.9°C, minimum 21.7-26.5°C, morning humidity 84.3-97% and evening humidity 54.3-58.3% suited the disease. Minimum and maximum temperature together explained 85% of severity [S3].
+- (WEAK, IN) The thresholds above are from Tamil Nadu and Haryana sources and a thesis. Karnataka-measured values are not available in this corpus [S1][S3].
+
+SYMPTOMS
+- (INSP, IN) Black circular spots on ripening fruit. Badly affected fruit turn straw coloured or white and lose pungency. Brownish-black spots on leaves and dieback of branches also occur [S1][S2].
+
+FIELD INSPECTION
+- (INSP, IN) Check ripening fruit for black circular spots, and branch tips for dieback [S1][S2].
+
+MANAGEMENT
+- (OBS, IN) Use disease-free seed [S1].
+- (WEAK, IN) TNAU and NIPHM mention chemical seed treatment and fungicide sprays. Product names, doses and spray timing are not included here. Ask the KVK or agriculture officer for approved products [S1][S4].
+- (WEAK, IN) Biocontrol agents (Pseudomonas fluorescens and Bacillus subtilis) were reported as effective in studies [S1]. This is study evidence only, not a product recommendation.
+
+EVIDENCE QUALITY AND LIMITS
+- CORPUS RULE: Matching readings show conditions that favour anthracnose. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] TNAU (Tamil Nadu), India; [S2] NIPHM (India); [S3] CCSHAU, Haryana, India (thesis); [S4] TNAU (Tamil Nadu), India.
+
+REFERENCES
+[S1] TNAU Agritech, Chilli anthracnose, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html
+[S2] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S3] CCSHAU thesis (2008), epidemiology of chilli anthracnose, https://krishikosh.egranth.ac.in/items/3cf485d8-7cd8-4f8e-9097-9e8c9c205d93
+[S4] TNAU CPPS Pest Surveillance Report, September 2023, https://agritech.tnau.ac.in/crop_protection/pdf/2023/CPPS-PSR-September 2023-.pdf

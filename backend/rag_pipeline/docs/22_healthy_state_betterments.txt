@@ -1,0 +1,62 @@
+DOC_ID: 22_healthy_state_betterments
+TITLE: Practices the sources recommend to keep crops healthy (for use when the ML output is 0)
+CROPS: tomato; chilli; ragi (finger millet)
+SENSOR_SIGNALS: humidity_pct; leaf_wet; soil_moisture_pct; soil_ec_dsm; temperature_c; rainfall_mm
+EMBED: yes
+
+USE NOTE
+- CORPUS RULE: Use this file only when the ML output is 0. It contains no disease diagnosis and must not be used to suggest one. Pick only the practices that match the farmer's current readings. Do not list them all. If no practice here matches, say so rather than inventing one.
+
+WHEN HUMIDITY OR LEAF WETNESS IS OFTEN HIGH
+- (OBS, INTL) Use drip irrigation instead of overhead irrigation, and avoid working among wet plants [S1].
+- (OBS, INTL) Water at the base and avoid wetting foliage [S2]. Water in late morning when soil is dry [S3]. Avoid overhead and night-time irrigation because they lengthen leaf wetness [S4].
+- (OBS, INTL) Keep plant spacing for air flow. Prune the lowest 3-4 leaf branches once plants are established [S2][S5]. Do not strip leaves above the fruit, which risks sunscald [S6]. Pruning or trellising can add stress and raise blossom-end problems in tomato fruit [S7].
+- (OBS, INTL) Scout low, shaded and damp spots first [S4].
+
+WHEN SOIL IS WET
+- (OBS, INTL) Improve drainage, use raised beds and avoid overwatering [S3]. Managing soil moisture may reduce losses from soil-borne problems [S8]. Do not move wet soil on tools or shoes [S9].
+
+WHEN SOIL IS DRY OR WATERING IS UNEVEN
+- (OBS, INTL) Water deeply and on a regular schedule, especially in hot weather, and keep soil evenly moist [S10][S11]. Mulch may help [S7].
+
+WHEN SOIL EC IS RISING
+- (PHYS, INTL) The tomato salinity yield threshold is 2.5 dS/m (ECe) [S12]. Keep irrigation-water salinity below about 4 dS/m [S13]. Use drip irrigation when water is salty [S14]. Fertilise moderately to avoid salt build-up [S7]. Treat sensor soil_ec_dsm as a trend and confirm with a laboratory soil test (see 20_soil_salinity_ec_tomato).
+- UNAVAILABLE: Salinity thresholds for chilli and ragi are not available in this corpus.
+
+WHEN TEMPERATURE IS HIGH (tomato)
+- (PHYS, INTL) Sustained heat above about 29°C by day and 21°C at night can cause flower drop. Heat-tolerant varieties help [S15]. See 19_heat_stress_fruit_set_tomato.
+
+NUTRITION
+- (OBS, INTL) Avoid too much nitrogen because lush growth is linked to more plant problems [S16][S9]. Soil-test calcium and potassium [S7][S9].
+
+HYGIENE AND PLANTING
+- (OBS, INTL) Use disease-free seed and seedlings. Remove crop debris and control nightshade-family weeds [S5][S17]. Clean tools, stakes and crates [S9]. See 24_field_hygiene.
+- (OBS, INTL, IN) Choose resistant or tolerant varieties recommended locally [S17][S18].
+- (OBS, IN, SEC) For ragi, early sowing, resistant varieties and rotation with legumes are listed [S18][S19].
+
+EVIDENCE QUALITY AND LIMITS
+- CORPUS NOTE: The practices above are taken from extension sources written for several crops and countries. Only the ragi line and the salinity values are crop- or region-specific. No Karnataka-specific practice is available in this corpus.
+
+SOURCE GEOGRAPHY
+[S1] Minnesota, USA; [S2] Maryland, USA; [S3] Mississippi, USA; [S4] Manitoba, Canada; [S5] Wisconsin, USA; [S6] Missouri, USA; [S7] Washington, USA; [S8] China field study (location of source not fully verified); [S9] Missouri, USA; [S10] California, USA; [S11] United Kingdom (RHS); [S12] California, USA; [S13] PLoS ONE 2015 (location not verified); [S14] FAO AGRIS record (location not verified); [S15] Minnesota, USA; [S16] Pacific region guide (location not verified); [S17] Michigan and Florida, USA; [S18] ICAR, India; [S19] TNAU-affiliated college course material, India.
+
+REFERENCES
+[S1] University of Minnesota Extension, Early blight on tomato, https://extension.umn.edu/disease-management/early-blight-tomato
+[S2] University of Maryland Extension, Septoria Leaf Spot on Tomatoes, https://extension.umd.edu/resource/septoria-leaf-spot-tomatoes
+[S3] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
+[S4] Manitoba Agriculture, Late Blight in Potatoes, https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html
+[S5] University of Wisconsin Vegetable Pathology, Tomato Septoria Leaf Spot, https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
+[S6] Missouri Botanical Garden, Septoria leaf spot of tomato, https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/fungal-spots/septoria-leaf-spot-of-tomato.aspx
+[S7] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S8] Jiang et al., soil moisture and bacterial wilt, https://journal.hep.com.cn/sel/EN/10.1007/s42832-021-0086-2
+[S9] Missouri Botanical Garden, Fusarium wilt of tomato, https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/cankers/fusarium-wilt-of-tomato.aspx
+[S10] UC ANR Stanislaus Sprout, Prevent Blossom-End Rot by Watering Deeply and Regularly, https://ucanr.edu/blog/stanislaus-sprout/article/prevent-blossom-end-rot-watering-deeply-and-regularly
+[S11] Royal Horticultural Society, Blossom end rot, https://www.rhs.org.uk/problems/blossom-end-rot
+[S12] UC ANR, tomato salinity data, https://ucanr.edu/media/307064
+[S13] PLoS ONE 2015, saline drip irrigation, tomato yield and BER, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4634986/
+[S14] Malash et al. 2008 (FAO AGRIS record), https://agris.fao.org/search/en/records/65df8f7f0f3e94b9e5d9ddb4
+[S15] University of Minnesota Extension, How excessive heat affects the vegetable garden, https://extension.umn.edu/planting-and-growing-guides/how-excessive-heat-affects-vegetable-garden
+[S16] Pacific Pests, Pathogens and Weeds, Tomato powdery mildew (314), https://apps.lucidcentral.org/pppw_v10/pdf/web_full/tomato_powdery_mildew_314.pdf
+[S17] Michigan State University (Hausbeck), Organic Management of Early Blight on Tomato, https://www.canr.msu.edu/hausbeck/Uploads/PDF/FS_Organic-Management-of-Early-Blight-on-Tomato.pdf ; UF/IFAS, Early Blight of Tomato, https://ipm.ifas.ufl.edu/pdfs/Early_Blight.pdf
+[S18] ICAR Indian Farming (Oct 2025), finger millet overview, https://epubs.icar.org.in/index.php/IndFarm/article/download/174434/64149/505234
+[S19] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast

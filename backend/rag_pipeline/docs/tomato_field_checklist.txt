@@ -1,0 +1,126 @@
+DOC_ID: tomato_field_checklist
+TITLE: Tomato - what to look for today (field inspection checklist by sensor condition)
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet; rainfall_mm; soil_moisture_pct; soil_ec_dsm; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This checklist helps the farmer know what to inspect in the field based on current sensor readings. It does not diagnose. Matching sensor conditions only favour a problem; they do not confirm it. Use with the relevant disease documents (03-12, 18-20, tomato_nutrient_deficiencies, tomato_blight_leafspot_comparison).
+
+HOW TO USE
+1. Look at your current sensor readings (especially consecutive readings over hours/days).
+2. Find the matching condition row below.
+3. Do the field checks listed for that condition.
+4. Contact KVK or agriculture officer to confirm any findings.
+
+CONDITION: Cool (10-21°C) + High humidity (>80%) + Long leaf wetness (>10 hrs)
+→ PRIORITY CHECKS FOR LATE BLIGHT (03_late_blight_tomato_potato)
+- Check leaf UNDERSIDES on humid mornings for WHITE MILDEW-LIKE GROWTH [03, S2]
+- Check for water-soaked dark green patches turning purple-black [03, S2]
+- Check stems/branches for brown lesions [03, S2]
+- Check fruit for brown, firm, leathery lesions [03, S2]
+→ ALSO CHECK FOR SEPTORIA (05_septoria_leaf_spot_tomato)
+- Check LOWEST leaves for many small circular spots with dark margins, tan-grey centres, TINY BLACK DOTS [05, S2]
+- Check for leaf yellowing/browning spreading upward [05, S2]
+
+CONDITION: Warm (20-30°C) + High humidity/dew (>90%) + Alternating wet/dry periods
+→ PRIORITY CHECKS FOR EARLY BLIGHT (04_early_blight_tomato_potato)
+- Check OLDEST (lowest) leaves first for TARGET-LIKE SPOTS with concentric rings and yellow halo [04, S4]
+- Check stems for dry, brown, ringed lesions [04, S2]
+- Check fruit for concentric rings, often at stem end [04, S4]
+→ ALSO CHECK FOR BACTERIAL LEAF SPOT (08_tomato_bacterial_leaf_spot)
+- Check leaves for SMALL GREASY WATER-SOAKED SPOTS with YELLOW HALO (not vein-limited) [08, S4]
+- Check green fruit for SUNKEN SCABBY SPOTS with yellow halo [08, S4]
+
+CONDITION: Moderate (20-25°C) + High humidity + Poor airflow + Lower leaves affected
+→ PRIORITY CHECKS FOR SEPTORIA (05_septoria_leaf_spot_tomato)
+- Check LOWEST leaves for MANY SMALL CIRCULAR SPOTS with dark margins, tan-grey centres, TINY BLACK DOTS [05, S2]
+- Check for leaf yellowing, browning, withering spreading upward [05, S2]
+→ ALSO CHECK FOR EARLY BLIGHT (04_early_blight_tomato_potato)
+- Check oldest leaves for LARGER target-like spots with concentric rings [04, S4]
+
+CONDITION: High humidity + Moderate temp (16-25°C) + Dry leaves (leaf_wet=0) + Shade
+→ CHECK FOR POWDERY MILDEW (06_powdery_mildew_tomato_chilli)
+- Turn leaves over; check LOWER SURFACE for WHITE POWDERY GROWTH [06, S5]
+- Check UPPER surface for PALE YELLOW BLOTCHES [06, S5]
+
+CONDITION: High humidity (>80%) + 15.5-24°C + Dense canopy
+→ CHECK FOR GRAY MOLD (07_gray_mold_botrytis_tomato)
+- Check wounds, dead tissue, fading flowers for GREY-BROWN FUZZY GROWTH [07, S2]
+- Check fruit for soft rot and "ghost spots" [07, S4]
+
+CONDITION: Rainfall/splashing + High humidity + Persistent dew
+→ CHECK FOR BACTERIAL LEAF SPOT (08_tomato_bacterial_leaf_spot)
+- Check leaves for small greasy spots with YELLOW HALO (not vein-limited) [08, S4]
+- Check green fruit for raised water-soaked spots with yellow border [08, S4]
+
+CONDITION: High soil moisture (days) + High temperature (29-35°C)
+→ CHECK FOR BACTERIAL WILT (09_bacterial_wilt_ralstonia)
+- Check for SUDDEN COMPLETE WILTING of normal-looking green plants [09, S8]
+- Check stem base for brown discoloration [09, S2]
+
+CONDITION: Low soil moisture + Light sandy soil + 27-32°C
+→ CHECK FOR FUSARIUM WILT (10_fusarium_wilt_tomato)
+- Check for ONE-SIDED YELLOWING on lower leaves [10, S2]
+- Check stem base for BROWN STREAKING inside [10, S2]
+
+CONDITION: Wet, cool, poorly drained soil (seedlings)
+→ CHECK FOR DAMPING-OFF (11_damping_off_seedlings)
+- Check stem at soil line for WATER-SOAKED TISSUE, collapse [11, S5]
+
+CONDITION: Curling leaves + Whiteflies present
+→ CHECK FOR LEAF CURL VIRUS (12_tomato_leaf_curl_virus_whitefly)
+- Check for SEVERE STUNTING, downward rolling, crinkling, leathery leaves, bushy look [12, S1]
+- Check for WHITEFLIES on undersides [12, S1]
+
+CONDITION: Swinging soil moisture (dry-wet cycles) + Heat + High soil EC
+→ CHECK FOR BLOSSOM-END ROT (18_blossom_end_rot_tomato)
+- Check FRUIT blossom end (away from stem) for TAN WATER-SOAKED area turning BLACK LEATHERY [18, S3]
+
+CONDITION: High temperature (>29°C day / >21°C night) + Flower drop
+→ CHECK FOR HEAT STRESS (19_heat_stress_fruit_set_tomato)
+- Check for FLOWER/BUD DROP and poor fruit set [19, S4]
+
+CONDITION: Rising soil_ec_dsm (>2.5 dS/m trend) + Salt-sensitive variety
+→ CHECK FOR SALT STRESS (20_soil_salinity_ec_tomato)
+- Check for reduced leaf area, chlorophyll loss, yield decline [20, S4]
+
+CONDITION: Young leaves: pale margins, necrotic tips, dead growing point
+→ CHECK FOR CALCIUM or BORON DEFICIENCY (tomato_nutrient_deficiencies)
+- Check fruit for BLOSSOM-END ROT [tomato_nutrient_deficiencies, S1]
+
+CONDITION: Older leaves: interveinal yellowing (veins green)
+→ CHECK FOR MAGNESIUM DEFICIENCY (tomato_nutrient_deficiencies)
+
+CONDITION: Older leaves: edge burning, curling, crinkling
+→ CHECK FOR POTASSIUM DEFICIENCY (tomato_nutrient_deficiencies)
+
+CONDITION: Older leaves: uniform yellowing from tips
+→ CHECK FOR NITROGEN DEFICIENCY (tomato_nutrient_deficiencies)
+
+CONDITION: Lower leaves: upward curl, thick leathery, green
+→ CHECK FOR PHYSIOLOGICAL LEAF CURL (tomato_nutrient_deficiencies)
+- Distinct from viral: no stunting, no crinkling, no whiteflies [tomato_nutrient_deficiencies, S1]
+
+EVIDENCE QUALITY AND LIMITS
+- All thresholds come from documents cited above, primarily INTL (USA) or IN (TNAU, NIPHM). No Karnataka-measured thresholds for tomato foliar diseases.
+- CORPUS RULE: This checklist only prioritizes field inspection. Sensor readings show conditions that favour a problem. They do not confirm it. Field inspection and KVK/agriculture officer confirmation are required.
+
+SOURCE GEOGRAPHY
+See individual documents cited in checklist.
+
+REFERENCES
+[S1] 03_late_blight_tomato_potato
+[S2] 04_early_blight_tomato_potato
+[S3] 05_septoria_leaf_spot_tomato
+[S4] 06_powdery_mildew_tomato_chilli
+[S5] 07_gray_mold_botrytis_tomato
+[S6] 08_tomato_bacterial_leaf_spot
+[S7] 09_bacterial_wilt_ralstonia
+[S8] 10_fusarium_wilt_tomato
+[S9] 11_damping_off_seedlings
+[S10] 12_tomato_leaf_curl_virus_whitefly
+[S11] 18_blossom_end_rot_tomato
+[S12] 19_heat_stress_fruit_set_tomato
+[S13] 20_soil_salinity_ec_tomato
+[S14] tomato_nutrient_deficiencies
+[S15] tomato_blight_leafspot_comparison

@@ -1,0 +1,14 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment secrets
+.env
+backend/**/.env
+
+# RAG pipeline local artifacts
+backend/rag_pipeline/.cache/
+backend/rag_pipeline/*.log

@@ -1,0 +1,110 @@
+DOC_ID: pest_aphids_thrips
+TITLE: Aphids and thrips - weather relationships, sensor conditions, and field signs
+CROPS: tomato; chilli; ragi
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: This document covers aphids (Aphis gossypii, Myzus persicae) and thrips (Scirtothrips dorsalis, Thrips palmi, Frankliniella schultzei) - major sucking pests and virus vectors in Karnataka. Sensor conditions indicate population growth risk, not infestation confirmation.
+
+CORPUS RULE: Sensors show conditions that favour pest population growth. They do not confirm infestation. Field scouting and KVK confirmation required.
+
+IDENTIFICATION
+- (OBS, KA) Aphids: Aphis gossypii (cotton/melon aphid) and Myzus persicae (green peach aphid) are major vectors of CMV, ChiVMV, and other viruses in tomato and chilli [S1][S2].
+- (OBS, KA) Thrips: Scirtothrips dorsalis (chilli thrips) and Thrips palmi (melon thrips) are major pests of chilli, tomato; Frankliniella schultzei vectors TSWV/GBNV [S1][S3].
+- (OBS, KA) Ragi aphids: Rhopalosiphum maidis and R. padi; ragi thrips: Haplothrips spp. [S4].
+
+KARNATAKA WEATHER & SENSOR CONDITIONS FAVOURING POPULATION GROWTH
+
+Aphids (Aphis gossypii, Myzus persicae):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 20-25°C; reproduction slows below 15°C and above 30°C [S1].
+- (FAV, KA) UAS Bengaluru: Moderate humidity 60-80% favours survival; heavy rainfall_mm washes off colonies [S1].
+- (FAV, KA) IIHR Bengaluru: Peak populations in rabi (Jan-Feb) and summer (Mar-Apr) in Karnataka [S2].
+- (FAV, IN) TNAU/NIPHM: Temperature 22-28°C, humidity 70-80%, low rainfall favour rapid multiplication [S5].
+- (FAV, INTL) Dry, calm weather with moderate temperatures favours winged aphid dispersal [S6].
+
+Thrips (Scirtothrips dorsalis, Thrips palmi):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 25-30°C; development stops below 15°C and above 35°C [S1].
+- (FAV, KA) UHS Bagalkote: Low humidity (<60%) and high temperature (>28°C) favour thrips buildup in chilli [S3].
+- (FAV, KA) IIHR Bengaluru: Peak populations in summer (Mar-May) and late kharif (Sep-Oct) in Karnataka [S2][S3].
+- (FAV, IN) TNAU/NIPHM: Temperature 28-32°C, humidity 40-60%, dry weather favour thrips [S5].
+- (FAV, INTL) High sunlight_wm2, low leaf_wet, dry conditions favour thrips activity [S6].
+
+Ragi Aphids & Thrips:
+- (FAV, KA) UAS Bengaluru AICRP: Aphid incidence correlates with mean temperature 20-25°C, morning humidity >80% [S4].
+- (FAV, KA) UAS Bengaluru AICRP: Thrips incidence favoured at 25-29°C with humidity 83-95% (Zone 6 tables) [S4].
+
+SEASONAL POPULATION DYNAMICS (KARNATAKA)
+
+Kharif (Jun-Oct):
+- Aphids: Moderate populations; washed off by heavy rains [S1].
+- Thrips: Building up in late kharif (Sep-Oct) as rainfall decreases [S2][S3].
+- Ragi: Aphids peak at tillering (Aug); thrips at flowering (Sep-Oct) [S4].
+
+Rabi (Oct-Feb):
+- Aphids: PEAK populations (Jan-Feb) on tomato, chilli; virus transmission risk highest [S1][S2].
+- Thrips: Moderate; increasing in February [S3].
+
+Summer (Feb-May):
+- Aphids: Declining after Feb peak; summer heat >30°C suppresses [S1].
+- Thrips: PEAK populations (Mar-May) on chilli, tomato; highest virus (TSWV/GBNV) risk [S2][S3].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+
+Aphids:
+- (INSP, KA) Check undersides of young leaves and growing tips for colonies [S1].
+- (INSP, KA) Look for honeydew (sticky shine) and sooty mould (black coating) [S1].
+- (INSP, KA) Yellow sticky traps: winged aphids indicate dispersal/colonization [S2].
+- (INSP, KA) Virus symptoms: mosaic, curling, stunting (see chilli_viral_diseases, 12_tomato_leaf_curl_virus_whitefly) [S2].
+
+Thrips:
+- (INSP, KA) Tap flowers/leaves over white paper; look for tiny slender insects [S2][S3].
+- (INSP, KA) Leaf symptoms: silvery streaks, curling, brittle leaves (chilli thrips) [S3].
+- (INSP, KA) Flower symptoms: scarring, discoloration, premature drop [S3].
+- (INSP, KA) Blue sticky traps: more attractive to thrips than yellow [S2][S3].
+- (INSP, KA) Virus symptoms: bud necrosis, ringspots (GBNV/TSWV - see chilli_viral_diseases) [S2].
+
+MANAGEMENT (CULTURAL & BIOLOGICAL - NO CHEMICAL DOSES)
+- (OBS, KA) Reflective mulches (silver/aluminium) repel aphids and thrips [S1][S2].
+- (OBS, KA) Barrier crops: maize/sorghum border reduces aphid entry [S1].
+- (OBS, KA) Weed control: remove alternate hosts (Solanum nigrum, Abutilon, Parthenium) [S1][S2].
+- (OBS, KA) Natural enemies: ladybird beetles, lacewings, syrphid flies (aphids); predatory mites, Orius bugs (thrips) [S1][S2].
+- (OBS, KA) Neem-based formulations and botanical extracts used; consult KVK [S1].
+- (OBS, KA) Avoid excess nitrogen - lush growth attracts aphids [S1].
+- (OBS, KA) Rogue virus-infected plants early to reduce spread [S2].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Aphid risk HIGH:
+- temperature_c 20-25°C + humidity_pct 70-80% + low rainfall_mm (dry spell) + rabi season (Jan-Feb) [S1][S2].
+
+Thrips risk HIGH:
+- temperature_c 28-32°C + humidity_pct 40-60% + high sunlight_wm2 + low leaf_wet + summer season (Mar-May) [S3].
+
+Both aphid & thrips risk MODERATE:
+- temperature_c 25-28°C + humidity_pct 60-70% + low rainfall + late kharif (Sep-Oct) [S1][S3].
+
+Low risk for both:
+- Heavy rainfall_mm (washes off) + temperature_c >32°C (aphids) or <15°C (both) [S1][S3].
+
+Virus transmission risk HIGH:
+- Aphid/Thrips risk HIGH + susceptible crop stage (flowering/fruiting) + susceptible variety [S2].
+
+CORPUS RULE: These are conditions that favour pest populations. They do not confirm infestation or virus transmission. Field scouting with sticky traps and plant inspection required. KVK confirmation for virus identification.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR technical bulletins, UHS Bagalkote provide Karnataka seasonal dynamics.
+- (FAV, KA) UAS AICRP agrometeorology tables give temperature-humidity correlations for ragi.
+- UNAVAILABLE: Karnataka-specific degree-day models for aphid/thrips forecasting.
+- UNAVAILABLE: Sensor thresholds for economic threshold levels.
+- (WEAK, IN) TNAU/NIPHM temperature-humidity ranges included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops / Millets; [S2] IIHR Bengaluru, Technical bulletins on sucking pests; [S3] UHS Bagalkote, Chilli thrips research; [S4] UAS Bengaluru AICRP Agrometeorology ragi pest tables; [S5] TNAU Agritech / NIPHM Vikaspedia; [S6] International pest ecology literature.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Technical Bulletin on Sucking Pest Management, https://www.iihr.res.in/publications
+[S3] UHS Bagalkote, Research on chilli thrips management, https://uhsbagalkote.karnataka.gov.in/research
+[S4] UAS Bengaluru, AICRP on Agrometeorology, Zone 5 & 6 ragi pest tables, https://mail.uasbangalore.edu.in/images/crop_weather/
+[S5] TNAU Agritech, Aphids and thrips management, https://agritech.tnau.ac.in/crop_protection/
+[S6] CABI Invasive Species Compendium, Aphis gossypii / Scirtothrips dorsalis

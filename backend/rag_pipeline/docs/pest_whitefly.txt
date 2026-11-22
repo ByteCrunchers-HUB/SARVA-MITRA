@@ -1,0 +1,115 @@
+DOC_ID: pest_whitefly
+TITLE: Whitefly (Bemisia tabaci) - weather relationships, sensor conditions, and virus vector role
+CROPS: tomato; chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: Whitefly (Bemisia tabaci) is the primary vector of Tomato leaf curl virus (ToLCV) and Chilli leaf curl virus (ChiLCV) in Karnataka. This document covers population dynamics and sensor relationships. Virus details are in 12_tomato_leaf_curl_virus_whitefly.txt and chilli_viral_diseases.txt.
+
+CORPUS RULE: Sensors show conditions that favour whitefly population growth and virus transmission risk. They do not confirm infestation or virus presence. Field scouting and KVK confirmation required.
+
+IDENTIFICATION
+- (OBS, KA) Bemisia tabaci (MEAM1 and Asia-II-1 biotypes) is the dominant whitefly in Karnataka tomato and chilli [S1][S2].
+- (OBS, KA) Primary vector of Tomato leaf curl virus (ToLCV) and Chilli leaf curl virus (ChiLCV) - both begomoviruses [S3][S4].
+- (OBS, KA) Also vectors Criniviruses (Tomato chlorosis virus) and Torradoviruses [S2].
+- (OBS, KA) Direct feeding damage: chlorotic spots, leaf yellowing, downward curling, honeydew, sooty mould [S3].
+
+KARNATAKA WEATHER & SENSOR CONDITIONS FAVOURING POPULATION GROWTH
+
+Temperature:
+- (FAV, KA) UAS Bengaluru: Optimal development 25-30°C; generation time ~18 days at 27°C [S1].
+- (FAV, KA) IIHR Bengaluru: Development threshold 10-12°C lower; 35-38°C upper; peak populations at 28-32°C [S2].
+- (FAV, IN) NIPHM: Temperature 27-32°C, humidity 60-75% favour rapid multiplication [S5].
+
+Humidity & Rainfall:
+- (FAV, KA) UAS Bengaluru: Moderate humidity 60-75% optimal; high humidity >85% promotes entomopathogenic fungi [S1].
+- (FAV, KA) Heavy rainfall_mm (>10mm/day) washes off nymphs and adults; reduces populations temporarily [S1].
+- (FAV, KA) Dry spells after rain favour population rebound [S1].
+
+Sunlight & Leaf Wetness:
+- (FAV, KA) High sunlight_wm2, low leaf_wet favour adult flight and dispersal [S1][S2].
+- (FAV, KA) Cloudy, humid conditions reduce flight activity [S1].
+
+SEASONAL POPULATION DYNAMICS (KARNATAKA)
+
+Kharif (Jun-Oct):
+- (OBS, KA) Moderate populations; monsoon rains suppress [S1].
+- (OBS, KA) Late kharif (Sep-Oct): population build-up as rains recede [S1].
+
+Rabi (Oct-Feb):
+- (OBS, KA) PEAK populations (Dec-Feb) on tomato, chilli [S1][S2].
+- (OBS, KA) Highest virus transmission risk (ToLCV, ChiLCV) [S3][S4].
+- (OBS, KA) Cool nights (15-20°C) slow development but adults survive [S1].
+
+Summer (Feb-May):
+- (OBS, KA) High populations continue (Feb-Mar); decline in April-May as temps exceed 35°C [S1][S2].
+- (OBS, KA) Protected cultivation (polyhouse): year-round high populations [S2].
+
+VIRUS TRANSMISSION DYNAMICS
+
+Acquisition & Inoculation:
+- (OBS, KA) Minimum acquisition access period: 15-30 minutes [S2].
+- (OBS, KA) Minimum inoculation access period: 15-30 minutes [S2].
+- (OBS, KA) Persistent-circulative transmission: virus retained for life of adult [S2].
+- (FAV, KA) Efficient transmission at 25-30°C; reduced below 20°C and above 35°C [S2].
+
+Vector-Virus-Plant Interactions:
+- (OBS, KA) Virus-infected plants more attractive to whiteflies (enhanced settling) [S3].
+- (OBS, KA) Whiteflies prefer young leaves for feeding and oviposition [S1].
+- (FAV, KA) Weed hosts (Abutilon indicum, Solanum nigrum, Euphorbia spp.) maintain virus and vector between crops [S1][S3].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+
+Whitefly presence:
+- (INSP, KA) Check undersides of young leaves for adults (tiny white moth-like) and nymphs (oval, flat, translucent) [S1][S3].
+- (INSP, KA) Yellow sticky traps at crop height: count adults/trap/week [S1][S3].
+- (INSP, KA) Honeydew and sooty mould on lower leaves [S3].
+
+Virus symptoms (see 12_tomato_leaf_curl_virus_whitefly, chilli_viral_diseases):
+- (INSP, KA) Tomato: severe stunting, downward rolling, crinkling, leathery leaves, bushy appearance [S3].
+- (INSP, KA) Chilli: similar symptoms; mosaic, curling, stunting [S4].
+- (INSP, KA) Whitefly feeding damage alone: chlorotic spots, yellowing, curling (no stunting/bushy) [S3].
+
+MANAGEMENT (CULTURAL, BIOLOGICAL, PHYSICAL - NO CHEMICAL DOSES)
+- (OBS, KA) Weed management: remove Abutilon indicum, Solanum nigrum, other alternate hosts [S1][S3].
+- (OBS, KA) Barrier crops: maize, sorghum, sesame border (2-3 rows) reduces whitefly entry [S1].
+- (OBS, KA) Reflective mulches (silver/aluminium) repel whiteflies [S1][S2].
+- (OBS, KA) Yellow sticky traps: monitoring + mass trapping (1 trap/10 m²) [S1][S3].
+- (OBS, KA) Natural enemies: Encarsia spp., Eretmocerus spp. (parasitoids); Delphastus (predator) [S2].
+- (OBS, KA) Neem oil, botanical formulations; consult KVK [S1].
+- (OBS, KA) Rogue virus-infected plants early (first 30 days) [S3].
+- (OBS, KA) Crop rotation with non-hosts (cereals, legumes) [S1].
+- (OBS, KA) Protected cultivation: UV-absorbing films, insect-proof nets (40-50 mesh) [S2].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Whitefly population risk HIGH:
+- temperature_c 25-30°C + humidity_pct 60-75% + low rainfall_mm + high sunlight_wm2 + rabi season (Dec-Feb) [S1][S2].
+
+Virus transmission risk HIGH:
+- Whitefly risk HIGH + crop in susceptible stage (seedling to early flowering) + susceptible variety + weed hosts present [S1][S3].
+
+Whitefly population risk MODERATE:
+- temperature_c 20-25°C or 30-33°C + humidity_pct 50-60% or 75-85% [S1][S2].
+
+Whitefly population risk LOW:
+- temperature_c <15°C or >35°C + heavy rainfall_mm + high humidity_pct >85% (fungal mortality) [S1][S2].
+
+CORPUS RULE: These are conditions that favour whitefly populations and virus transmission risk. They do not confirm infestation or virus infection. Field scouting with yellow sticky traps and plant inspection required. KVK confirmation for virus identification.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR technical bulletins provide Karnataka seasonal dynamics and thresholds.
+- (FAV, KA) IIHR studies on whitefly-virus-plant interactions in Karnataka conditions.
+- UNAVAILABLE: Karnataka-specific degree-day model for whitefly forecasting.
+- UNAVAILABLE: Sensor thresholds for economic injury levels.
+- (WEAK, IN) NIPHM temperature-humidity ranges included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops; [S2] IIHR Bengaluru, Technical bulletins on whitefly and begomoviruses; [S3] 12_tomato_leaf_curl_virus_whitefly; [S4] chilli_viral_diseases; [S5] NIPHM via Vikaspedia.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Technical Bulletin on Whitefly and Begomovirus Management, https://www.iihr.res.in/publications
+[S3] 12_tomato_leaf_curl_virus_whitefly
+[S4] chilli_viral_diseases
+[S5] NIPHM via Vikaspedia, Whitefly management, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/whitefly

@@ -1,0 +1,86 @@
+DOC_ID: ragi_field_checklist
+TITLE: Ragi (finger millet) - what to look for today (field inspection checklist by sensor condition)
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: temperature_c; humidity_pct; sunlight_wm2 (cloudy days); rainfall_mm; soil_moisture_pct
+EMBED: yes
+
+CORPUS NOTE: This checklist helps the farmer know what to inspect in the field based on current sensor readings. It does not diagnose. Matching sensor conditions only favour a problem; they do not confirm it. Use with the relevant disease documents (15_ragi_blast, 16_ragi_weather_uas_bengaluru_tables, 17_ragi_other_diseases_and_varieties, ragi_blast_detailed, ragi_foliar_comparison, ragi_soil_moisture_bands).
+
+HOW TO USE
+1. Look at your current sensor readings (especially consecutive readings over hours/days).
+2. Find the matching condition row below.
+3. Do the field checks listed for that condition.
+4. Contact KVK or agriculture officer to confirm any findings.
+
+CONDITION: Morning humidity 90-94% + >3 cloudy days + Frequent rain/drizzle + Temp 25-28°C
+→ PRIORITY CHECKS FOR RAGI BLAST (15_ragi_blast, ragi_blast_detailed, 16_ragi_weather_uas_bengaluru_tables)
+- Check LEAVES for GREYISH ELLIPTICAL SPOTS with brown margins, joining and drying leaves [15, S3; ragi_blast_detailed, S3]
+- Check NECK (peduncle below ear) for BROWNING/BLACKENING with OLIVE-GREY GROWTH - MOST YIELD-DAMAGING [15, S3; ragi_blast_detailed, S3]
+- Check FINGER TIPS for BROWNING spreading toward base; empty chaffy fingers [15, S3; ragi_blast_detailed, S3]
+- Scout during FLOWERING TO GRAIN-FILLING stage (critical period) [ragi_blast_detailed, S2]
+
+CONDITION: High humidity + Cloudy + Warm (20-28°C)
+→ ALSO CHECK FOR RUST (17_ragi_other_diseases_and_varieties, ragi_foliar_comparison)
+- Check LEAF UNDERSIDES for ORANGE-BROWN POWDERY PUSTULES (uredinia) that rub off on fingers [ragi_foliar_comparison, S1]
+- Rust stays on leaves; does not attack neck or fingers
+
+CONDITION: High humidity + Wet leaves + Young leaves affected
+→ ALSO CHECK FOR LEAF SPOT - Cercospora / Helminthosporium (17_ragi_other_diseases_and_varieties, ragi_foliar_comparison)
+- Check YOUNG LEAVES for SMALL OVAL BROWN LESIONS joining into blighted patches [17, S2; ragi_foliar_comparison, S1]
+- Helminthosporium: lesions may have yellow halo [ragi_foliar_comparison, S1]
+- Leaf spots stay on leaves; do not progress to neck/fingers
+
+CONDITION: Low soil moisture sustained during flowering/grain fill (Sept-Oct)
+→ CHECK FOR MOISTURE STRESS (ragi_soil_moisture_bands)
+- UAS GKVK: 40% PASM = 25% yield; 58% PASM = 50% yield [ragi_soil_moisture_bands, S1]
+- Check for poor grain fill, small heads [ragi_soil_moisture_bands, S1]
+- CORPUS NOTE: PASM is not the same as soil_moisture_pct sensor unit
+
+CONDITION: Very high soil moisture + Poor drainage at seedling stage
+→ CHECK FOR DAMPING-OFF / ROOT ROT (11_damping_off_seedlings, 17_ragi_other_diseases_and_varieties)
+- Check seedling stem at soil line for WATER-SOAKED TISSUE, collapse [11, S5]
+- ICAR-IIMR: seedling diseases (root rot, damping-off) at seedling stage [17, S2]
+
+CONDITION: High humidity + Cloudy at maturity/harvest
+→ CHECK FOR GRAIN MOLD (17_ragi_other_diseases_and_varieties)
+- Check ears for MOLD GROWTH, discoloration [17, S1]
+- Dry weather needed for harvest
+
+CONDITION: Smut / Green ear / Viral symptoms
+→ CHECK FOR OTHER RAGI DISEASES (17_ragi_other_diseases_and_varieties)
+- Smut: transformed ears into black spore masses [17, S1]
+- Green ear: leafy structures replace grains [17, S1]
+- Streak/mottle viruses: mosaic, streaking on leaves [17, S1]
+
+DIAGNOSTIC CONFUSION POINTS (ragi_foliar_comparison)
+- BLAST vs RUST: Blast has OLIVE-GREY growth on NECK; Rust has ORANGE-BROWN PUSTULES on leaf undersides (powdery, rub off). Blast attacks NECK and FINGERS; Rust stays on leaves.
+- BLAST vs LEAF SPOT: Blast spots are GREY with brown margins; Cercospora/Helminthosporium spots are BROWN. Blast progresses to NECK and FINGERS; Leaf spots stay on leaves.
+- BLAST is the ONLY one attacking NECK and FINGERS. If you see neck browning or finger tip browning → PRIORITIZE BLAST.
+
+VARIETY NOTE
+- If farmer knows variety: GPU-28, GPU-48, GPU-101, ML-322 (UAS Bangalore), CFMV-1, CFMV-2, Indaf-5, Indaf-9 have blast resistance/tolerance [ragi_blast_detailed, S8-S12].
+- Confirm suitability with local KVK or UAS Bengaluru.
+
+EVIDENCE QUALITY AND LIMITS
+- Blast has Karnataka (UAS) weather data alongside incidence, but alignment is uncertain (WEAK, KA).
+- Rust and leaf spot have NO sensor thresholds in this corpus.
+- Soil moisture: only UAS GKVK PASM study (40%, 58%) but different units than sensor.
+- CORPUS RULE: This checklist only prioritizes field inspection. Sensor readings show conditions that favour a problem. They do not confirm it. Field inspection and KVK/agriculture officer confirmation are required.
+
+SOURCE GEOGRAPHY
+[S1] 15_ragi_blast
+[S2] 16_ragi_weather_uas_bengaluru_tables
+[S3] 17_ragi_other_diseases_and_varieties
+[S4] ragi_blast_detailed
+[S5] ragi_foliar_comparison
+[S6] ragi_soil_moisture_bands
+[S7] 11_damping_off_seedlings
+
+REFERENCES
+[S1] 15_ragi_blast
+[S2] 16_ragi_weather_uas_bengaluru_tables
+[S3] 17_ragi_other_diseases_and_varieties
+[S4] ragi_blast_detailed
+[S5] ragi_foliar_comparison
+[S6] ragi_soil_moisture_bands
+[S7] 11_damping_off_seedlings

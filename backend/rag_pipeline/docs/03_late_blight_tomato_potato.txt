@@ -1,0 +1,53 @@
+DOC_ID: 03_late_blight_tomato_potato
+TITLE: Late blight (Phytophthora infestans) - weather conditions that favour it
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet; rainfall_mm; sunlight_wm2 (cloud indicator); irrigation timing (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: The ID keeps "potato" because it is an existing ID. This document is used for tomato only. Lines marked POTATO-DERIVED come from potato guides or studies and are not confirmed for tomato in Karnataka.
+CORPUS NOTE: Tags in brackets show evidence type (OBS observed/stated fact, FAV sensor condition that only favours disease, INSP symptom needing field inspection, PHYS physiological disorder, WEAK uncertain or weak evidence) and origin (KA Karnataka/UAS Bengaluru, IN India/ICAR and other Indian bodies, INTL international research, SEC course or secondary material). See 00_README_manifest.
+
+IDENTIFICATION
+- (OBS, INTL) Late blight on tomato and potato is caused by Phytophthora infestans [S1].
+- (OBS, INTL) It can affect leaves, stems, branches and fruit (and tubers on potato) [S4].
+
+WEATHER FACTS
+- (FAV, INTL, USA) Cool temperature of 10-21°C with humidity above 80% from heavy dew, fog or rain, plus long leaf wetness, favours the disease [S1].
+- (FAV, INTL, Canada, POTATO-DERIVED) Risk is highest with frequent rain, heavy dew or fog, long leaf wetness, high humidity, and overhead or night irrigation [S2].
+- (FAV, INTL, USA, POTATO-DERIVED) A research risk model counts "spores forming" after 10 consecutive hours of leaf wetness, or humidity above 90%, when temperature is above 10°C [S3].
+- (FAV, INTL, USA) Spore production is favoured at 18-21°C with humidity near 100%. Spores last far less when humidity is below 95%; at 80% humidity they survive only about 5 hours [S4].
+- (FAV, INTL, USA) Leaf wetness of more than 10-12 hours at 15-21°C favours spore formation and spread. Spores survive up to about 1 hour in sunny dry conditions and up to about 4 hours in cloudy weather [S5].
+- (FAV, INTL, USA, POTATO-DERIVED) A Michigan study states favourable conditions as air temperature of 7-27°C with 10 or more hours of leaf wetness [S6].
+- (OBS, INTL) Hot, dry conditions turn lesions brown and papery [S1].
+
+SYMPTOMS
+- (INSP, INTL) Water-soaked dark green patches on leaves; under humidity above 80% they turn purple to black with white spore growth [S1].
+- (INSP, INTL) Lesions are not limited by leaf veins, may look greasy, and can destroy a leaf in days. White mildew-like growth shows on the underside of leaves on humid mornings. Badly affected plants may smell [S2].
+
+FIELD INSPECTION
+- (INSP, INTL) Scout low-lying, shaded and hard-to-spray parts of the field more often [S2][S7].
+- (INSP, INTL) Check the underside of leaves on humid mornings for white mildew-like growth [S2].
+
+MANAGEMENT
+- (OBS, INTL) Management is preventive. The source states there is no economic threshold [S2].
+- (OBS, INTL) Weather-based forecasting tools are used to time control measures [S2][S3].
+- (OBS, INTL) Sources describe protectant fungicides as preventive tools used before infection [S1][S4]. Product names, doses and timing are deliberately not included in this corpus. Ask the KVK or agriculture officer for approved products.
+
+PREVENTION
+- (OBS, INTL) Avoid overhead and night-time irrigation, since they extend leaf wetness [S2].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka or ICAR late blight weather threshold is present in this corpus. All thresholds above are from North American studies, several on potato.
+- CORPUS RULE: Matching sensor readings show that conditions favour late blight. They do not confirm it. Only field inspection of the plant, with KVK or agriculture officer confirmation, can identify the disease.
+
+SOURCE GEOGRAPHY
+[S1] Florida, USA; [S2] Manitoba, Canada; [S3] Oregon, USA; [S4] Pennsylvania, USA; [S5] Massachusetts, USA; [S6] Michigan, USA; [S7] Manitoba, Canada.
+
+REFERENCES
+[S1] UF/IFAS, Late Blight on Potato and Tomato, https://edis.ifas.ufl.edu/publication/PP301/pdf
+[S2] Manitoba Agriculture, Late Blight in Potatoes, https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html
+[S3] Oregon State University / USPEST, Potato/Tomato Late Blight Risk, https://instar.biossys.oregonstate.edu/risk/ptlb_app
+[S4] Penn State Extension, Late Blight Update (30 Jul 2025), https://extension.psu.edu/late-blight-update-july-30-2025
+[S5] UMass Extension, Tomato Leaf Blights, https://www.umass.edu/agriculture-food-environment/vegetable/fact-sheets/tomato-leaf-blights
+[S6] Michigan State University thesis (K. Baker), potato late blight risk, https://d.lib.msu.edu/etd/31454/FULL_TEXT/view
+[S7] Manitoba Agriculture, Late Blight in Potatoes (print page), https://gov.mb.ca/agriculture/crops/plant-diseases/print,late-blight-potatoes.html

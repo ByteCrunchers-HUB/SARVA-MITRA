@@ -1,0 +1,63 @@
+DOC_ID: ragi_foliar_comparison
+TITLE: Ragi (finger millet) foliar disease comparison - blast vs rust vs leaf spot
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: humidity_pct; temperature_c; sunlight_wm2 (cloudy); rainfall_mm
+EMBED: yes
+
+CORPUS NOTE: This comparative document helps distinguish between the main ragi foliar diseases when sensor conditions overlap. Individual disease documents: 15_ragi_blast.txt, ragi_blast_detailed.txt, 17_ragi_other_diseases_and_varieties.txt. Ragi rust and leaf spot details are limited in this corpus; this comparison summarizes what is available.
+
+CORPUS RULE: Sensors show conditions that favour a disease. They never confirm one. This comparison only helps prioritize what to check first. Field inspection and KVK/agriculture officer confirmation are required.
+
+KEY DIFFERENCES AT A GLANCE
+
+| Feature | Blast (15, ragi_blast_detailed) | Rust (Uromyces) | Leaf Spot (Cercospora/Helminthosporium) |
+|---------|----------------------------------|-----------------|------------------------------------------|
+| Pathogen | Pyricularia grisea / Magnaporthe grisea | Uromyces eleusines | Cercospora eleusines, Helminthosporium spp. |
+| Temperature favouring | 25-28°C (SEC); wide range in UAS tables | 20-25°C (typical for rusts) | 25-30°C (typical for leaf spots) |
+| Humidity / wetness | High humidity >90%, cloudy, frequent rain/drizzle | High humidity, dew, wet leaves | High humidity, wet leaves |
+| Key weather signal | Morning humidity 90-94% + >3 cloudy days (UAS KA) | Not available in corpus | Not available in corpus |
+| First appears on | Lower leaves, then neck, then fingers | Lower leaves | Young leaves (Cercospora/Helminthosporium) |
+| Lesion appearance | Grey elliptical spots, brown margins; neck: browning/blackening with olive-grey growth; fingers: tip browning | Orange-brown pustules (uredinia) on leaves, powdery | Cercospora: small oval brown lesions joining into blighted patches. Helminthosporium: similar, may have yellow halo |
+| Progression | Leaf → neck → finger (ear) | Leaves only, typically | Leaves only; sporadic per ICAR-IIMR |
+| Yield impact | HIGH - neck/finger blast blocks grain fill | Moderate - reduces photosynthesis | Low to moderate - sporadic |
+
+WEATHER CONDITION OVERLAPS
+
+Overlap: High humidity (>90%), cloudy, 20-28°C
+- Strongest match: Blast (15, ragi_blast_detailed) - this is its classic Karnataka condition per UAS tables
+- Also possible: Rust and leaf spots favour similar humid, cloudy conditions
+- Action: Check for olive-grey growth on neck (blast) vs orange-brown pustules on leaf underside (rust) vs brown elliptical spots (leaf spot)
+
+Overlap: Warm humid conditions with wet leaves
+- Possible: All three diseases
+- Action: Inspect lower leaves first for characteristic lesions
+
+FIELD INSPECTION PRIORITY CHECKLIST (WHAT TO LOOK FOR TODAY)
+
+If sensors show HIGH HUMIDITY (morning >90%) + CLOUDY + FREQUENT RAIN/DRIZZLE:
+1. Check NECK (peduncle below ear) for browning/blackening with olive-grey growth → Blast neck blast (ragi_blast_detailed, S3)
+2. Check FINGER TIPS for browning spreading to base → Blast finger blast (ragi_blast_detailed, S3)
+3. Check LEAVES for grey elliptical spots with brown margins → Blast leaf blast (ragi_blast_detailed, S3)
+4. Check LEAF UNDERSIDES for orange-brown powdery pustules → Rust (17_ragi_other, S3)
+5. Check YOUNG LEAVES for small oval brown lesions joining into patches → Cercospora/Helminthosporium leaf spot (17_ragi_other, S2, S4)
+
+DIAGNOSTIC CONFUSION POINTS
+
+- Blast leaf spots vs leaf spots: Blast spots are grey with brown margins; Cercospora/Helminthosporium spots are brown. Blast progresses to neck and fingers; leaf spots stay on leaves.
+- Rust vs blast: Rust produces ORANGE-BROWN PUSTULES (uredinia) that are powdery and rub off on fingers. Blast has olive-grey fungal growth on neck, not orange pustules on leaves.
+- Blast is the only one that attacks the NECK and FINGERS (ear). If you see neck browning or finger tip browning, prioritize blast.
+- Smut, green ear, and viruses (17_ragi_other) have very different symptoms (transformed ears, galls, mosaic) and are not confused with foliar spots.
+
+EVIDENCE QUALITY AND LIMITS
+- Blast has Karnataka (UAS) weather data alongside incidence, but alignment is uncertain (WEAK, KA).
+- Rust and leaf spot have NO sensor thresholds in this corpus. They are only listed as occurring in ragi (17_ragi_other, S1, S2).
+- The temperature/humidity ranges for rust and leaf spot are extrapolated from general crop pathology, not Karnataka ragi studies.
+- CORPUS RULE: This document helps prioritize field inspection. It does not diagnose. Matching sensor readings show conditions that favour a disease. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] 15_ragi_blast (IN, SEC, KA); [S2] ragi_blast_detailed (KA, IN, SEC); [S3] 17_ragi_other_diseases_and_varieties (IN, SEC).
+
+REFERENCES
+[S1] 15_ragi_blast
+[S2] ragi_blast_detailed
+[S3] 17_ragi_other_diseases_and_varieties

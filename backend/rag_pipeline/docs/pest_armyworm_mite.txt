@@ -1,0 +1,104 @@
+DOC_ID: pest_armyworm_mite
+TITLE: Armyworms and red spider mites - weather relationships, sensor conditions, and field signs
+CROPS: tomato; chilli; ragi
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: This document covers fall armyworm (Spodoptera frugiperda) - invasive pest on ragi, maize, and spreading to tomato/chilli, and red spider mite (Tetranychus urticae) - major pest in dry, hot conditions on tomato and chilli.
+
+CORPUS RULE: Sensors show conditions that favour pest activity. They do not confirm infestation. Field scouting required. KVK confirmation for species ID (especially fall armyworm vs native Spodoptera).
+
+IDENTIFICATION
+- (OBS, KA) Fall armyworm (Spodoptera frugiperda): Invasive, first reported Karnataka 2018; attacks ragi, maize, sorghum; also feeds on tomato, chilli [S1][S2].
+- (OBS, KA) Native armyworms: Spodoptera litura (tobacco caterpillar), S. exigua (beet armyworm) - see pest_fruit_borer.txt [S2].
+- (OBS, KA) Red spider mite (Tetranychus urticae): Major pest in protected cultivation and dry open-field conditions on tomato, chilli [S3].
+
+KARNATAKA WEATHER & SENSOR CONDITIONS FAVOURING ACTIVITY
+
+Fall Armyworm (Spodoptera frugiperda):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 24-30°C; development 11-37°C [S1].
+- (FAV, KA) IIHR Bengaluru: Favours warm, humid conditions; 27-30°C, humidity 70-85% [S2].
+- (FAV, KA) UAS Bengaluru: Rainfall_mm 50-100mm/month favourable; heavy rain (>50mm/day) increases larval mortality [S1].
+- (FAV, IN) ICAR-NBAIR: All-year activity in South India; peaks post-monsoon (Oct-Dec) and pre-monsoon (Apr-May) [S4].
+- (FAV, KA) Egg masses: Laid on underside of leaves, covered with scales; 100-200 eggs/mass [S1].
+
+Red Spider Mite (Tetranychus urticae):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 28-32°C; rapid development at 30°C [S3].
+- (FAV, KA) IIHR Bengaluru: LOW humidity (<50%) and HIGH temperature (>30°C) favour explosive population growth [S3].
+- (FAV, KA) UHS Bagalkote: Dry spells, dust on leaves, water stress favour mites [S3].
+- (FAV, KA) Protected cultivation: Year-round risk; low humidity in polyhouses (<40%) causes outbreaks [S3].
+- (FAV, IN) TNAU: Temperature 30-35°C, humidity 30-50% optimal [S5].
+- (FAV, INTL) High sunlight_wm2, low leaf_wet, water-stressed plants favour mites [S6].
+
+SEASONAL ACTIVITY (KARNATAKA)
+
+Fall Armyworm:
+- (OBS, KA) Kharif (Jun-Oct): High on ragi/maize; spillover to tomato/chilli [S1].
+- (OBS, KA) Rabi (Oct-Feb): Moderate; survives on crop residues, weeds [S1].
+- (OBS, KA) Summer (Feb-May): Low on ragi; may persist on maize, vegetables [S2].
+
+Red Spider Mite:
+- (OBS, KA) Rabi (Oct-Feb): Increasing in dry months (Dec-Feb) on tomato/chilli [S3].
+- (OBS, KA) Summer (Feb-May): PEAK populations; hot, dry conditions ideal [S3].
+- (OBS, KA) Kharif (Jun-Oct): Suppressed by rain, high humidity [S3].
+- (OBS, KA) Polyhouse: Year-round risk; monitor weekly [S3].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+
+Fall Armyworm:
+- (INSP, KA) Ragi/Maize: "Window panes" (scraped leaf surface by young larvae), ragged holes, frass in whorl [S1].
+- (INSP, KA) Tomato/Chilli: Larvae in flowers, fruit; similar to Helicoverpa but with inverted "Y" on head [S2].
+- (INSP, KA) Pheromone traps (FAW lure): Monitor male moths; distinguish from native Spodoptera [S1][S4].
+- (INSP, KA) Egg masses: Creamy, fuzzy/scaly, on leaf undersides [S1].
+
+Red Spider Mite:
+- (INSP, KA) Tap leaves over white paper: tiny moving dots (mites) [S3].
+- (INSP, KA) Leaf symptoms: Fine stippling (white/yellow dots), bronzing, webbing on undersides [S3].
+- (INSP, KA) Severe: Leaf drying, defoliation, fruit russeting [S3].
+- (INSP, KA) Check 10 leaves/plant, 5 plants/location, 5 locations/acre [S3].
+
+MANAGEMENT (CULTURAL, BIOLOGICAL, MECHANICAL - NO CHEMICAL DOSES)
+- (OBS, KA) Fall armyworm: Pheromone traps (FAW lure); bird perches; Trichogramma pretiosum, Telenomus remus (egg parasitoids); NPV, Bt formulations; neem-based; consult KVK [S1][S2].
+- (OBS, KA) Fall armyworm: Whorl application of sand/ash/neem cake in maize/ragi [S1].
+- (OBS, KA) Red spider mite: Increase humidity (overhead irrigation/sprinkling in open field) [S3].
+- (OBS, KA) Red spider mite: Predatory mites (Phytoseiulus persimilis, Neoseiulus californicus) - effective in polyhouse [S3].
+- (OBS, KA) Red spider mite: Avoid dust on leaves (mulch paths); adequate irrigation reduces water stress [S3].
+- (OBS, KA) Red spider mite: Neem oil, horticultural oils, sulphur formulations; consult KVK [S3].
+- (OBS, KA) Remove and destroy heavily infested leaves/plants [S3].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Fall Armyworm risk HIGH:
+- temperature_c 27-30°C + humidity_pct 70-85% + rainfall_mm moderate (50-100mm/month) + ragi/maize whorl stage + post-monsoon [S1][S2].
+
+Fall Armyworm risk MODERATE:
+- temperature_c 24-27°C or 30-33°C + humidity_pct 60-70% [S1][S2].
+
+Red Spider Mite risk HIGH:
+- temperature_c >30°C + humidity_pct <50% + low rainfall_mm + high sunlight_wm2 + low leaf_wet + summer season (Feb-May) or polyhouse [S3].
+
+Red Spider Mite risk MODERATE:
+- temperature_c 28-30°C + humidity_pct 50-60% + dry conditions [S3].
+
+Red Spider Mite risk LOW:
+- temperature_c <25°C + humidity_pct >70% + regular rainfall_mm (monsoon) [S3].
+
+CORPUS RULE: These are conditions that favour pest populations. They do not confirm infestation. Field scouting required. Fall armyworm identification needs KVK/lab confirmation (morphological/molecular).
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Bengaluru, IIHR, UHS Bagalkote provide Karnataka data for both pests.
+- (FAV, KA) ICAR-NBAIR national monitoring for fall armyworm spread.
+- UNAVAILABLE: Karnataka-specific degree-day models for fall armyworm.
+- UNAVAILABLE: Sensor thresholds for economic threshold levels.
+- (WEAK, IN) TNAU/ICAR-NBAIR supplementary ranges included.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices / Fall Armyworm Advisory; [S2] IIHR Bengaluru, Technical bulletins on FAW in vegetables; [S3] UHS Bagalkote, Red spider mite research; [S4] ICAR-NBAIR, Fall Armyworm Monitoring; [S5] TNAU Agritech; [S6] International mite ecology literature.
+
+REFERENCES
+[S1] UAS Bengaluru, Fall Armyworm Advisory, https://www.uasbangalore.edu.in/extension/fall-armyworm
+[S2] IIHR Bengaluru, Technical Bulletin on Fall Armyworm in Vegetables, https://www.iihr.res.in/publications
+[S3] UHS Bagalkote, Research on Red Spider Mite Management, https://uhsbagalkote.karnataka.gov.in/research
+[S4] ICAR-NBAIR, Fall Armyworm India Portal, https://www.nbair.res.in/fall-armyworm
+[S5] TNAU Agritech, Red Spider Mite Management, https://agritech.tnau.ac.in/crop_protection/
+[S6] CABI Invasive Species Compendium, Tetranychus urticae / Spodoptera frugiperda

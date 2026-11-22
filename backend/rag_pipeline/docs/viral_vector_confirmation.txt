@@ -1,0 +1,135 @@
+DOC_ID: viral_vector_confirmation
+TITLE: Viral disease vectors - field confirmation, weather relationships, and sensor correlates
+CROPS: tomato; chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: This document supplements 12_tomato_leaf_curl_virus_whitefly.txt and chilli_viral_diseases.txt with vector confirmation protocols and weather relationships. Sensors indicate vector activity risk, not virus presence.
+
+CORPUS RULE: Sensors show conditions that favour vector populations and virus transmission. They do not confirm virus infection. Field scouting for vectors + symptom inspection + KVK/lab confirmation required.
+
+IDENTIFICATION
+- (OBS, KA) Major viruses in Karnataka tomato/chilli:
+  - ToLCV (Tomato leaf curl virus) - whitefly vector [12]
+  - ChiLCV (Chilli leaf curl virus) - whitefly vector [chilli_viral_diseases]
+  - CMV (Cucumber mosaic virus) - aphid vector [chilli_viral_diseases]
+  - ChiVMV (Chilli veinal mottle virus) - aphid vector [chilli_viral_diseases]
+  - TSWV/GBNV (Tomato spotted wilt / Groundnut bud necrosis) - thrips vector [chilli_viral_diseases]
+- (OBS, KA) Vector details in pest_whitefly.txt, pest_aphids_thrips.txt.
+
+VECTOR CONFIRMATION PROTOCOLS (FIELD)
+
+Whitefly (Bemisia tabaci) - ToLCV, ChiLCV vector:
+- (INSP, KA) Yellow sticky traps: 1 trap/100 m² at crop canopy height [S1].
+- (INSP, KA) Count adults/trap/week; >10 adults/trap/week = HIGH virus risk [S1].
+- (INSP, KA) Leaf inspection: Check 5 leaves/plant, 10 plants/location for nymphs/adults on undersides [S1].
+- (INSP, KA) Confirm vector species: Bemisia tabaci (MEAM1/Asia-II-1) - requires lab [S1].
+- (INSP, KA) Virus confirmation: Symptomatic leaf samples to KVK/lab for PCR [S2].
+
+Aphids (Aphis gossypii, Myzus persicae) - CMV, ChiVMV vector:
+- (INSP, KA) Yellow sticky traps: winged aphid counts [S3].
+- (INSP, KA) Direct inspection: Growing tips, young leaves for colonies [S3].
+- (INSP, KA) >5 aphids/leaf on 10% plants = HIGH virus risk [S3].
+- (INSP, KA) Virus confirmation: Symptomatic samples to KVK/lab for ELISA/PCR [S2].
+
+Thrips (Scirtothrips dorsalis, Thrips palmi, Frankliniella schultzei) - TSWV/GBNV vector:
+- (INSP, KA) Blue sticky traps: more attractive than yellow [S4].
+- (INSP, KA) Tap flowers/leaves over white paper; count thrips [S4].
+- (INSP, KA) >10 thrips/flower = HIGH virus risk [S4].
+- (INSP, KA) Virus confirmation: Symptomatic samples to KVK/lab [S2].
+
+WEATHER & SENSOR CONDITIONS FOR VECTOR ACTIVITY & TRANSMISSION
+
+Whitefly:
+- (FAV, KA) Temperature 25-30°C: optimal flight, reproduction [pest_whitefly].
+- (FAV, KA) Humidity 60-75%: optimal survival [pest_whitefly].
+- (FAV, KA) Low rainfall, high sunlight_wm2: high flight activity [pest_whitefly].
+- (FAV, KA) Virus transmission efficiency: highest at 25-30°C [pest_whitefly].
+
+Aphids:
+- (FAV, KA) Temperature 20-25°C: optimal reproduction [pest_aphids_thrips].
+- (FAV, KA) Humidity 70-80%: optimal survival [pest_aphids_thrips].
+- (FAV, KA) Dry calm weather: winged dispersal [pest_aphids_thrips].
+- (FAV, KA) Virus transmission: persistent/non-persistent depending on virus [S3].
+
+Thrips:
+- (FAV, KA) Temperature 25-30°C: optimal [pest_aphids_thrips].
+- (FAV, KA) Humidity 40-60%: optimal for chilli thrips [pest_aphids_thrips].
+- (FAV, KA) High sunlight, low leaf_wet: high activity [pest_aphids_thrips].
+- (FAV, KA) Virus transmission: persistent (TSWV) [S4].
+
+SEASONAL VIRUS RISK (KARNATAKA)
+
+Rabi (Oct-Feb) - HIGHEST VIRUS RISK:
+- Whitefly PEAK (Dec-Feb) → ToLCV, ChiLCV risk HIGH [pest_whitefly].
+- Aphid PEAK (Jan-Feb) → CMV, ChiVMV risk HIGH [pest_aphids_thrips].
+- Cool nights slow vectors but extend virus retention [S1][S3].
+
+Summer (Feb-May):
+- Thrips PEAK (Mar-May) → TSWV/GBNV risk HIGH [pest_aphids_thrips].
+- Whitefly decline after March (heat >35°C) [pest_whitefly].
+- Heat reduces virus replication in plant [S2].
+
+Kharif (Jun-Oct):
+- Moderate vector pressure; rains suppress [S1][S3][S4].
+- Late kharif (Sep-Oct): vector build-up as rains recede [S1].
+
+FIELD CONFIRMATION WORKFLOW
+
+1. SENSOR ALERT: Conditions favour vector (see pest docs + this doc)
+2. SCOUT: Deploy sticky traps (yellow for whitefly/aphid, blue for thrips)
+3. INSPECT: Check leaves/flowers for vectors (nymphs, adults, colonies)
+4. SYMPTOM CHECK: Look for virus symptoms (see 12, chilli_viral_diseases)
+5. SAMPLE: Collect symptomatic leaves (with vectors if possible)
+6. SUBMIT: Send to KVK/lab for PCR/ELISA confirmation
+7. MANAGE: Based on confirmation - rogue, vector control, resistant varieties
+
+DIFFERENTIATING VIRUS FROM LOOK-ALIKES
+
+Whitefly feeding damage vs ToLCV/ChiLCV:
+- Feeding: chlorotic spots, yellowing, downward curling; NO stunting, NO bushy [12].
+- Virus: severe stunting, downward rolling, crinkling, leathery, bushy, short internodes [12].
+
+Aphid feeding damage vs CMV/ChiVMV:
+- Feeding: leaf curling, distortion, honeydew; NO mosaic [S3].
+- Virus: mosaic (light/dark green), distortion, stunting, ringspots on fruit [chilli_viral_diseases].
+
+Thrips feeding damage vs TSWV/GBNV:
+- Feeding: silvery streaks, leaf curling, flower scarring [pest_aphids_thrips].
+- Virus: bud necrosis, concentric ringspots, stunting, plant death [chilli_viral_diseases].
+
+Physiological leaf curl vs viral:
+- Physiological: upward curl, thick/leathery, green, NO stunting, NO vectors [tomato_nutrient_deficiencies][chilli_nutrient_deficiencies].
+- Viral: downward curl, crinkling, stunting, bushy, vectors present [12][chilli_viral_diseases].
+
+SENSOR READING INTERPRETATION FOR VIRUS RISK
+
+HIGH virus transmission risk:
+- Vector risk HIGH (see pest docs) + susceptible crop stage (seedling to early flowering) + susceptible variety + weed hosts present [S1][S3].
+
+MODERATE virus transmission risk:
+- Vector risk MODERATE + crop in susceptible stage [S1][S3].
+
+LOW virus transmission risk:
+- Vector risk LOW (heavy rain, temp extremes) OR crop past susceptible stage (late fruiting) [S1][S3].
+
+CORPUS RULE: These are conditions that favour vector activity and virus transmission. They do not confirm virus infection. Lab confirmation required. KVK guides sampling and testing.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS/IIHR provide Karnataka vector ecology and seasonal dynamics.
+- UNAVAILABLE: Karnataka-specific vector degree-day models.
+- UNAVAILABLE: Sensor thresholds for economic virus risk thresholds.
+- (WEAK, IN) International vector-virus transmission studies supplementary.
+
+SOURCE GEOGRAPHY
+[S1] IIHR Bengaluru, Whitefly-Begomovirus research; [S2] UAS Bengaluru, Package of Practices; [S3] IIHR/UAS, Aphid-CMV research; [S4] IIHR/UAS, Thrips-TSWV research; [S5] 12_tomato_leaf_curl_virus_whitefly; [S6] chilli_viral_diseases; [S7] pest_whitefly; [S8] pest_aphids_thrips.
+
+REFERENCES
+[S1] IIHR Bengaluru, Technical Bulletin on Begomovirus Management, https://www.iihr.res.in/publications
+[S2] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S3] IIHR Bengaluru, Aphid-Virus Management, https://www.iihr.res.in/publications
+[S4] IIHR Bengaluru, Thrips-Tospovirus Management, https://www.iihr.res.in/publications
+[S5] 12_tomato_leaf_curl_virus_whitefly
+[S6] chilli_viral_diseases
+[S7] pest_whitefly
+[S8] pest_aphids_thrips

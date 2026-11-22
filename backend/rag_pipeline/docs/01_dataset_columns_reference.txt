@@ -1,0 +1,28 @@
+DOC_ID: 01_dataset_columns_reference
+TITLE: Meaning of the sensor columns and the ML output column in the team's CSV
+CROPS: not crop-specific (applies to tomato; chilli; ragi (finger millet))
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; humidity_pct; leaf_wet; sunlight_wm2; sunlight_lux; rainfall_mm; soil_ec_dsm
+EMBED: no (project metadata; do not embed)
+
+CORPUS NOTE: This file describes the team's CSV only. It makes no agronomy claims, except the unit equivalence in [S1]. Column details are carried forward from the previous corpus version and were not re-checked against the CSV in this rebuild.
+
+COLUMNS
+- timestamp: date and time of the reading. Sample rows in the previous version were 3-hourly or irregular, 1-3 Jan 2023.
+- location: place of the sensor (sample: Bengaluru).
+- soil_moisture_pct: soil water content in percent.
+- temperature_c: air temperature in degrees Celsius (°C).
+- humidity_pct: relative humidity of the air in percent (%).
+- leaf_wet: 0 or 1, whether the leaf surface is wet.
+- sunlight_wm2: solar radiation in watts per square metre (W/m2). Zero at night.
+- sunlight_lux: light in lux. In the sample, lux was about 120 times W/m2 (for example 413.7 W/m2 with 49,640 lux), so the two columns carry the same information.
+- rainfall_mm: rainfall in millimetres (mm).
+- soil_ec_dsm: soil electrical conductivity in dS/m, a salt indicator. 1 dS/m = 1 mmhos/cm = 1000 microsiemens/cm [S1].
+- disease (ML output): 0 or 1 output of the ML model. CORPUS RULE: This value is only an abnormality signal from the sensor pattern. It is not a disease diagnosis, and it does not say which problem is present.
+
+HOW TO REASON
+- CORPUS RULE: Use consecutive readings, not one row. Night and early-morning rows matter for dew and leaf wetness. Then retrieve the documents whose sensor signals match (see 02_weather_thresholds_by_disease). Sensor readings show risk. They never confirm a disease.
+- CORPUS RULE: The CSV has no crop column. Ask the farmer which crop is grown (tomato, chilli or ragi (finger millet)); do not guess.
+- CORPUS RULE: Check units before comparing. For example, a source value in "% of maximum water-holding capacity" is not the same as soil_moisture_pct.
+
+REFERENCES
+[S1] University of California ANR, salinity slides (units), https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/california_waterfix/exhibits/docs/Islands/II_14.pdf

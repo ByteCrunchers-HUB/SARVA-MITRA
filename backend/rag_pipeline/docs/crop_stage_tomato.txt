@@ -1,0 +1,125 @@
+DOC_ID: crop_stage_tomato
+TITLE: Tomato crop-stage sensor expectations and management focus - Karnataka
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; soil_moisture_pct; sunlight_wm2; leaf_wet; soil_ec_dsm
+EMBED: yes
+
+CORPUS NOTE: This document defines expected sensor ranges and management priorities for each tomato crop stage in Karnataka. Ranges are approximate (Karnataka UAS/IIHR guidance); actual values vary by season, variety, soil, and microclimate. Sensors show conditions, not diagnoses.
+
+CORPUS RULE: No universal sensor thresholds. Use as general guidance. KVK consultation for farm-specific targets.
+
+IDENTIFICATION
+- (OBS, KA) Tomato grown in three seasons in Karnataka: kharif (Jun-Oct), rabi (Oct-Feb), summer (Feb-May) [S1].
+- (OBS, KA) Typical duration: 110-140 days (transplant to last harvest) [S1].
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR Bengaluru define crop stages and management [S1][S2].
+
+STAGE 1: SEEDLING / NURSERY (0-25 DAYS BEFORE TRANSPLANT)
+- Duration: 20-25 days in nursery trays/beds
+- Temperature_c: Optimum 25-30°C day / 18-22°C night; >35°C causes heat stress [S2].
+- Humidity_pct: 70-85%; high humidity + low light = damping-off risk (11) [S2].
+- Soil_moisture_pct: Consistently moist (not wet); ~60-70% FC [S2].
+- Sunlight_wm2: Partial shade (30-50%) recommended; full sun causes stress [S2].
+- Leaf_wet: Minimize; water morning only [S2].
+- Key risks: Damping-off (11), heat stress, viral vectors (aphids, whitefly) [S2][pest_aphids_thrips, pest_whitefly].
+- Management focus: Disease-free trays, protected nursery, seed treatment, vector monitoring.
+
+STAGE 2: TRANSPLANT TO ESTABLISHMENT (0-15 DAT)
+- Duration: 10-15 days after transplanting
+- Temperature_c: 25-32°C day / 18-22°C night [S1].
+- Humidity_pct: 65-80% [S1].
+- Soil_moisture_pct: 75-80% FC (~60-70% volumetric sandy loam) [S3][irrigation_tomato].
+- Rainfall_mm: Avoid heavy rain immediately after transplant [S1].
+- Leaf_wet: Minimize; drip irrigation [S1].
+- Key risks: Transplant shock, bacterial wilt (09) if wet+hot, damping-off (11) [S3][09].
+- Management focus: Light frequent irrigation, mulch, gap filling, early pest scouting.
+
+STAGE 3: VEGETATIVE GROWTH (15-45 DAT)
+- Duration: 30 days; rapid leaf and stem growth
+- Temperature_c: 25-30°C day / 18-22°C night optimum [S1].
+- Humidity_pct: 60-75% [S1].
+- Soil_moisture_pct: 55-65% FC (~45-55% volumetric sandy loam); allow mild depletion [S3][irrigation_tomato].
+- Sunlight_wm2: Full sun; high light = good growth [S1].
+- Leaf_wet: 0 preferred; drip irrigation [S1].
+- Soil_ec_dsm: Monitor; rising = salt buildup risk [S2].
+- Key risks: Early blight (04) if alternating wet/dry, late blight (03) if cool+wet, whitefly (pest_whitefly), leaf miner [S1][03][04].
+- Management focus: Staking/trellising, pruning (lower leaves), N top-dress, pest monitoring, disease scouting.
+
+STAGE 4: FLOWERING & FRUIT SET (45-75 DAT) - MOST CRITICAL
+- Duration: 30 days; first flower to fruit set
+- Temperature_c: 21-28°C day / 15-21°C night optimum [S2][19].
+- Humidity_pct: 60-75% (not >80% prolonged) [S2][19].
+- Soil_moisture_pct: 70-75% FC (~55-65% volumetric sandy loam); NO FLUCTUATIONS [S3][irrigation_tomato].
+- Rainfall_mm: Light rain OK; heavy rain disrupts pollination [S1].
+- Leaf_wet: 0 preferred; avoid overhead irrigation [S1].
+- Sunlight_wm2: Full sun; cloudy >3 days reduces fruit set [S2].
+- Key risks: Blossom-end rot (18) if moisture fluctuates, heat stress (19) if >29/21°C, bacterial leaf spot (08) if wet, gray mold (07) if humid+cool, poor pollination [S3][18][19].
+- Management focus: Even irrigation, mulch, pollination support (gentle shaking), Ca foliar (if advised), disease prevention, fruit set monitoring.
+
+STAGE 5: FRUIT DEVELOPMENT (75-105 DAT)
+- Duration: 30 days; fruit growth to mature green
+- Temperature_c: 22-29°C day / 16-22°C night [S1].
+- Humidity_pct: 55-70% [S1].
+- Soil_moisture_pct: 65-70% FC (~50-60% volumetric sandy loam); mild deficit OK for quality [S3][irrigation_tomato].
+- Rainfall_mm: Avoid heavy rain (cracking, disease) [S1].
+- Leaf_wet: 0 preferred [S1].
+- Soil_ec_dsm: Monitor for salinity [S2].
+- Key risks: Fruit borer (pest_fruit_borer), anthracnose (chilli but similar), sunscald, cracking, late blight (03) if cool+wet [S1][03].
+- Management focus: Pest scouting (pheromone traps), irrigation management, fruit thinning if needed, harvest preparation.
+
+STAGE 6: MATURITY & HARVEST (105+ DAT)
+- Duration: Until last harvest
+- Temperature_c: 20-28°C day / 14-20°C night [S1].
+- Humidity_pct: 50-65% [S1].
+- Soil_moisture_pct: Reduce to 55-60% FC (~45-50% volumetric); stop 7-10 days before final harvest [S3][irrigation_tomato].
+- Rainfall_mm: Dry weather preferred [S1].
+- Key risks: Over-ripening, fruit rot, sunscald [S1].
+- Management focus: Timely harvest, reduced irrigation, post-harvest handling.
+
+SEASONAL ADJUSTMENTS (KARNATAKA)
+
+Kharif (Jun-Oct transplant):
+- Higher disease pressure (late blight 03, bacterial wilt 09) due to rains [S1].
+- Humidity_pct often >80%; leaf_wet frequent [S1].
+- Focus: Drainage, disease prevention, raised beds [S1].
+
+Rabi (Oct-Feb transplant) - MAIN SEASON:
+- Optimal conditions; lower disease pressure [S1].
+- Cool nights (15-20°C) good for fruit set [S1][19].
+- Focus: Even irrigation, pest monitoring (whitefly rabi peak) [pest_whitefly].
+
+Summer (Feb-May transplant):
+- Heat stress (19) risk HIGH; day >32°C common [S2][19].
+- Low humidity; high sunlight_wm2 [S1].
+- Focus: Shade net, frequent irrigation, heat-tolerant varieties [S2][19].
+
+SENSOR MONITORING PRIORITIES BY STAGE
+
+| Stage | Primary Sensors | Watch Thresholds (approx.) |
+|-------|----------------|---------------------------|
+| Nursery | temperature_c, humidity_pct, soil_moisture_pct | temp >35°C, humidity >90%, soil wet |
+| Establishment | soil_moisture_pct, temperature_c | soil <50% FC, temp >35°C |
+| Vegetative | soil_moisture_pct, humidity_pct, leaf_wet | soil <45% FC, humidity >85%+leaf_wet |
+| Flowering | soil_moisture_pct, temperature_c (day/night), humidity_pct | soil <60% FC, temp >29/21°C, humidity >80% |
+| Fruit Dev. | temperature_c, humidity_pct, soil_ec_dsm | temp >32°C, humidity >80%, EC rising |
+| Harvest | soil_moisture_pct, rainfall_mm | soil >60% FC, heavy rain |
+
+CORPUS RULE: These are approximate Karnataka ranges. Actual values vary. Sensors show conditions, not diagnoses. Field inspection and KVK consultation required.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, IIHR crop calendars provide stage definitions.
+- (FAV, KA) UHS Bagalkote irrigation studies give soil moisture targets for sandy loam.
+- UNAVAILABLE: Continuous sensor data validation for all stages across Karnataka zones.
+- (WEAK, IN) International phenology data included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Tomato; [S2] IIHR Bengaluru, Tomato Production Technology; [S3] UHS Bagalkote, Tomato irrigation research; [S4] 19_heat_stress_fruit_set_tomato; [S5] irrigation_tomato; [S6] pest_aphids_thrips; [S7] pest_whitefly; [S8] pest_fruit_borer.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Tomato Production Technology, https://www.iihr.res.in/publications
+[S3] UHS Bagalkote, Tomato irrigation research, https://uhsbagalkote.karnataka.gov.in/research
+[S4] 19_heat_stress_fruit_set_tomato
+[S5] irrigation_tomato
+[S6] pest_aphids_thrips
+[S7] pest_whitefly
+[S8] pest_fruit_borer

@@ -30,7 +30,7 @@ from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 SCHEMA_VERSION = "1.0"
 IST = timezone(timedelta(hours=5, minutes=30))
@@ -110,6 +110,40 @@ class PredictRequest(BaseModel):
     target_date: Day | None = None
     history: list[DayRecord] = Field(min_length=MIN_HISTORY_DAYS)
     current: CurrentReading | None = None
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "device_id": "sample-device",
+                    "location": "Vijayawada",
+                    "lat": 16.51,
+                    "lon": 80.52,
+                    "target_date": "2000-01-09",
+                    "history": [
+                        {"date": "2000-01-01", "soil_moisture_pct": 30, "sunlight_wm2": 186.34, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-02", "soil_moisture_pct": 30, "sunlight_wm2": 183.68, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-03", "soil_moisture_pct": 29, "sunlight_wm2": 187.27, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-04", "soil_moisture_pct": 28, "sunlight_wm2": 193.17, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-05", "soil_moisture_pct": 28, "sunlight_wm2": 212.04, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-06", "soil_moisture_pct": 27, "sunlight_wm2": 215.51, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-07", "soil_moisture_pct": 26, "sunlight_wm2": 207.41, "rainfall_mm": 0, "leaf_wet_days": 0},
+                        {"date": "2000-01-08", "soil_moisture_pct": 26, "sunlight_wm2": 220.25, "rainfall_mm": 0, "leaf_wet_days": 0},
+                    ],
+                }
+            ]
+        }
+    }
+
+    @field_validator("history")
+    @classmethod
+    def validate_history_dates(cls, history: list[DayRecord]) -> list[DayRecord]:
+        dates = [record.date for record in history]
+        if len(set(dates)) != len(dates):
+            raise ValueError("history has duplicate dates")
+        if any(current != previous + timedelta(days=1) for previous, current in zip(dates, dates[1:])):
+            raise ValueError("history must contain consecutive dates")
+        return history
 
 
 class HistoryError(Exception):

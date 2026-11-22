@@ -1,0 +1,105 @@
+DOC_ID: nutrient_discrimination
+TITLE: Nutrient deficiency vs toxicity discrimination - visual keys and sensor correlates
+CROPS: tomato; chilli; ragi
+SENSOR_SIGNALS: soil_ec_dsm; soil_moisture_pct; temperature_c; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This document supplements tomato_nutrient_deficiencies.txt and chilli_nutrient_deficiencies.txt with discrimination keys. Sensor readings indicate conditions that favour nutrient disorders, but cannot confirm specific deficiencies. Soil test is the only reliable confirmation. KVK soil testing lab recommended.
+
+CORPUS RULE: Nutrient disorders are physiological, not infectious. Sensors show conditions that favour them. They do not confirm any deficiency or toxicity. Soil test and KVK confirmation required.
+
+IDENTIFICATION
+- (PHYS, IN) Nutrient imbalances cause characteristic visual symptoms, but several deficiencies look similar (e.g., N vs S, Mg vs Fe, K vs drought) [S1][S2].
+- (PHYS, IN) Toxicity symptoms (excess) can mimic deficiency of other nutrients [S1].
+- (PHYS, IN) Soil pH, EC, moisture, and temperature affect nutrient availability - not just soil content [S1][S2].
+
+DISCRIMINATION KEYS BY NUTRIENT
+
+NITROGEN (N) vs SULPHUR (S) - Both cause yellowing:
+- N deficiency: OLDER leaves first, UNIFORM yellowing from tips, stunted growth [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- S deficiency: YOUNG leaves first, uniform yellowing (S immobile), stunted [S1].
+- Discrimination: Leaf age affected. N = old leaves; S = young leaves [S1].
+- Sensor: LOW soil_moisture_pct reduces N mineralization; HIGH soil_ec_dsm may indicate S excess [S2].
+
+PHOSPHORUS (P) - Distinctive:
+- P deficiency: OLDER leaves, dark green with PURPLISH undersides, stunted [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- Few conditions mimic this; cold soil induces temporary P deficiency [S1].
+- Sensor: LOW temperature_c (<15°C) + LOW soil_moisture_pct = reduced P uptake [S2].
+
+POTASSIUM (K) vs DROUGHT vs SALT STRESS - All cause edge burn:
+- K deficiency: OLDER leaves, MARGINAL NECROSIS (edge burn), curling, interveinal chlorosis [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- Drought stress: ALL leaves wilt, recover at night, edge burn from tip [S2].
+- Salt stress (HIGH soil_ec_dsm): Edge burn + leaf thickening + general stunting [20_soil_salinity_ec_tomato, S4].
+- Discrimination: K = older leaves only, curling; Drought = all leaves, diurnal wilting; Salt = all leaves, high soil_ec_dsm [S1][S2].
+- Sensor: HIGH soil_ec_dsm (>2.5 dS/m tomato) = salt; LOW soil_moisture_pct = drought; normal soil_moisture_pct + normal EC = K [S2].
+
+CALCIUM (Ca) vs BORON (B) - Both affect growing points:
+- Ca deficiency: YOUNG leaves, distorted/hooked, tip burn, blossom-end rot (fruit) [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- B deficiency: YOUNG leaves, brittle/thickened, growing point dies, "rosette", cracked fruit [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- Discrimination: Ca = BER on fruit + tip burn; B = growing point death + rosette + cracked fruit [S1].
+- Sensor: SWINGING soil_moisture_pct = Ca/BER trigger; HIGH soil_ec_dsm reduces both Ca and B uptake [S2].
+
+MAGNESIUM (Mg) vs IRON (Fe) vs MANGANESE (Mn) - Interveinal chlorosis:
+- Mg deficiency: OLDER leaves, interveinal chlorosis (veins GREEN), necrotic spots later [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- Fe deficiency: YOUNG leaves, interveinal chlorosis (veins GREEN), severe = white leaves [S1].
+- Mn deficiency: YOUNG leaves, interveinal chlorosis with brown necrotic spots [S1].
+- Discrimination: Mg = OLD leaves; Fe/Mn = YOUNG leaves. Mn has necrotic spots; Fe does not [S1].
+- Sensor: HIGH soil_ec_dsm reduces all; LOW temperature_c reduces Fe/Mn uptake [S2].
+
+ZINC (Zn) - Critical for all three crops:
+- Zn deficiency: YOUNG leaves, SMALL, distorted, "khaira disease" appearance, short internodes, rosette [S1][S3].
+- Ragi: Zn deficiency common in Karnataka alkaline soils; "khaira disease" in nursery [S3].
+- Sensor: HIGH soil_ec_dsm + HIGH pH (alkaline) = Zn deficiency risk [S2].
+- UNAVAILABLE: Karnataka soil_moisture_pct thresholds for Zn availability.
+
+TOXICITY SYMPTOMS (EXCESS)
+- N excess: Excessive vegetative growth, dark green, delayed flowering, lodging, disease susceptibility [tomato_nutrient_deficiencies, S1][chilli_nutrient_deficiencies, S1].
+- P excess: Rare; induces Zn/Fe deficiency [S1].
+- K excess: Induces Mg/Ca deficiency (cation competition) [S1].
+- B toxicity: OLDER leaf tips/edges necrotic, yellowing [S1].
+- Salt toxicity (HIGH soil_ec_dsm): See 20_soil_salinity_ec_tomato [S4].
+
+SENSOR CONDITIONS FAVOURING NUTRIENT DISORDERS
+
+General:
+- HIGH soil_ec_dsm (>2.5 dS/m tomato; chilli/ragi UNAVAILABLE): Reduces uptake of most nutrients [S2][20].
+- LOW soil_moisture_pct sustained: Reduces mass flow of N, Ca, Mg, S [S2].
+- SWINGING soil_moisture_pct: Disrupts Ca transport (BER) [18].
+- LOW temperature_c (<15°C): Reduces P, Fe, Mn, Zn uptake [S2].
+- HIGH temperature_c (>35°C): Reduces nutrient uptake, increases demand [S2].
+- HIGH sunlight_wm2: Increases demand, can induce deficiencies in fast growth [S2].
+
+Crop-Specific (Karnataka):
+- Ragi in alkaline soils (North Karnataka): Zn, Fe deficiency common [S3].
+- Tomato/chilli in high EC soils: Ca, Mg, K deficiencies common [S2].
+- Tomato/chilli in sandy soils (red loam): N, K, S leaching common [S1].
+
+FIELD INSPECTION - DISCRIMINATION CHECKLIST
+1. Which leaves affected? (Old vs Young) → N/P/K/Mg = Old; Ca/B/Fe/Mn/Zn/S = Young
+2. Pattern? (Uniform vs Interveinal vs Marginal) → N/S = Uniform; Mg/Fe/Mn = Interveinal; K/B/Salt = Marginal
+3. Fruit symptoms? → Ca = BER; B = cracked; K = blotchy ripening
+4. Soil test? → ESSENTIAL for confirmation [S1][S2].
+5. Sensor context? → Check soil_ec_dsm, soil_moisture_pct, temperature_c trends [S2].
+
+MANAGEMENT PRINCIPLES (NO DOSES)
+- (OBS, IN) Soil test before every season; fertilise based on recommendation [S1].
+- (OBS, IN) Split N application: basal + top-dress at critical stages [S1].
+- (OBS, IN) Organic manures improve soil health, buffer pH/EC [S1].
+- (OBS, IN) Foliar sprays for micronutrients (Zn, Fe, B) when soil application ineffective [S1].
+- (OBS, IN) Lime acidic soils; gypsum for sodic soils; consult KVK [S1].
+- (OBS, IN) Avoid excess N - increases disease/pest susceptibility [tomato_nutrient_deficiencies, S1].
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, IN) IIHR, UAS, ICAR-IISS provide discrimination keys for Indian conditions.
+- UNAVAILABLE: Karnataka soil_moisture_pct thresholds for specific nutrient availability.
+- UNAVAILABLE: Sensor-based nutrient deficiency discrimination without soil test.
+- (WEAK, IN) Some symptom descriptions extrapolated from tomato to chilli/ragi.
+
+SOURCE GEOGRAPHY
+[S1] IIHR Bengaluru, UAS Bengaluru, ICAR-IISS nutrient management guides; [S2] Soil physics/chemistry principles; [S3] Karnataka soil health card data / ICAR reports; [S4] 20_soil_salinity_ec_tomato; 18_blossom_end_rot_tomato.
+
+REFERENCES
+[S1] IIHR Bengaluru, Nutrient Deficiency Identification Guide, https://www.iihr.res.in/publications
+[S2] ICAR-Indian Institute of Soil Science, Nutrient Management, https://www.iiiss.icar.gov.in
+[S3] Karnataka Soil Health Card Portal, https://soilhealth.karnataka.gov.in
+[S4] 20_soil_salinity_ec_tomato; 18_blossom_end_rot_tomato

@@ -1,0 +1,51 @@
+DOC_ID: 08_tomato_bacterial_leaf_spot
+TITLE: Bacterial leaf spot of tomato (Xanthomonas) - symptoms, weather, inspection, management
+CROPS: tomato; chilli
+SENSOR_SIGNALS: rainfall_mm; humidity_pct; leaf_wet; temperature_c
+EMBED: yes
+
+CORPUS NOTE: This document replaces the previous 08_tomato_bacterial_leaf_spot which had UNAVAILABLE symptoms and management. This version adds field-observable symptoms, inspection steps, and management from Indian sources. Chilli bacterial leaf spot is covered separately in chilli_bacterial_leaf_spot.txt.
+
+IDENTIFICATION
+- (OBS, IN) Caused by Xanthomonas axonopodis pv. vesicatoria (syn. X. euvesicatoria, X. perforans). Bacteria survive on infected plant debris, on and inside seed, and on nightshade-family weeds such as Solanum nigrum. Secondary spread is by rain splash [S1][S2].
+- (OBS, IN) Primary infection is often seed-borne; bacteria enter through hydathodes and wounds [S1].
+
+WEATHER FACTS
+- (FAV, IN) Moist weather and splattering rain favour the disease on tomato, with high humidity or persistent dew [S1][S2].
+- (FAV, IN) NIPHM lists moderate temperature, high relative humidity and intermittent rain as favourable for chilli bacterial leaf spot [S3].
+- (FAV, IN) Optimum temperature for disease development is 24-30°C with humidity above 85% [S4].
+- UNAVAILABLE: No Karnataka-measured temperature or humidity threshold is present in this corpus. The values above are from Indian (TNAU, NIPHM) and international extension sources.
+
+SYMPTOMS (tomato)
+- (INSP, IN) Leaf: Small, brown, circular, water-soaked spots; when wet, spots appear greasy or dark brown/black. As spots enlarge, they develop a prominent yellow halo. Spots coalesce in severe cases, causing leaf yellowing and premature defoliation starting from lower leaves [S1][S4].
+- (INSP, IN) Fruit: On green fruit, small water-soaked spots develop that become sunken, scabby, light brown, and irregular [S1].
+- (INSP, IN) Stem: Small, elongated dark spots may appear [S4].
+
+FIELD INSPECTION
+- (INSP, IN) Check lower leaves first for small water-soaked spots with yellow halos [S1].
+- (INSP, IN) Turn leaves over and inspect undersides; bacterial lesions are not limited by leaf veins [S4].
+- (INSP, IN) Check green fruit for small raised water-soaked spots with pale yellow borders [S1].
+- (INSP, IN) Scout low-lying, shaded, and hard-to-spray parts of the field more often [S5].
+- CORPUS NOTE: Bacterial leaf spot lesions have a distinct yellow halo and greasy appearance when wet, unlike fungal spots (early blight, Septoria). However, only field inspection and KVK/agriculture officer confirmation can identify the disease. Sensor readings cannot confirm it.
+
+MANAGEMENT
+- (OBS, IN) Use disease-free seed; hot-water seed treatment (settings not given here, ask KVK) [S1][S2].
+- (OBS, IN) Remove and destroy infected plant debris after harvest [S1].
+- (OBS, IN) Control nightshade-family weeds (Solanum nigrum) that carry the bacteria [S1][S2].
+- (OBS, IN) Avoid overhead and night-time irrigation, which extend leaf wetness [S1][S5].
+- (OBS, IN) Sources describe copper-based bactericides and streptocycline as options used in India; product names, doses and timing are not included here. Ask the KVK or agriculture officer for approved products [S1][S4].
+- (OBS, IN) Practice crop rotation; avoid planting tomato or chilli in the same field consecutively [S2].
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, IN) The NIPHM/Vikaspedia page text was partly scrambled when retrieved. Only statements clearly tied to bacterial leaf spot are repeated here. No Karnataka threshold could be reliably extracted. The original page should be read before relying on more detail [S1][S3].
+- CORPUS RULE: Matching sensor readings (rainfall, high humidity, leaf wetness) show that conditions favour bacterial leaf spot. They do not confirm it. Field inspection of leaves and fruit is required.
+
+SOURCE GEOGRAPHY
+[S1] TNAU (Tamil Nadu) and NIPHM (India); [S2] Michigan, USA; [S3] NIPHM (India); [S4] Illinois, USA; [S5] Manitoba, Canada.
+
+REFERENCES
+[S1] TNAU Agritech, Tomato diseases and symptoms, https://agritech.tnau.ac.in/crop_protection/tomato_diseases_11.html
+[S2] NIPHM / Directorate of Plant Protection via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en
+[S3] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S4] Illinois Extension, Bacterial Diseases of Solanaceous Crops, https://extension.illinois.edu/plant-problems/bacterial-diseases-solanaceous-crops
+[S5] Manitoba Agriculture, Late Blight in Potatoes (scouting advice applies to bacterial leaf spot), https://manitoba.ca/agriculture/crops/plant-diseases/late-blight-potatoes.html

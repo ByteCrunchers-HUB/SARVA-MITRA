@@ -1,0 +1,122 @@
+DOC_ID: crop_stage_ragi
+TITLE: Ragi (finger millet) crop-stage sensor expectations and management focus - Karnataka
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; soil_moisture_pct; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: Ragi is predominantly kharif rainfed (90%) in Karnataka. This document defines expected sensor ranges and management priorities for each crop stage. Ranges are approximate (Karnataka UAS/UAS GKVK/AICRP guidance); actual values vary by zone, soil, and monsoon. Sensors show conditions, not diagnoses.
+
+CORPUS RULE: No universal sensor thresholds. Ragi is rainfed; irrigation rare. Use as general guidance. KVK consultation for farm-specific targets.
+
+IDENTIFICATION
+- (OBS, KA) Ragi grown in kharif (Jun-Nov) in Karnataka; 120-day medium duration [S1].
+- (OBS, KA) Major zones: Zone 5 (Bengaluru, Eastern Dry), Zone 6 (Mysore, Southern Dry) [S2].
+- (OBS, KA) UAS Bengaluru Package of Practices, UAS GKVK, AICRP Agrometeorology define stages [S1][S2][S3].
+
+STAGE 1: SOWING TO GERMINATION (0-15 DAS)
+- Timing: Zone 5/6 - Sowing window 1 (early Jun), window 2 (late Jun) [S2].
+- Temperature_c: Optimum 25-30°C for germination [S1].
+- Rainfall_mm: 20-30 mm for sowing moisture; avoid dry sowing [S1].
+- Soil_moisture_pct: >16% volumetric (red sandy loam) for germination [S4][ragi_soil_moisture_ka].
+- Sunlight_wm2: Full sun after emergence [S1].
+- Leaf_wet: Not applicable (bare soil) [S1].
+- Key risks: Dry sowing failure, seedling damping-off (11) if waterlogged [S5].
+- Management focus: Wait for monsoon onset, seed treatment, proper depth (3-5 cm), drainage.
+
+STAGE 2: SEEDLING / ESTABLISHMENT (15-30 DAS)
+- Duration: 2-4 weeks after emergence
+- Temperature_c: 25-30°C day / 18-22°C night [S1].
+- Humidity_pct: 70-85% (monsoon) [S1].
+- Rainfall_mm: Regular monsoon rain expected [S1].
+- Soil_moisture_pct: >16% volumetric (adequate) [S4].
+- Sunlight_wm2: Increasing as canopy develops [S1].
+- Key risks: Damping-off (11) if waterlogged, blast (15) early infection possible [S5][S6].
+- Management focus: Gap filling, weed management (critical 20-30 DAS), drainage.
+
+STAGE 3: VEGETATIVE / TILLERING (30-60 DAS)
+- Duration: Peak tillering at 40-50 DAS
+- Temperature_c: 25-28°C day / 20-22°C night [S1].
+- Humidity_pct: 75-90% (monsoon peak) [S1].
+- Rainfall_mm: Regular to heavy [S1].
+- Soil_moisture_pct: >18% volumetric (adequate monsoon) [S4].
+- Sunlight_wm2: Variable; cloudy days common [S1].
+- Key risks: Blast (15, ragi_blast_detailed) - leaf blast starts [S6], stem borer (AICRP: 25-29°C, humidity 83-95%) [S2], leaf folder (25-29°C, humidity >80%) [S2].
+- Management focus: Weed management, blast scouting (lower leaves), stem borer monitoring.
+
+STAGE 4: FLOWERING (60-80 DAS) - CRITICAL FOR YIELD
+- Duration: 50% flowering at ~70 DAS
+- Temperature_c: 24-27°C day / 18-21°C night [S1].
+- Humidity_pct: 80-95% morning; critical for blast [S2][S6].
+- Rainfall_mm: Frequent rain/drizzle favours blast [S6].
+- Soil_moisture_pct: Target >16% volumetric (58% PASM) [S4][ragi_soil_moisture_ka].
+- Sunlight_wm2: Cloudy days reduce photosynthesis [S1].
+- Key risks: Blast (15, ragi_blast_detailed) - NECK BLAST most damaging [S6], grain mold if humid at maturity [S7].
+- Management focus: Blast scouting (neck & fingers), protective irrigation if dry spell >10 days, avoid excess N.
+
+STAGE 5: GRAIN FILLING (80-105 DAS) - MOST CRITICAL
+- Duration: 25 days; grain weight accumulation
+- Temperature_c: 24-28°C day / 18-22°C night [S1].
+- Humidity_pct: 75-90% morning [S1].
+- Rainfall_mm: Decreasing; dry spells = moisture stress risk [S1].
+- Soil_moisture_pct: CRITICAL - maintain >16% volumetric (58% PASM) [S4][ragi_soil_moisture_ka].
+- Sunlight_wm2: Full sun needed for grain fill [S1].
+- Key risks: Moisture stress (if soil_moisture_pct <13% = 40% PASM = >75% yield loss) [S4], finger blast (ragi_blast_detailed), grain mold if humid [S7].
+- Management focus: Moisture monitoring, supplemental irrigation if available, blast scouting (fingers).
+
+STAGE 6: MATURITY TO HARVEST (105-120 DAS)
+- Duration: Physiological maturity at ~110 DAS
+- Temperature_c: 22-28°C day / 16-20°C night [S1].
+- Humidity_pct: 60-75% (decreasing) [S1].
+- Rainfall_mm: Dry weather NEEDED [S1].
+- Soil_moisture_pct: <14% volumetric at harvest [S1].
+- Sunlight_wm2: Full sun for drying [S1].
+- Key risks: Grain mold (17) if rain at maturity, shattering if over-mature [S1][S7].
+- Management focus: Timely harvest, proper drying, storage.
+
+ZONE-SPECIFIC NOTES (UAS BENGALURU AICRP)
+
+Zone 5 (Bengaluru District - Eastern Dry Zone):
+- (OBS, KA) Red sandy loam; weekly minimum temp 15-19.6°C [S2].
+- (FAV, KA) Neck+finger blast incidence 4.8-96.25% across weeks [S2].
+- (FAV, KA) Leaf folder favoured at 25-29°C, humidity >80% [S2].
+- (FAV, KA) Stem borer at 25-29°C, humidity 83-95% [S2].
+
+Zone 6 (Mysore District - Southern Dry Zone):
+- (OBS, KA) Red sandy loam; morning humidity 90-94%, >3 cloudy days [S2].
+- (FAV, KA) Blast incidence 8-45%; neck+finger blast 5-96% [S2].
+- (FAV, KA) Stem borer at 25-29°C, humidity 83-95% [S2].
+
+North Karnataka (Black Soils - Bidar, Kalaburagi, Vijayapura):
+- (OBS, KA) Later sowing (Jul-Aug); longer duration varieties [S1].
+- UNAVAILABLE: Zone-specific sensor thresholds for black soils.
+
+SENSOR MONITORING PRIORITIES BY STAGE
+
+| Stage | Primary Sensors | Watch Thresholds (Red Sandy Loam) |
+|-------|----------------|-----------------------------------|
+| Sowing | rainfall_mm, soil_moisture_pct, temperature_c | rain <20mm, soil <16%, temp <20°C |
+| Seedling | soil_moisture_pct, rainfall_mm, humidity_pct | soil <14% or >22%, heavy rain |
+| Tillering | humidity_pct, rainfall_mm, temperature_c | humidity >90%+cloudy, temp 25-29°C |
+| Flowering | humidity_pct (morning), rainfall_mm, soil_moisture_pct | humidity >90%+rain, soil <16% |
+| Grain Fill | soil_moisture_pct, rainfall_mm, humidity_pct | soil <13% (SEVERE), dry spell >10 days |
+| Harvest | rainfall_mm, humidity_pct, soil_moisture_pct | rain >0, humidity >75%, soil >14% |
+
+CORPUS RULE: These are approximate Karnataka red sandy loam ranges. Actual values vary by zone, soil, and monsoon. Sensors show conditions, not diagnoses. Field inspection and KVK consultation required.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, AICRP Agrometeorology tables, UAS GKVK study provide Karnataka data.
+- UNAVAILABLE: Continuous sensor validation for all stages across all Karnataka zones.
+- UNAVAILABLE: Sensor thresholds for black soils, laterite soils.
+- (WEAK, KA) AICRP tables have uncertain week-level alignment.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Millets; [S2] UAS Bengaluru, AICRP Agrometeorology Zone 5 & 6 ragi tables; [S3] UAS GKVK, Soil moisture induced yield variability; [S4] ragi_soil_moisture_ka; [S5] 11_damping_off_seedlings; [S6] ragi_blast_detailed, 15_ragi_blast; [S7] 17_ragi_other_diseases_and_varieties.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Millets, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] UAS Bengaluru, AICRP on Agrometeorology, https://mail.uasbangalore.edu.in/images/crop_weather/
+[S3] UAS GKVK, Indian J. Agric. Sci., https://epubs.icar.org.in/index.php/IJAgS/article/view/104382
+[S4] ragi_soil_moisture_ka
+[S5] 11_damping_off_seedlings
+[S6] ragi_blast_detailed; 15_ragi_blast
+[S7] 17_ragi_other_diseases_and_varieties

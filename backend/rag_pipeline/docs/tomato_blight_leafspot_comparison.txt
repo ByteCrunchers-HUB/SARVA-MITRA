@@ -1,0 +1,86 @@
+DOC_ID: tomato_blight_leafspot_comparison
+TITLE: Tomato foliar disease comparison - late blight vs early blight vs Septoria vs bacterial leaf spot
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet; rainfall_mm; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This is a comparative reference document to help distinguish between the four main tomato foliar diseases when sensor conditions overlap. It does not replace the individual disease documents (03, 04, 05, 08). Use this when sensor readings match multiple diseases and the farmer needs to know what to look for in the field.
+
+CORPUS RULE: Sensors show conditions that favour a disease. They never confirm one. This comparison only helps prioritize what to check first. Field inspection and KVK/agriculture officer confirmation are required.
+
+KEY DIFFERENCES AT A GLANCE
+
+| Feature | Late Blight (03) | Early Blight (04) | Septoria Leaf Spot (05) | Bacterial Leaf Spot (08) |
+|---------|------------------|-------------------|-------------------------|---------------------------|
+| Pathogen | Phytophthora infestans (oomycete) | Alternaria solani (fungus) | Septoria lycopersici (fungus) | Xanthomonas spp. (bacteria) |
+| Temperature favouring | Cool 10-21°C | Warm 15-30°C, optimum 28-30°C | Moderate 20-25°C | Moderate 24-30°C |
+| Humidity / leaf wetness | High humidity >80%, leaf wet >10-12 hrs | High humidity >90% or heavy dew; alternating wet/dry | High humidity, dew, wet leaves, poor airflow | High humidity >85%, persistent dew, splashing rain |
+| Leaf wetness need | REQUIRED (long periods) | Alternating wet/dry periods | High humidity, dew helps | Persistent dew, splashing rain |
+| Sunlight effect | Spores die in 1 hr sun, survive 4 hrs cloud | Spores release at mid-morning as dew dries | Not specified | Not specified |
+| First appears on | Any leaf, often upper canopy | Oldest (lowest) leaves first | Oldest (lowest) leaves first | Lower leaves, but can start anywhere |
+| Lesion appearance | Water-soaked dark green → purple-black with white mildew underside | Target-like concentric rings, yellow halo | Small circular, dark margins, tan-grey centres with tiny black dots | Small water-soaked, greasy when wet, YELLOW HALO |
+| Vein-limited? | NO - lesions cross veins | Not specified | Not specified | NO - lesions not limited by veins |
+| Fruit symptoms | Brown, firm, leathery lesions | Concentric rings on fruit, often at stem end | Rare on fruit | Sunken, scabby spots with yellow halo on green fruit |
+| Stem symptoms | Brown lesions, can girdle | Dry, brown, ringed stem lesions | Not typical | Small elongated dark spots |
+| Progression speed | Very fast (days) | Moderate (weeks) | Moderate (weeks) | Moderate (weeks) |
+| Smell | Badly affected plants may smell | No | No | No |
+
+WEATHER CONDITION OVERLAPS AND HOW TO PRIORITIZE
+
+Overlap 1: Cool (10-21°C), high humidity (>80%), long leaf wetness
+- Strongest match: Late blight (03) - these are its classic conditions
+- Also possible: Septoria (05) at 20-25°C with high humidity
+- Action: Check for white mildew on leaf undersides (late blight) vs tiny black dots in tan centres (Septoria)
+
+Overlap 2: Warm (20-30°C), high humidity (>90%), heavy dew
+- Strongest match: Early blight (04) - warm + dew is its signature
+- Also possible: Bacterial leaf spot (08) at 24-30°C with humidity >85%
+- Action: Check oldest leaves first for target rings (early blight) vs yellow-halo greasy spots (bacterial)
+
+Overlap 3: Alternating wet/dry periods, warm temperature
+- Strongest match: Early blight (04) - specifically needs alternating wet/dry
+- Bacterial leaf spot (08) also favoured by intermittent rain
+- Action: Check for concentric rings (early blight) vs non-vein-limited yellow-halo spots (bacterial)
+
+Overlap 4: High humidity, moderate temperature, poor airflow, lower leaves
+- Strongest match: Septoria (05) - specifically mentions poor airflow
+- Also possible: Early blight (04) on older leaves
+- Action: Check for tiny black dots in lesion centres (Septoria) vs concentric rings (early blight)
+
+FIELD INSPECTION PRIORITY CHECKLIST (WHAT TO LOOK FOR TODAY)
+
+If sensors show COOL (10-21°C) + HIGH HUMIDITY + LONG LEAF WETNESS:
+1. Check leaf undersides on humid mornings for white mildew-like growth → Late blight (03, S2)
+2. Check lowest leaves for small circular spots with dark margins and tiny black dots → Septoria (05, S2)
+3. Check for water-soaked dark green patches turning purple-black → Late blight (03, S2)
+
+If sensors show WARM (20-30°C) + HIGH HUMIDITY/DEW + ALTERNATING WET/DRY:
+1. Check oldest (lowest) leaves for target-like concentric rings with yellow halo → Early blight (04, S4)
+2. Check for small greasy water-soaked spots with prominent YELLOW HALO, not limited by veins → Bacterial leaf spot (08, S4)
+3. Check fruit for sunken scabby spots with yellow halo (bacterial) vs concentric rings at stem end (early blight)
+
+If sensors show MODERATE (20-25°C) + HIGH HUMIDITY + POOR AIRFLOW:
+1. Check lowest leaves for many small circular spots with dark margins, tan-grey centres, tiny black dots → Septoria (05, S2)
+2. Check for leaf yellowing, browning, withering spreading upward → Septoria (05, S2)
+3. Check oldest leaves for target rings → Early blight (04, S4)
+
+DIAGNOSTIC CONFUSION POINTS
+
+- Early blight vs Septoria: Both start on lower leaves. Early blight has LARGER target-like spots with concentric rings. Septoria has MANY SMALLER spots with tiny black dots (pycnidia) in centres.
+- Bacterial leaf spot vs fungal spots: Bacterial lesions have a DISTINCT YELLOW HALO, appear GREASY when wet, and are NOT LIMITED by leaf veins. Fungal lesions typically have more defined margins and may be vein-limited.
+- Late blight vs others: Late blight produces WHITE SPORE GROWTH on leaf undersides in humid conditions. No other tomato foliar disease does this. Lesions are NOT vein-limited and can destroy a leaf in days.
+- Bacterial wilt (09) and Fusarium wilt (10) cause WILTING, not leaf spots. If the plant is wilting but leaves have spots, check stem base for brown streaking (Fusarium) or sudden complete wilting of green plant (bacterial wilt).
+
+EVIDENCE QUALITY AND LIMITS
+- All thresholds in this comparison come from the individual disease documents (03, 04, 05, 08), which are primarily INTL (USA) or IN (TNAU, NIPHM). No Karnataka-measured thresholds for tomato foliar diseases are present in this corpus.
+- The temperature/humidity ranges overlap significantly. Sensor readings alone cannot distinguish these diseases.
+- CORPUS RULE: This document helps prioritize field inspection. It does not diagnose. Matching sensor readings show conditions that favour a disease. They do not confirm it.
+
+SOURCE GEOGRAPHY
+See individual disease documents: 03_late_blight_tomato_potato (INTL), 04_early_blight_tomato_potato (INTL), 05_septoria_leaf_spot_tomato (INTL), 08_tomato_bacterial_leaf_spot (IN, INTL).
+
+REFERENCES
+[S1] 03_late_blight_tomato_potato
+[S2] 04_early_blight_tomato_potato
+[S3] 05_septoria_leaf_spot_tomato
+[S4] 08_tomato_bacterial_leaf_spot

@@ -1,0 +1,169 @@
+DOC_ID: stress_vs_disease
+TITLE: Combined stress vs disease discrimination - decision keys for abiotic vs biotic problems
+CROPS: tomato; chilli; ragi
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; soil_moisture_pct; sunlight_wm2; leaf_wet; soil_ec_dsm
+EMBED: yes
+
+CORPUS NOTE: This document helps distinguish abiotic stress (heat, moisture, nutrient, salt) from biotic disease when sensor conditions overlap and symptoms look similar. Sensors show conditions; they do not diagnose. Field inspection + KVK/lab confirmation required.
+
+CORPUS RULE: Sensors show conditions that favour problems. They do not confirm any disease or disorder. This document provides discrimination logic only.
+
+IDENTIFICATION
+- (PHYS, IN) Abiotic stresses (heat, drought, flood, nutrient, salt) and biotic diseases often produce similar visual symptoms (wilting, yellowing, leaf curl, stunting) [S1].
+- (PHYS, IN) Key principle: abiotic stress usually affects WHOLE FIELD or GRADIENT; biotic disease often starts in PATCHES/FOCI and SPREADS [S1].
+- (PHYS, IN) Sensor patterns differ: abiotic = sustained extremes; biotic = favourable windows (temp/humidity/leaf wetness) [S1].
+
+DECISION KEYS BY SYMPTOM GROUP
+
+WILTING PLANTS
+| Feature | Bacterial Wilt (09) | Fusarium Wilt (10) | Phytophthora Wilt (chilli_wilt_damping_off) | Heat Stress (19, chilli_heat_ka) | Drought Stress |
+|---------|---------------------|-------------------|---------------------------------------------|----------------------------------|----------------|
+| Onset | Sudden, complete | Gradual, one-sided | Sudden, water-soaked stem | Gradual, diurnal | Gradual, diurnal |
+| Leaf colour | Green (initially) | Yellow (one side) | Green → brown | Green → curl | Green → curl → brown |
+| Stem base | Brown discoloration | Brown streaking inside | Water-soaked, dark | Normal | Normal |
+| Soil moisture | HIGH sustained | LOW sustained | HIGH sustained | Variable | LOW sustained |
+| Temperature | 29-35°C | ~28°C | 25-30°C | >32°C day | Any |
+| Field pattern | Patches, spreads | Patches, spreads | Patches, low areas | Whole field / gradient | Whole field / gradient |
+| Sensor combo | High soil_moisture + high temp | Low soil_moisture + ~28°C | High soil_moisture + 25-30°C | High temp + low humidity | Low soil_moisture + high temp |
+
+YELLOWING / CHLOROSIS
+| Feature | N Deficiency | Mg Deficiency | Fe/Zn Deficiency | Viral (CMV/ChiVMV) | Root Disease |
+|---------|-------------|--------------|-----------------|-------------------|-------------|
+| Leaf age | OLDER | OLDER | YOUNG | YOUNG | OLDER first |
+| Pattern | Uniform | Interveinal | Interveinal | Mosaic | Variable |
+| Veins | Yellow | GREEN | GREEN | Green/cleared | Variable |
+| Soil EC | Normal | Normal | HIGH pH/EC | Normal | Variable |
+| Soil moisture | Normal | Normal | Normal | Normal | Often HIGH/LOW |
+| Field pattern | Uniform / gradient | Uniform / gradient | Patches (alkaline spots) | Patches, spreads | Patches, spreads |
+| Sensor combo | Normal | Normal | High soil_ec_dsm + high pH | Vector risk HIGH | Soil moisture extreme |
+
+LEAF CURL
+| Feature | Physiological (tomato/chilli_nutrient) | TYLCV/ChiLCV (12, chilli_viral) | Thrips/TSWV (chilli_viral) | Heat Stress (19, chilli_heat) |
+|---------|--------------------------------------|-------------------------------|--------------------------|------------------------------|
+| Direction | UPWARD | DOWNWARD | DOWNWARD/DISTORTED | UPWARD/DOWNWARD |
+| Texture | Thick, leathery | Crinkled, brittle | Silvery, distorted | Thick, leathery |
+| Stunting | NONE | SEVERE | MODERATE | MODERATE (if severe) |
+| Bushy look | NO | YES | NO | NO |
+| Vectors present | NO | WHITEFLY | THRIPS | NO |
+| Temperature | High + dry | 25-30°C | 25-30°C | >32°C day |
+| Humidity | Low | 60-75% | 40-60% | Low (<50%) |
+| Field pattern | Uniform / gradient | Patches, spreads | Patches, spreads | Gradient (field edges) |
+
+STUNTING / POOR GROWTH
+| Feature | Nutrient Deficiency | Salt Stress (20) | Root Disease | Heat Stress | Virus |
+|---------|-------------------|------------------|-------------|------------|-------|
+| Uniformity | Gradient / uniform | Gradient (low areas) | Patches | Gradient | Patches |
+| Root appearance | Normal | Brown, stunted | Rotted, discolored | Normal | Normal |
+| Soil EC | Normal | HIGH (>2.5 tomato) | Variable | Normal | Normal |
+| Soil moisture | Normal | Variable | Extreme (HIGH/LOW) | Normal | Normal |
+| Temperature | Normal | Normal | Pathogen-specific | HIGH | Vector-favourable |
+
+SENSOR PATTERN DISCRIMINATION
+
+ABIOTIC STRESS SIGNATURES:
+- Heat stress: Sustained high temperature_c (>32°C day, >24°C night) + low humidity_pct (<50%) + high sunlight_wm2 [19, chilli_heat_ka].
+- Drought stress: Sustained LOW soil_moisture_pct + high temperature_c + high sunlight_wm2 + no rainfall_mm [irrigation docs].
+- Flood stress: Sustained HIGH soil_moisture_pct + rainfall_mm + poor drainage reported [irrigation docs, 09, chilli_wilt_damping_off].
+- Salt stress: Rising soil_ec_dsm trend + normal soil_moisture_pct + sensitive variety [20].
+- Nutrient stress: Normal sensors + visual symptoms + soil test confirmation [nutrient_discrimination].
+
+BIOTIC DISEASE SIGNATURES:
+- Fungal foliar (03, 04, 05, 06, 07, 13, 15): Favourable temp/humidity/leaf_wet WINDOWS (hours-days) [02].
+- Bacterial (08, chilli_bacterial_leaf_spot, 09): Rainfall_mm + high humidity + leaf_wet + warm temp [02].
+- Soil-borne wilt (09, 10, chilli_wilt_damping_off): Sustained soil moisture extreme + pathogen temp range [02, 21].
+- Viral (12, chilli_viral_diseases): Vector risk HIGH + susceptible stage + NO direct sensor threshold [pest docs].
+
+COMBINED STRESS (MULTIPLE FACTORS)
+- Heat + Drought: HIGH temp + LOW soil_moisture + HIGH sunlight → physiological leaf curl, flower drop [19, chilli_heat_ka, nutrient_discrimination].
+- Heat + Flood: HIGH temp + HIGH soil_moisture → bacterial wilt (09) risk EXTREME [09].
+- Salt + Drought: HIGH soil_ec_dsm + LOW soil_moisture → severe nutrient lockout [20, nutrient_discrimination].
+- Nutrient + Disease: Deficiency weakens plant → disease susceptibility [22, tomato_nutrient_deficiencies].
+
+FIELD INSPECTION WORKFLOW FOR DISCRIMINATION
+
+1. ASSESS FIELD PATTERN:
+   - Whole field / gradient → likely abiotic
+   - Patches, foci, spreading → likely biotic
+
+2. CHECK ROOTS & STEM BASE:
+   - Rotted, discolored, water-soaked → soil-borne disease
+   - Normal, healthy → abiotic or foliar disease
+
+3. CHECK LEAF AGE & PATTERN:
+   - Older leaves first → N, P, K, Mg, mobile nutrients
+   - Young leaves first → Ca, B, Fe, Mn, Zn, S, virus
+   - Uniform → abiotic / nutrient
+   - Mosaic, rings, irregular → virus / specific disease
+
+4. CHECK FOR VECTORS:
+   - Whitefly → TYLCV/ChiLCV
+   - Aphids → CMV/ChiVMV
+   - Thrips → TSWV/GBNV
+
+5. REVIEW SENSOR HISTORY (3-7 days):
+   - Sustained extremes → abiotic
+   - Favourable windows → biotic
+   - Both → combined stress
+
+6. SOIL TEST:
+   - EC, pH, nutrients → confirms abiotic
+   - Normal + symptoms → biotic likely
+
+7. KVK/LAB CONFIRMATION:
+   - Pathogen isolation, PCR, ELISA → definitive
+
+SENSOR READING INTERPRETATION FOR DISCRIMINATION
+
+If wilting + HIGH soil_moisture_pct + HIGH temperature_c (29-35°C):
+→ PRIORITY: Bacterial wilt (09) / Phytophthora (chilli_wilt_damping_off) [09, chilli_wilt_damping_off].
+→ ALSO CHECK: Heat stress if low humidity + high temp [19, chilli_heat_ka].
+
+If wilting + LOW soil_moisture_pct + HIGH temperature_c:
+→ PRIORITY: Drought stress / Fusarium wilt (10) [10, irrigation docs].
+→ DISCRIMINATE: Check stem streaking (Fusarium) vs diurnal recovery (drought) [10].
+
+If leaf curl UPWARD + thick leathery + NO vectors + HIGH temp + LOW humidity:
+→ PRIORITY: Physiological leaf curl / Heat stress [tomato_nutrient_deficiencies, chilli_nutrient_deficiencies, 19, chilli_heat_ka].
+
+If leaf curl DOWNWARD + crinkling + stunting + bushy + WHITEFLY present:
+→ PRIORITY: TYLCV / ChiLCV (12, chilli_viral_diseases) [12, chilli_viral_diseases].
+
+If mosaic + stunting + APHIDS present:
+→ PRIORITY: CMV / ChiVMV (chilli_viral_diseases) [chilli_viral_diseases].
+
+If silvery streaks + bud necrosis + ringspots + THRIPS present:
+→ PRIORITY: TSWV / GBNV (chilli_viral_diseases) [chilli_viral_diseases].
+
+If yellowing OLDER leaves uniform + NO vectors + normal sensors:
+→ PRIORITY: N deficiency (tomato_nutrient_deficiencies, chilli_nutrient_deficiencies) [nutrient_discrimination].
+
+If yellowing YOUNG leaves interveinal + HIGH soil_ec_dsm + HIGH pH:
+→ PRIORITY: Fe/Zn deficiency (nutrient_discrimination) [nutrient_discrimination].
+
+If edge burn OLDER leaves + curling + HIGH soil_ec_dsm:
+→ PRIORITY: Salt stress (20) / K deficiency (nutrient_discrimination) [20, nutrient_discrimination].
+
+CORPUS RULE: These are discrimination guides. Sensors show conditions. They do not confirm any disease or disorder. Field inspection + soil test + KVK/lab confirmation required for definitive identification.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, IN) IIHR, UAS, ICAR provide discrimination frameworks for Indian conditions.
+- UNAVAILABLE: Sensor-based automated discrimination algorithms.
+- UNAVAILABLE: Karnataka-specific combined stress thresholds.
+- (WEAK, IN) Some discriminators based on general plant physiology principles.
+
+SOURCE GEOGRAPHY
+[S1] IIHR Bengaluru, UAS Bengaluru, ICAR diagnostic guides; [S2] 02_weather_thresholds_by_disease; [S3] pest_whitefly; [S4] pest_aphids_thrips; [S5] 12_tomato_leaf_curl_virus_whitefly; [S6] chilli_viral_diseases; [S7] nutrient_discrimination; [S8] 19_heat_stress_fruit_set_tomato; [S9] chilli_heat_ka; [S10] 20_soil_salinity_ec_tomato.
+
+REFERENCES
+[S1] IIHR Bengaluru, Diagnostic Guide for Tomato/Chilli Problems, https://www.iihr.res.in/publications
+[S2] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S3] ICAR, Diagnostic Protocols for Vegetable Diseases, https://www.icar.org.in
+[S4] 02_weather_thresholds_by_disease
+[S5] pest_whitefly
+[S6] pest_aphids_thrips
+[S7] 12_tomato_leaf_curl_virus_whitefly
+[S8] chilli_viral_diseases
+[S9] nutrient_discrimination
+[S10] 19_heat_stress_fruit_set_tomato
+[S11] chilli_heat_ka
+[S12] 20_soil_salinity_ec_tomato

@@ -1,0 +1,110 @@
+DOC_ID: ragi_soil_moisture_ka
+TITLE: Ragi (finger millet) soil moisture - Karnataka sensor bands and rainfed guidance
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; sunlight_wm2 (cloud indicator)
+EMBED: yes
+
+CORPUS NOTE: This document replaces ragi_soil_moisture_bands.txt with Karnataka-specific sensor-relevant data from UAS GKVK and UAS Bengaluru AICRP. The sensor column soil_moisture_pct is volumetric water content (%). Research sources use PASM (per cent available soil moisture), % field capacity, and kPa tension. Always confirm units before comparing.
+
+CORPUS RULE: No universal soil moisture target exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+IDENTIFICATION
+- (OBS, KA) Ragi (Eleusine coracana) is Karnataka's major millet, grown on ~0.8 M ha, 90% kharif rainfed in Bengaluru Rural, Kolar, Tumakuru, Chitradurga, Hassan, Ramanagara, and Mysuru districts [S1][S2].
+- (OBS, KA) UAS GKVK long-term experiments (2014-19) and UAS Bengaluru AICRP agrometeorology provide the only Karnataka soil moisture-yield relationships for ragi [S3][S4].
+
+KARNATAKA SOIL MOISTURE - YIELD RELATIONSHIPS (UAS GKVK)
+
+Long-term field study (2014-19, Bengaluru, red sandy loam):
+- (OBS, KA) Per cent Available Soil Moisture (PASM) measured at 30 cm depth [S3].
+- (OBS, KA) At 58% PASM: grain yield ~50% of normal [S3].
+- (OBS, KA) At 40% PASM: grain yield ~25% of normal [S3].
+- (OBS, KA) At 70% PASM: near-normal yield [S3].
+- CORPUS NOTE: PASM = (soil moisture - wilting point) / (field capacity - wilting point) × 100. This is NOT the same as soil_moisture_pct (volumetric). Conversion requires soil-specific calibration.
+
+SENSOR CORRELATES (RED SANDY LOAM - BENGALURU ZONE)
+- (FAV, KA) UAS GKVK calibration: Field capacity ~22% volumetric; wilting point ~8% volumetric [S3].
+- (FAV, KA) 70% PASM ≈ 18% soil_moisture_pct (volumetric) [S3].
+- (FAV, KA) 58% PASM ≈ 16% soil_moisture_pct (volumetric) - 50% yield threshold [S3].
+- (FAV, KA) 40% PASM ≈ 13% soil_moisture_pct (volumetric) - 25% yield threshold [S3].
+- UNAVAILABLE: Sensor calibration for black soils (North Karnataka), laterite soils (Coastal), and other zones.
+
+CROP STAGE GUIDANCE (KHARIF RAINFED CONTEXT)
+
+Sowing to Establishment (July - Week 1-3 after monsoon onset):
+- (OBS, KA) UAS Bengaluru defines sowing windows by zone (Zone 5: Bengaluru; Zone 6: Mysore) [S4].
+- (FAV, KA) Adequate soil moisture at sowing: >16% soil_moisture_pct (volumetric) for germination [S3].
+- (FAV, KA) Seedling damping-off (11_damping_off_seedlings) favoured if soil_moisture_pct >20% + cool temps + poor drainage [S5].
+
+Vegetative / Tillering (August - September):
+- (OBS, KA) Rainfed; soil moisture tracks monsoon rainfall_mm [S4].
+- (FAV, KA) Blast (15_ragi_blast, ragi_blast_detailed) favoured by high humidity_pct + cloudy (low sunlight_wm2) + 25-28°C - canopy conditions, not directly soil moisture [S6].
+- (OBS, KA) UAS Bengaluru Zone 6 tables: morning humidity 90-94%, >3 cloudy days/week correlates with blast incidence 8-45% [S4].
+
+Flowering to Grain Filling (September - October) - CRITICAL:
+- (FAV, KA) UAS GKVK: Moisture stress at this stage severely reduces grain fill [S3].
+- (FAV, KA) Target: Maintain >58% PASM (~16% soil_moisture_pct on red sandy loam) [S3].
+- (FAV, KA) If soil_moisture_pct drops below 13% (40% PASM) during grain fill: expect >75% yield loss [S3].
+- (FAV, KA) Supplemental irrigation (if available): 30-40 mm at 50% PASM threshold [S1].
+- (FAV, KA) Neck blast & finger blast (ragi_blast_detailed) occur during this period; favoured by high humidity/cloudy [S6].
+
+Maturity to Harvest (October - November):
+- (OBS, KA) Dry weather needed for harvest; high soil moisture/humidity causes grain mold (17_ragi_other_diseases_and_varieties) [S2].
+- (OBS, KA) Target soil_moisture_pct <14% at harvest for easy threshing [S1].
+
+ZONE-SPECIFIC NOTES (KARNATAKA)
+
+Zone 5 (Bengaluru District - Eastern Dry Zone):
+- (OBS, KA) Red sandy loam; weekly minimum temp 15-19.6°C; neck+finger blast 4.8-96.25% [S4].
+- (FAV, KA) Leaf folder favoured at 25-29°C with humidity >80% [S4].
+
+Zone 6 (Mysore District - Southern Dry Zone):
+- (OBS, KA) Red sandy loam; morning humidity 90-94%, >3 cloudy days; blast incidence 8-45% [S4].
+- (FAV, KA) Stem borer favoured at 25-29°C with humidity 83-95% [S4].
+
+North Karnataka (Bidar, Kalaburagi, Vijayapura - Black Soils):
+- (OBS, KA) Higher water holding capacity; later sowing (August); longer moisture retention [S1].
+- UNAVAILABLE: PASM-yield calibration for black soils.
+
+Coastal Karnataka (Dakshina Kannada, Udupi - Laterite):
+- (OBS, KA) High rainfall, rapid drainage; ragi less common [S1].
+- UNAVAILABLE: Soil moisture thresholds for laterite.
+
+SENSOR READING INTERPRETATION (KARNATAKA RED SANDY LOAM)
+
+LOW soil_moisture_pct (<13%) sustained during flowering/grain fill (Sept-Oct):
+→ Severe moisture stress, likely >75% yield loss (UAS GKVK: 40% PASM = 25% yield) [S3].
+
+MODERATE soil_moisture_pct (13-16%) during grain fill:
+→ Moderate stress, 50-75% yield potential (UAS GKVK: 40-58% PASM) [S3].
+
+ADEQUATE soil_moisture_pct (>16%) during grain fill:
+→ Near-normal yield potential (UAS GKVK: >58% PASM) [S3].
+
+HIGH soil_moisture_pct (>20%) + high humidity_pct + cloudy (low sunlight_wm2) during flowering:
+→ Conditions favour blast (ragi_blast_detailed, 15_ragi_blast) [S6].
+
+VERY HIGH soil_moisture_pct + poor drainage at seedling stage:
+→ Conditions favour damping-off/root rot (11_damping_off_seedlings, 17_ragi_other_diseases_and_varieties) [S5].
+
+HIGH humidity_pct + cloudy at maturity:
+→ Conditions favour grain mold (17_ragi_other_diseases_and_varieties) [S2].
+
+CORPUS RULE: These are conditions that favour problems. They do not confirm any disease or disorder. Field inspection is required.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS GKVK 2014-19 study is the only Karnataka long-term soil moisture-yield dataset for ragi.
+- UNAVAILABLE: Direct soil_moisture_pct sensor calibration for non-red-sandy-loam soils.
+- UNAVAILABLE: Sensor thresholds for ragi under supplemental irrigation.
+- (WEAK, KA) UAS Bengaluru AICRP tables have uncertain week-level alignment; use as rough ranges only [S4].
+- Ragi is predominantly rainfed; irrigation-based soil moisture management is not typical.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Millets; [S2] ICAR Indian Farming (Oct 2025) finger millet overview; [S3] UAS GKVK, Soil moisture induced yield variability in major crops of Karnataka (Indian J. Agric. Sci.); [S4] UAS Bengaluru, AICRP Agrometeorology Zone 5 & 6 ragi tables; [S5] 11_damping_off_seedlings; [S6] ragi_blast_detailed, 15_ragi_blast.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Millets, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] ICAR Indian Farming (Oct 2025), finger millet overview, https://epubs.icar.org.in/index.php/IndFarm/article/download/174434/64149/505234
+[S3] Indian Journal of Agricultural Sciences, Soil moisture induced yield variability in major crops of Karnataka, https://epubs.icar.org.in/index.php/IJAgS/article/view/104382
+[S4] UAS Bengaluru, AICRP on Agrometeorology, Zone 5 & 6 ragi, https://mail.uasbangalore.edu.in/images/crop_weather/
+[S5] 11_damping_off_seedlings
+[S6] ragi_blast_detailed; 15_ragi_blast

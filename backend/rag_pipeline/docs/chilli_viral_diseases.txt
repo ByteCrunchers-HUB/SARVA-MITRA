@@ -1,0 +1,50 @@
+DOC_ID: chilli_viral_diseases
+TITLE: Chilli viral diseases - mosaic, leaf curl, and other viruses
+CROPS: chilli
+SENSOR_SIGNALS: none reliable. The sources give no sensor threshold. Use only when the farmer reports viral symptoms.
+EMBED: yes
+
+CORPUS NOTE: Tomato leaf curl virus (whitefly vector) is in 12_tomato_leaf_curl_virus_whitefly.txt. This document covers chilli-specific viral diseases. Sensor readings cannot confirm viral diseases.
+
+IDENTIFICATION
+- (OBS, IN) Chilli mosaic (Cucumber mosaic virus - CMV): Spread by seed to some extent and by aphid vectors from collateral hosts [S1].
+- (OBS, IN) Chilli leaf curl virus (ChiLCV): Carried by whitefly Bemisia tabaci. Primary spread by whiteflies, secondary by movement of infected plants [S2].
+- (OBS, IN) Chilli veinal mottle virus (ChiVMV): Aphid-transmitted, causes mosaic and mottling [S3].
+- (OBS, IN) Groundnut bud necrosis virus (GBNV) / Tomato spotted wilt virus (TSWV): Thrips-transmitted, causes bud necrosis and ringspots [S3].
+- (WEAK, INTL) A research paper states that vector activity, virus multiplication and symptom development are affected by weather during and after infection, but gives no thresholds [S4].
+
+SYMPTOMS
+- (INSP, IN) Chilli mosaic (CMV): Mosaic pattern of light and dark green on leaves; leaf distortion, curling, stunting; fruit may be small, distorted, with ringspots [S1][S3].
+- (INSP, IN) Chilli leaf curl (ChiLCV): Severe stunting, downward rolling and crinkling of leaves, older leaves leathery and brittle, short internodes, bushy look with more side branches [S2].
+- (INSP, IN) Whitefly feeding damage alone (no virus): Chlorotic spots, yellowing, and downward curling and drying of leaves [S5]. Field inspection needed to distinguish from viral leaf curl.
+- (INSP, IN) Chilli veinal mottle (ChiVMV): Vein clearing, mottling, leaf distortion, stunting [S3].
+- (INSP, IN) Bud necrosis (GBNV/TSWV): Necrosis of growing buds, concentric ringspots on leaves and fruit, stunting, plant death [S3].
+
+FIELD INSPECTION
+- (INSP, IN) Look for whiteflies on undersides of leaves (for leaf curl) [S2][S5].
+- (INSP, IN) Look for aphids on growing tips (for mosaic, veinal mottle) [S1][S3].
+- (INSP, IN) Look for thrips in flowers (for bud necrosis) [S3].
+- (INSP, IN) Check for mosaic/mottle patterns on young leaves, leaf curling/stunting, and bushy appearance [S1][S2][S3].
+- CORPUS NOTE: Whitefly feeding alone can curl leaves without virus [S5]. Aphid feeding can cause distortion. Only field inspection and KVK/agriculture officer confirmation (or lab test) can identify the virus. Sensor readings cannot suggest viral diseases.
+
+MANAGEMENT
+- (OBS, IN) Uproot and destroy virus-infected plants [S1][S2].
+- (OBS, IN) Use nitrogen and irrigation judiciously; lush growth attracts vectors [S2].
+- (OBS, IN) Remove weed hosts: Abutilon indicum for whitefly/leaf curl; collateral hosts for aphids/thrips [S1][S2].
+- (OBS, IN) Use yellow sticky traps for whitefly monitoring; blue sticky traps for thrips (trap numbers not given, ask KVK) [S2][S3].
+- (OBS, IN) Use reflective mulches to repel aphids and whiteflies [S3].
+- (OBS, IN) Seed treatment and insecticide sprays for vector management are mentioned; product names, doses and timing not included here. Ask KVK or agriculture officer for approved products [S1][S2][S3].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No reliable sensor threshold exists in the retrieved sources for any chilli viral disease. Sensor readings must not be used to suggest them.
+- CORPUS RULE: A virus cannot be confirmed from sensor readings. This document is only retrieved when the farmer reports viral symptoms.
+
+SOURCE GEOGRAPHY
+[S1] NIPHM (India); [S2] TNAU (Tamil Nadu), India; [S3] TNAU (Tamil Nadu), India; [S4] Virology Journal (location not verified); [S5] TNAU (Tamil Nadu), India.
+
+REFERENCES
+[S1] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S2] TNAU Agritech, Chilli leaf curl, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_6.html
+[S3] TNAU Agritech, Chilli viral diseases, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_5.html
+[S4] Al Abdallat et al. 2010, Virology Journal 7:84, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2874538/
+[S5] TNAU Agritech, Whitefly, https://agritech.tnau.ac.in/crop_protection/tomato/tomato_4.html
