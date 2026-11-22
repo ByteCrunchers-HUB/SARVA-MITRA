@@ -17,8 +17,10 @@ try:
         EMBEDDING_CACHE_DIR,
         EMBEDDING_DIMENSION,
         EMBEDDING_MODEL,
+        GROQ_MODEL,
         ML_ENGINE_URL,
         RAG_USE_VECTOR_SEARCH,
+        MONGODB_VECTOR_INDEX,
     )
     from .config import MONGODB_DATABASE, MONGODB_COLLECTION
     from .config import GROQ_API_KEY, mongodb_uri
@@ -28,8 +30,10 @@ except ImportError:
         EMBEDDING_CACHE_DIR,
         EMBEDDING_DIMENSION,
         EMBEDDING_MODEL,
+        GROQ_MODEL,
         ML_ENGINE_URL,
         RAG_USE_VECTOR_SEARCH,
+        MONGODB_VECTOR_INDEX,
     )
     from config import MONGODB_DATABASE, MONGODB_COLLECTION
     from config import GROQ_API_KEY, mongodb_uri
@@ -116,19 +120,9 @@ app.add_middleware(
 def health():
     return {
         "status": "ok",
-        "chat_mode": "stateless",
-        "ml_engine_url": ML_ENGINE_URL,
-        "embedding": {
-            "model": EMBEDDING_MODEL,
-            "dimension": EMBEDDING_DIMENSION,
-            "cache": EMBEDDING_CACHE_DIR,
-        },
+        "schema_version": "1.0",
+        "mode": "stateless",
     }
-
-
-@app.get("/ready", include_in_schema=False)
-def ready():
-    return {"status": "ready", "mode": "stateless"}
 
 
 @app.get("/diagnostics")
@@ -146,12 +140,15 @@ def diagnostics():
         ml_status = f"unreachable:{type(exc).__name__}"
     return {
         "vector_search": RAG_USE_VECTOR_SEARCH,
+        "vector_index": MONGODB_VECTOR_INDEX,
         "mongodb_configured": mongo_configured,
         "groq_configured": bool(GROQ_API_KEY),
+        "groq_model": GROQ_MODEL,
         "ml_engine_url": ML_ENGINE_URL,
         "ml_status": ml_status,
         "embedding_model": EMBEDDING_MODEL,
         "embedding_dimension": EMBEDDING_DIMENSION,
+        "embedding_cache": EMBEDDING_CACHE_DIR,
         "mongodb_database": MONGODB_DATABASE,
         "mongodb_collection": MONGODB_COLLECTION,
     }
@@ -219,9 +216,17 @@ def call_ml_engine(request: AdvisoryRequest) -> dict:
     raise HTTPException(504, f"ML engine timed out after retry: {last_error}")
 
 
-@app.post("/v1/advisory")
+@app.post("/advisory")
 def advisory(request: AdvisoryRequest):
-    prediction = request.ml_prediction or call_ml_engine(request)
+    if request.ml_prediction is not None:
+        prediction = request.ml_prediction
+    elif request.ml_output in (0, 1):
+        prediction = {
+            "ml_output": request.ml_output,
+            "source": "explicit",
+        }
+    else:
+        prediction = call_ml_engine(request)
     output = ml_output(prediction, request.ml_output)
     readings = dict(request.readings)
     if request.history:
@@ -273,17 +278,3 @@ def advisory(request: AdvisoryRequest):
         "retrieval_context": pipeline.last_retrieval,
         "chat_history": updated,
     }
-
-
-@app.post("/advisory")
-def advisory_alias(request: AdvisoryRequest):
-    return advisory(request)
-
-
-@app.post("/predict-and-advice")
-def predict_and_advice(request: AdvisoryRequest):
-    if request.ml_prediction is not None:
-        return advisory(request)
-    prediction = call_ml_engine(request)
-    combined = request.model_copy(update={"ml_prediction": prediction})
-    return advisory(combined)

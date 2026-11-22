@@ -59,9 +59,8 @@ Replace production records:
 Endpoints:
 
 - `GET /health`
-- `POST /v1/advisory`
-- `POST /advisory` (compatibility alias)
-- `POST /predict-and-advice` (combined demo convenience endpoint)
+- `GET /diagnostics`
+- `POST /advisory`
 
 Example request:
 
@@ -427,9 +426,9 @@ Swagger testing:
 - ML: `https://<sarva-mitra-ml>.onrender.com/docs`
 - RAG: `https://<sarva-mitra-rag>.onrender.com/docs`
 
-The RAG Swagger `/predict-and-advice` request includes a valid eight-day
-history example. The endpoint calls `/predict` on the ML service and then
-calls RAG retrieval and Groq before returning one combined response.
+The RAG Swagger `/advisory` request includes a valid eight-day history example.
+When `ml_prediction` and `ml_output` are omitted, the endpoint calls `/predict`
+on the ML service and then runs RAG retrieval and Groq.
 
 ## Swagger and demo endpoints
 
@@ -440,8 +439,8 @@ When deployed, open:
 - ML Swagger: `https://<ml-service>.onrender.com/docs`
 - ML health: `https://<ml-service>.onrender.com/health`
 
-Use `/predict-and-advice` for the simplest demo. It accepts ML history and
-calls both services internally:
+Use `/advisory` for the universal demo endpoint. It accepts ML history and
+calls the ML service when no ML result is supplied:
 
 ```json
 {
@@ -468,10 +467,10 @@ calls both services internally:
 }
 ```
 
-For `/predict-and-advice`, the history must contain at least eight consecutive
-daily records. The target date must be one day after the final history date.
-The RAG endpoint can still accept an already-computed `ml_prediction` through
-`/v1/advisory` or `/advisory`.
+For automatic ML prediction, `/advisory` history must contain at least eight
+consecutive daily records. The target date must be one day after the final
+history date. To bypass the ML service, send either `ml_output` or
+`ml_prediction` directly.
 
 ## Render environment variables
 

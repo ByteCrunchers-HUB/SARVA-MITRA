@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
@@ -11,26 +12,53 @@ from backend.rag_pipeline import app as rag_app
 
 
 class SimplifiedRAGTests(unittest.TestCase):
-    def test_predict_and_advice_endpoint_exists(self) -> None:
+    def test_single_advisory_endpoint_exists(self) -> None:
         from backend.rag_pipeline.app import app
         paths = app.openapi()["paths"]
-        self.assertIn("/predict-and-advice", paths)
-        self.assertIn("/v1/advisory", paths)
         self.assertIn("/advisory", paths)
+        self.assertNotIn("/predict-and-advice", paths)
+        self.assertNotIn("/v1/advisory", paths)
+        self.assertNotIn("/ready", paths)
+        self.assertIn("/health", paths)
+        self.assertIn("/diagnostics", paths)
 
-    def test_legacy_advisory_endpoint_is_normal(self) -> None:
-        from backend.rag_pipeline.app import app
-        operation = app.openapi()["paths"]["/advisory"]["post"]
-        self.assertFalse(operation.get("deprecated", False))
-
-    def test_embedding_model_is_exposed_by_health(self) -> None:
-        from backend.rag_pipeline.app import health
-        payload = health()
-        self.assertEqual(payload["embedding"]["dimension"], 384)
+    def test_embedding_model_is_exposed_by_diagnostics(self) -> None:
+        from backend.rag_pipeline.app import diagnostics
+        payload = diagnostics()
+        self.assertEqual(payload["embedding_dimension"], 384)
         self.assertEqual(
-            payload["embedding"]["model"],
+            payload["embedding_model"],
             "sentence-transformers/all-MiniLM-L6-v2",
         )
+
+    def test_health_is_demo_status_only(self) -> None:
+        from backend.rag_pipeline.app import health
+        payload = health()
+        self.assertEqual(payload["status"], "ok")
+        self.assertNotIn("embedding", payload)
+
+    def test_explicit_ml_output_bypasses_ml_engine(self) -> None:
+        with (
+            patch("backend.rag_pipeline.app.call_ml_engine") as call_ml,
+            patch("backend.rag_pipeline.rag.RAGPipeline") as rag_pipeline,
+        ):
+            rag_pipeline.return_value.answer.return_value = ("Advice", {})
+            rag_pipeline.return_value.last_retrieval = {
+                "query": "",
+                "matches": [],
+                "documents_sent": [],
+            }
+            result = rag_app.advisory(
+                rag_app.AdvisoryRequest(
+                    ml_output=1,
+                    crop="tomato",
+                    question="What should I inspect?",
+                )
+            )
+
+        call_ml.assert_not_called()
+        self.assertEqual(result["ml_output"], 1)
+        self.assertEqual(result["ml_prediction"]["source"], "explicit")
 
     def test_new_claude_corpus_documents_exist(self) -> None:
         docs = ROOT / "backend" / "rag_pipeline" / "docs"
