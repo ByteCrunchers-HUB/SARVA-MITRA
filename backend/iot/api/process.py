@@ -1,226 +1,160 @@
-"""
-Central orchestration endpoint (POST /api/process).
-Coordinates the full lifecycle:
-ESP32 -> Serial/ThingSpeak -> Weather -> Database -> History -> ML Engine -> RAG Advisory -> Frontend
-"""
+"""API-only farm workflow: geocode, fetch climate history, call ML, then RAG."""
 
 import logging
-from datetime import date, datetime, timezone
-from fastapi import APIRouter, Request, HTTPException
+from datetime import date, datetime, timedelta, timezone
+from typing import Dict, Any
+
+from fastapi import APIRouter, HTTPException
 
 from config import settings
-from database.sensor_repository import upsert_daily_record
-from schemas.ml_schema import MLCurrentReading
 from schemas.rag_schema import ProcessRequest, ProcessResponse
-from services.data_integration import build_ml_request, merge_sensor_and_weather
-from services.history_service import prepare_ml_history, to_rag_history
+from services.data_integration import build_ml_request
+from services.history_service import to_rag_history
+from services.location_service import geocode_place, match_trained_location
 from services.ml_service import call_ml_engine, generate_mock_ml_response
+from services.nasa_power_service import fetch_daily_history
 from services.rag_service import build_rag_request, call_rag_pipeline, generate_mock_rag_response
-from services.thingspeak_service import fetch_latest_reading as fetch_thingspeak_reading
 from utils.validation import validate_date_format
 
 logger = logging.getLogger("smartfarm.process")
-
 router = APIRouter(prefix="/process", tags=["Process"])
+IST = timezone(timedelta(hours=5, minutes=30))
 
 
-@router.post("", response_model=ProcessResponse, summary="Execute complete end-to-end integration workflow")
-async def process_telemetry(payload: ProcessRequest, request: Request):
+@router.post("", response_model=ProcessResponse, summary="Run location-based ML and RAG analysis")
+async def process_telemetry(payload: ProcessRequest):
+    """Fetch real location-specific daily data, then call the ML and RAG APIs.
+
+    Request coordinates can be supplied directly, or a place name can be geocoded.
+    The ML model has static soil features only for its trained points, so the
+    nearest supported point is used as the model reference location.
     """
-    Main integration pipeline:
-    1. Read latest ESP32 sensor telemetry from PySerial receiver.
-    2. Read coordinates from UI (defaults to Vijayawada: lat=16.51, lon=80.52).
-    3. Fetch environmental weather parameters from Open-Meteo for the location.
-    4. Persist daily combined record in SQLite.
-    5. Compile consecutive daily history records.
-    6. Construct ML request and call ML Engine API (POST /predict).
-    7. Forward combined context + prediction to RAG Advisory API (POST /advisory).
-    8. Deliver the unified result to the frontend.
-    """
-    device_id = payload.device_id or settings.device_id
-    target_date = payload.target_date or date.today().strftime("%Y-%m-%d")
+    requested_lat = payload.latitude if payload.latitude is not None else payload.lat
+    requested_lon = payload.longitude if payload.longitude is not None else payload.lon
 
-    # Resolve latitude & longitude: provided by UI, or default to Vijayawada
-    resolved_lat = payload.latitude if payload.latitude is not None else (
-        payload.lat if payload.lat is not None else settings.latitude
-    )
-    resolved_lon = payload.longitude if payload.longitude is not None else (
-        payload.lon if payload.lon is not None else settings.longitude
-    )
-    resolved_location = payload.location or settings.location_name
+    if (requested_lat is None) != (requested_lon is None):
+        raise HTTPException(status_code=422, detail="Provide both latitude and longitude, or provide a location name.")
 
+    if requested_lat is None and payload.location:
+        try:
+            geocoded = await geocode_place(payload.location)
+        except (ValueError, ConnectionError) as exc:
+            raise HTTPException(status_code=502, detail=str(exc)) from exc
+        requested_lat = geocoded["latitude"]
+        requested_lon = geocoded["longitude"]
+        location_name = ", ".join(part for part in (geocoded["name"], geocoded.get("admin1")) if part)
+    elif requested_lat is None:
+        requested_lat = settings.latitude
+        requested_lon = settings.longitude
+        location_name = payload.location or settings.location_name
+    else:
+        location_name = payload.location or f"{float(requested_lat):.4f}, {float(requested_lon):.4f}"
+
+    try:
+        model_location = await match_trained_location(float(requested_lat), float(requested_lon))
+    except (ValueError, ConnectionError) as exc:
+        raise HTTPException(status_code=422 if isinstance(exc, ValueError) else 502, detail=str(exc)) from exc
+
+    target_date = payload.target_date or datetime.now(IST).date().isoformat()
     if not validate_date_format(target_date):
-        raise HTTPException(status_code=400, detail=f"Invalid target_date format: {target_date}. Expected YYYY-MM-DD.")
+        raise HTTPException(status_code=400, detail=f"Invalid target_date: {target_date}. Expected YYYY-MM-DD.")
 
-    logger.info(
-        "--- Starting Processing for Device: %s, Date: %s, Location: %s (%.2f, %.2f) ---",
-        device_id, target_date, resolved_location, resolved_lat, resolved_lon
-    )
-    metadata = {
-        "initiated_at": datetime.now(timezone.utc).isoformat(),
-        "device_id": device_id,
-        "target_date": target_date,
-        "location": resolved_location,
-        "latitude": resolved_lat,
-        "longitude": resolved_lon,
-        "crop": payload.crop,
-        "warnings": []
+    target_day = date.fromisoformat(target_date)
+    history_start = target_day - timedelta(days=7)
+    history_end = target_day - timedelta(days=1)
+
+    try:
+        # Weather is requested at the selected farm coordinates, not the ML reference point.
+        environment_history = await fetch_daily_history(
+            lat=float(requested_lat),
+            lon=float(requested_lon),
+            start_date=history_start.isoformat(),
+            end_date=history_end.isoformat(),
+        )
+    except (ValueError, ConnectionError) as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+    device_id = payload.device_id or f"API_{float(requested_lat):.3f}_{float(requested_lon):.3f}"
+    metadata: Dict[str, Any] = {
+        "data_source": "NASA POWER Daily API",
+        "location": location_name,
+        "requested_coordinates": {"lat": float(requested_lat), "lon": float(requested_lon)},
+        "ml_reference_coordinates": {"lat": model_location["lat"], "lon": model_location["lon"]},
+        "distance_to_ml_reference_km": model_location["distance_km"],
+        "ml_records_count": len(environment_history),
+        "warnings": [],
     }
-
-    # --------------------------------------------------------------------------
-    # Step 1: Read Latest ESP32 Hardware Readings
-    # --------------------------------------------------------------------------
-    receiver = getattr(request.app.state, "serial_receiver", None)
-    sensor_data = None
-    if receiver:
-        sensor_data = await receiver.get_latest_reading()
-    if not sensor_data:
-        sensor_data = await fetch_thingspeak_reading()
-
-    if not sensor_data:
-        warning_msg = (
-            "No ESP32 telemetry is available from Serial, HTTP ingestion, or ThingSpeak. "
-            "Proceeding with fallback/weather data."
+    if model_location["distance_km"] > 1:
+        metadata["warnings"].append(
+            "Static soil features and model location use the nearest trained point; "
+            "weather values are fetched for the requested coordinates."
         )
-        logger.warning(warning_msg)
-        metadata["warnings"].append(warning_msg)
 
-    # --------------------------------------------------------------------------
-    # Step 2: Fetch External Weather Information (Open-Meteo)
-    # --------------------------------------------------------------------------
-    from services.weather_service import fetch_weather
-    try:
-        weather_data = await fetch_weather(
-            lat=resolved_lat,
-            lon=resolved_lon,
-            target_date=target_date
-        )
-    except Exception as w_err:
-        logger.error("Weather service unavailable: %s", w_err)
-        metadata["warnings"].append(f"Weather API error: {str(w_err)}")
-        weather_data = {
-            "date": target_date,
-            "rainfall_mm": 0.0,
-            "sunlight_wm2": 0.0,
-            "source": "Unavailable"
-        }
-
-    # --------------------------------------------------------------------------
-    # Step 3: Persist Today's Snapshot into Database
-    # --------------------------------------------------------------------------
-    rainfall_val = weather_data.get("rainfall_mm", 0.0)
-    sunlight_val = weather_data.get("sunlight_wm2", 0.0)
-    leaf_wet = 1 if rainfall_val > 0.0 else 0
-
-    await upsert_daily_record(
+    ml_request = build_ml_request(
         device_id=device_id,
-        date=target_date,
-        temperature=sensor_data.get("temperature") if sensor_data else 28.0,
-        humidity=sensor_data.get("humidity") if sensor_data else 60.0,
-        soil_moisture=sensor_data.get("soil_moisture") if sensor_data else 45.0,
-        rainfall_mm=rainfall_val,
-        sunlight_wm2=sunlight_val,
-        leaf_wet_days=leaf_wet,
-        is_duplicated=False
-    )
-
-    # --------------------------------------------------------------------------
-    # Step 4: Prepare History Records
-    # --------------------------------------------------------------------------
-    try:
-        ml_history = await prepare_ml_history(device_id=device_id, target_date=target_date)
-    except ValueError as hist_err:
-        logger.error("History preparation failed: %s", hist_err)
-        raise HTTPException(status_code=422, detail=str(hist_err))
-
-    metadata["ml_records_count"] = len(ml_history)
-
-    # Current sensed reading for ML engine (optional)
-    curr_reading = None
-    if sensor_data:
-        curr_reading = MLCurrentReading(
-            date=target_date,
-            soil_moisture_pct=float(sensor_data.get("soil_moisture", 45.0)),
-            air_temperature_c=float(sensor_data.get("temperature", 28.0)),
-            humidity_pct=float(sensor_data.get("humidity", 60.0)),
-            sunlight_wm2=sunlight_val,
-            rainfall_mm=rainfall_val
-        )
-
-    # --------------------------------------------------------------------------
-    # Step 5: Construct and Send ML Request
-    # --------------------------------------------------------------------------
-    ml_request_obj = build_ml_request(
-        device_id=device_id,
-        lat=resolved_lat,
-        lon=resolved_lon,
+        lat=model_location["lat"],
+        lon=model_location["lon"],
         target_date=target_date,
-        history_records=ml_history,
-        current_reading=curr_reading
+        history_records=environment_history,
+        current_reading=None,
     )
 
-    ml_response_data = None
     if payload.use_stub_ml:
-        logger.info("Using mock ML Engine response per request flag.")
-        ml_response_data = generate_mock_ml_response(device_id, target_date)
+        ml_response = generate_mock_ml_response(
+            device_id, target_date, model_location["lat"], model_location["lon"]
+        )
         metadata["ml_mode"] = "stub_flag"
     else:
         try:
-            ml_response_data = await call_ml_engine(ml_request_obj)
+            ml_response = await call_ml_engine(ml_request)
             metadata["ml_mode"] = "live_service"
-        except (ConnectionError, TimeoutError, ValueError) as ml_err:
-            logger.warning("ML API request failed (%s). Falling back to mock stub for testing.", ml_err)
-            ml_response_data = generate_mock_ml_response(device_id, target_date)
-            metadata["ml_mode"] = "fallback_stub"
-            metadata["warnings"].append(f"ML Engine API unavailable: {str(ml_err)}")
+        except (ConnectionError, TimeoutError, ValueError) as exc:
+            logger.exception("ML request failed")
+            raise HTTPException(status_code=502, detail=f"ML service request failed: {exc}") from exc
 
-    # --------------------------------------------------------------------------
-    # Step 6 & 7: Construct Combined Payload & Call RAG Advisory API
-    # --------------------------------------------------------------------------
-    rag_history = to_rag_history(ml_history)
-    rag_request_obj = build_rag_request(
+    latest_environment = environment_history[-1].model_dump()
+    weather_context = {
+        "date": latest_environment["date"],
+        "rainfall_mm": latest_environment["rainfall_mm"],
+        "sunlight_wm2": latest_environment["sunlight_wm2"],
+        "source": "NASA POWER",
+    }
+    rag_history = to_rag_history(environment_history)
+    rag_request = build_rag_request(
         device_id=device_id,
-        lat=resolved_lat,
-        lon=resolved_lon,
+        lat=float(requested_lat),
+        lon=float(requested_lon),
         target_date=target_date,
-        sensor_data=sensor_data,
-        weather_data=weather_data,
-        ml_response=ml_response_data,
+        sensor_data=None,
+        weather_data=weather_context,
+        ml_response=ml_response,
         history_records=rag_history,
         crop=payload.crop,
-        question=payload.question
+        question=payload.question,
+        location_name=location_name,
     )
 
-    rag_response_data = None
-    risk_label = ml_response_data.get("prediction", {}).get("risk_label", "moderate")
-
     if payload.use_stub_rag:
-        logger.info("Using mock RAG Pipeline response per request flag.")
-        rag_response_data = generate_mock_rag_response(device_id, risk_label)
+        risk_label = ml_response.get("prediction", {}).get("risk_label", "moderate")
+        rag_response = generate_mock_rag_response(device_id, risk_label)
         metadata["rag_mode"] = "stub_flag"
     else:
         try:
-            rag_response_data = await call_rag_pipeline(rag_request_obj)
+            rag_response = await call_rag_pipeline(rag_request)
             metadata["rag_mode"] = "live_service"
-        except (ConnectionError, TimeoutError, ValueError) as rag_err:
-            logger.warning("RAG API request failed (%s). Falling back to mock stub for testing.", rag_err)
-            rag_response_data = generate_mock_rag_response(device_id, risk_label)
-            metadata["rag_mode"] = "fallback_stub"
-            metadata["warnings"].append(f"RAG Pipeline API unavailable: {str(rag_err)}")
+        except (ConnectionError, TimeoutError, ValueError) as exc:
+            logger.exception("RAG request failed")
+            raise HTTPException(status_code=502, detail=f"RAG service request failed: {exc}") from exc
 
     metadata["completed_at"] = datetime.now(timezone.utc).isoformat()
-
-    # --------------------------------------------------------------------------
-    # Step 8: Return Unified Payload to Client
-    # --------------------------------------------------------------------------
-    logger.info("--- End-to-End Processing Completed Successfully ---")
     return ProcessResponse(
         device_id=device_id,
         target_date=target_date,
         status="success",
-        sensor_data=sensor_data,
-        weather_data=weather_data,
-        ml_response=ml_response_data,
-        rag_response=rag_response_data,
-        metadata=metadata
+        sensor_data=None,
+        environment_history=[record.model_dump() for record in environment_history],
+        weather_data=weather_context,
+        ml_response=ml_response,
+        rag_response=rag_response,
+        metadata=metadata,
     )

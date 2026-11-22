@@ -1,7 +1,7 @@
 """
 RAG Service module.
 Communicates with the separate, externally implemented RAG Advisory API.
-Sends field telemetry, weather context, and ML engine prediction via HTTP POST,
+Sends location-based environmental history and ML engine prediction via HTTP POST,
 and returns the final advisory response to FastAPI.
 """
 
@@ -30,7 +30,8 @@ def build_rag_request(
     ml_response: Dict[str, Any],
     history_records: Optional[List[RAGHistoryRecord]] = None,
     crop: str = "tomato",
-    question: str = ""
+    question: str = "",
+    location_name: Optional[str] = None,
 ) -> RAGRequest:
     """
     Constructs the integration payload for the RAG Advisory API (/advisory).
@@ -62,13 +63,13 @@ def build_rag_request(
 
     return RAGRequest(
         device_id=device_id,
-        location=settings.location_name,
+        location=location_name or settings.location_name,
         lat=lat,
         lon=lon,
         target_date=target_date,
         history=history_records or [],
         crop=crop,
-        question=question or "What farming actions or crop protections are recommended based on current readings?",
+        question=question or "What farming actions or crop protections are recommended based on recent weather and this risk prediction?",
         ml_output=ml_output_val,
         ml_prediction=ml_pred,
         ml_response=ml_response,

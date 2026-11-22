@@ -2,6 +2,7 @@
 
 Endpoints
   GET  /health    service status and loaded model
+  GET  /locations coordinates represented in the static model table
   POST /predict   risk % and risk label for the next day, from prior daily records
                   merged with the current sensed reading
 
@@ -255,6 +256,16 @@ def health(request: Request):
     return {"schema_version": SCHEMA_VERSION, "status": "ok",
             "model": {"name": b["selected_model"], "trained_through": b["trained_through"]},
             "points": len(request.app.state.static)}
+
+
+@app.get("/locations")
+def locations(request: Request):
+    """List the coordinate points for which static model soil features are available."""
+    points = [
+        {"lat": lat, "lon": lon}
+        for lat, lon in sorted(request.app.state.static.keys())
+    ]
+    return {"locations": points}
 
 
 @app.post("/predict")

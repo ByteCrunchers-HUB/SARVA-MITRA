@@ -1,6 +1,5 @@
 """
-Main entry point for the Smart Agriculture Monitoring System FastAPI Backend.
-Integrates hardware serial communication, database, weather, ML, and RAG pipelines.
+API integration backend for dynamic farm-weather, ML, and RAG workflows.
 """
 
 import logging
@@ -19,6 +18,7 @@ from api.sensors import router as sensors_router
 from api.weather import router as weather_router
 from api.history import router as history_router
 from api.process import router as process_router
+from api.locations import router as locations_router
 
 # Configure structured logging
 logging.basicConfig(
@@ -36,21 +36,21 @@ async def lifespan(app: FastAPI):
     Initializes database tables and background serial receiver on startup,
     and cleanly tears down background tasks on shutdown.
     """
-    logger.info("=== Starting Smart Agriculture Monitoring System ===")
+    logger.info("=== Starting Sarva Mitra API integration backend ===")
     
     # 1. Initialize SQLite Database
     await init_db()
 
-    # 2. Initialize and Start ESP32 Serial Receiver (handles cloud/local mode)
+    # Retain the legacy HTTP sensor cache, but do not access local hardware.
     serial_receiver = SerialReceiver(
         port=settings.serial_port,
         baudrate=settings.serial_baudrate,
-        enabled=settings.enable_serial
+        enabled=False
     )
     app.state.serial_receiver = serial_receiver
     await serial_receiver.start()
 
-    logger.info("FastAPI backend initialized and ready to receive requests.")
+    logger.info("API-only backend initialized and ready to receive requests.")
     yield
 
     # Shutdown
@@ -61,11 +61,10 @@ async def lifespan(app: FastAPI):
 
 # Initialize FastAPI Application
 app = FastAPI(
-    title="Smart Agriculture Monitoring System",
+    title="Sarva Mitra Farm Intelligence API",
     description=(
-        "Centralized integration layer connecting ESP32 hardware telemetry, "
-        "Open-Meteo weather data, persistent SQLite historical records, "
-        "an independent ML Engine API, and a separately implemented RAG Pipeline API."
+        "Software-only farm risk workflow. Resolves a requested location, fetches "
+        "daily agrometeorology from NASA POWER, and calls the independent ML and RAG APIs."
     ),
     version="1.0.0",
     lifespan=lifespan
@@ -86,6 +85,7 @@ app.include_router(sensors_router, prefix="/api")
 app.include_router(weather_router, prefix="/api")
 app.include_router(history_router, prefix="/api")
 app.include_router(process_router, prefix="/api")
+app.include_router(locations_router, prefix="/api")
 
 
 @app.get("/", summary="Root Health Check & Welcome")
@@ -93,7 +93,7 @@ async def root():
     """Root route returning service identity and health."""
     return {
         "status": "online",
-        "service": "Sarva Mitra Smart Agriculture IoT Backend",
+        "service": "Sarva Mitra Farm Intelligence API",
         "version": "1.0.0",
         "docs": "/docs",
         "health": "/api/health"

@@ -1,198 +1,106 @@
-# SARVA-MITRA - IoT & Hardware Subsystem (`backend/iot`)
+# SARVA-MITRA API Orchestrator
 
-The **IoT & Hardware Subsystem** is the real-time physical telemetry gateway for **SARVA-MITRA**. It handles non-blocking Serial communications with the **ESP32 microcontroller**, ingests physical sensor data (Air Temperature, Relative Humidity, Soil Moisture), persists readings into SQLite, integrates with Open-Meteo external weather data, and triggers the ML Engine & RAG pipelines.
-
----
-
-## Architecture Overview
-
-```
- [ESP32 NodeMCU]
-  ├── DHT11 (GPIO 27) ---------> [USB Serial @ 115200]
-  └── Soil Sensor (GPIO 35)              │
-                                         ▼
-                             [FastAPI IoT Gateway]
-                                         │
-                 ┌───────────────────────┼────────────────────────┐
-                 ▼                       ▼                        ▼
-         [SQLite Storage]      [Open-Meteo Weather]      [ML Engine & RAG]
-          (Historical DB)       (Rainfall, Sunlight)     (sarva-mitra.onrender)
-```
-
----
-
-## Hardware Specifications & Pinout
-
-| Component | ESP32 Pin | Interface | Description |
-| :--- | :--- | :--- | :--- |
-| **DHT11 Data** | `GPIO 27` | 1-Wire Digital | Measures Ambient Air Temperature (°C) & Humidity (%) |
-| **Soil Moisture AO** | `GPIO 35` (ADC1_CH7) | 12-Bit Analog | Measures Volumetric Soil Water Content |
-| **DHT11 VCC / GND** | `3.3V` / `GND` | Power | 3.3V Supply Rail |
-| **Soil Sensor VCC / GND** | `3.3V` or `VIN (5V)` / `GND` | Power | Ground & Power Rail |
-| **Heartbeat LED** | `GPIO 2` | Onboard LED | Blinks briefly on each valid JSON transmission |
-
-> **Firmware Location**: [`firmware/esp32_sensor_node/esp32_sensor_node.ino`](./firmware/esp32_sensor_node/esp32_sensor_node.ino)
-
-### ESP32 Telemetry Format (USB Serial)
-The firmware transmits single-line JSON frames every 5 seconds:
-```json
-{"device_id":"ESP32_01","temperature":27.4,"humidity":65.2,"soil_moisture":48}
-```
-
----
-
-## Directory Structure
-
-```
-backend/iot/
-├── api/                   # FastAPI route handlers
-│   ├── health.py          # /api/health endpoint
-│   ├── history.py         # /api/history query & export endpoints
-│   ├── process.py         # /api/process end-to-end integration orchestrator
-│   ├── sensors.py         # /api/sensors/latest & /status endpoints
-│   └── weather.py         # /api/weather endpoint
-├── database/              # SQLite persistent storage
-│   ├── database.py        # Async SQLite database initializer
-│   └── sensor_repository.py # Repository CRUD operations
-├── firmware/              # ESP32 Arduino C++ firmware
-│   └── esp32_sensor_node/
-│       └── esp32_sensor_node.ino
-├── hardware/              # Hardware communication layer
-│   └── serial_receiver.py # Asynchronous PySerial background worker
-├── schemas/               # Pydantic data validation schemas
-│   ├── ml_schema.py       # ML request/response contracts
-│   ├── rag_schema.py      # RAG request/response contracts
-│   └── sensor_schema.py   # Hardware & weather sensor contracts
-├── services/              # Business logic & external API clients
-│   ├── data_integration.py # 8-day payload compilation
-│   ├── history_service.py # Historical record aggregation
-│   ├── ml_service.py      # ML Engine HTTP client
-│   ├── rag_service.py     # RAG Pipeline HTTP client
-│   └── weather_service.py # Open-Meteo Weather API client
-├── utils/                 # Helpers and validators
-│   └── validation.py
-├── .dockerignore
-├── .env.example           # Template environment configuration
-├── .gitignore
-├── config.py              # Pydantic-settings centralized config
-├── Dockerfile             # Container definition
-├── main.py                # FastAPI ASGI application entrypoint
-└── requirements.txt       # Python dependencies
-```
-
----
-
-## Quickstart Guide
-
-### 1. Setup Python Virtual Environment
-```powershell
-cd backend/iot
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-### 2. Configure Environment
-Copy `.env.example` to `.env`:
-```powershell
-cp .env.example .env
-```
-Ensure your ESP32 COM port is set in `.env`:
-```ini
-SERIAL_PORT=COM9
-SERIAL_BAUDRATE=115200
-DEVICE_ID=ESP32_01
-ML_API_URL=http://sarva-mitra.onrender.com/predict
-RAG_API_URL=http://localhost:8002/rag/query
-```
-
-> **Important**: Ensure Arduino IDE's Serial Monitor is **CLOSED** when running the backend, as only one process can bind to the COM port simultaneously.
-
-### 3. Run the Backend Server
-```powershell
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
-```
-- Interactive API Documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- Health Check: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
-- Live Telemetry: [http://127.0.0.1:8000/api/sensors/latest](http://127.0.0.1:8000/api/sensors/latest)
-
-### Use the ESP32 with the Render deployment
-
-For a direct cloud connection, use [ThingSpeak](https://thingspeak.com) as the
-telemetry store. The ESP32 sends sensor values to ThingSpeak over HTTPS, and the
-Render backend fetches the latest stored entry. Render cannot read `COM9` on your
-computer; keep the serial forwarder below as an alternative for USB-only use.
-
-#### 1. Create a ThingSpeak channel
-
-1. Create a ThingSpeak account and a channel named `SARVA-MITRA ESP32`.
-2. Add three numeric fields: **Temperature**, **Humidity**, and **Soil Moisture**.
-3. Keep the channel private. Copy the channel ID and its Write API Key for the
-   ESP32, and its Read API Key for Render.
-4. Free ThingSpeak channels accept an update every 15 seconds or slower; this
-   firmware sends one every 20 seconds.
-
-#### 2. Add Wi-Fi and ThingSpeak credentials to the ESP32 firmware
-
-1. Open `firmware/esp32_sensor_node` in Arduino IDE. Install the ESP32 board
-   support, the **DHT sensor library**, and the **ThingSpeak** library.
-2. Copy `secrets.example.h` to `secrets.h` in the same folder. Fill in your
-   2.4 GHz Wi-Fi name/password, channel ID, and Write API Key. Do not commit
-   `secrets.h`.
-3. Select your ESP32 board and COM port, then upload
-   `esp32_sensor_node.ino`. Open Serial Monitor at 115200 baud. It should print
-   `ThingSpeak telemetry stored successfully.` every 20 seconds.
-
-#### 3. Let Render read the channel
-
-In the Render service environment settings, set:
+This FastAPI service is the software-only integration layer for the SARVA-MITRA
+farm-risk project. It accepts a farm location and crop from an API client, fetches
+daily environmental history, calls the independent ML prediction API, then sends
+the prediction and source data to the RAG advisory API. The main flow does not
+require an ESP32 or serial port.
 
 ```text
-ENABLE_SERIAL=false
-THINGSPEAK_CHANNEL_ID=<your channel ID>
-THINGSPEAK_READ_API_KEY=<your channel Read API Key>
+API client (place name or coordinates)
+          │
+          ▼
+FastAPI ── Open-Meteo Geocoding (place name → coordinates)
+   │
+   ├────── NASA POWER Daily API (7 days of climate/soil-wetness data)
+   │
+   ├────── ML API /predict (risk estimate)
+   │
+   └────── RAG API /advisory (explanation and actions)
 ```
 
-Save the settings and redeploy. `GET /api/sensors/latest` and `POST /api/process`
-will use the latest ThingSpeak reading when no local Serial/HTTP reading is
-available. The backend caches cloud reads for 10 seconds to avoid fetching on
-every frontend poll. The ESP32 Write API Key stays on the device; the Read API
-Key stays in Render.
-
-#### 4. Verify the flow
-
-1. Confirm a new entry appears in the channel's **Private View** every 20 seconds.
-2. Open `https://sarva-mitra-0k9a.onrender.com/api/sensors/latest`.
-3. Confirm the response contains `"source":"thingspeak"` and the three field
-   values. The endpoint returns 503 until ThingSpeak has at least one complete
-   sensor entry.
-
-#### USB serial forwarding alternative
-
-If the ESP32 has no Wi-Fi access, connect it to your computer, close Arduino
-Serial Monitor, and run this from the `backend/iot` directory:
+## Run locally
 
 ```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python tools/serial_forwarder.py --port COM9 --baud 115200 --url https://sarva-mitra-0k9a.onrender.com/api/sensors/data
+Copy-Item .env.example .env
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Keep the command window open while you want live readings. Close Arduino Serial
-Monitor and any locally running backend first, since they can hold COM9 and stop
-the forwarder from opening it. The forwarder prints `[OK]` when Render accepts a
-reading. Then `/api/sensors/latest` returns the latest forwarded reading. If your
-Render service URL changes, replace it in the command.
+Open API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
----
+## Run an analysis
 
-## Key API Endpoints
+Send a place name; the service geocodes it:
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Service health status and component checks |
-| `GET` | `/api/sensors/latest` | Latest validated ESP32 telemetry (Temp, Humidity, Soil Moisture) |
-| `GET` | `/api/sensors/status` | Serial port connection state |
-| `POST` | `/api/sensors/simulate` | Inject mock readings (for testing without physical hardware) |
-| `GET` | `/api/weather/daily` | Environmental weather data for target coordinates |
-| `GET` | `/api/history` | Historical database records query |
-| `POST` | `/api/process` | **Main Orchestrator**: Collects sensor + weather -> builds 8-day history -> invokes ML engine -> invokes RAG pipeline |
+```json
+{
+  "location": "Vijayawada, Andhra Pradesh",
+  "crop": "tomato",
+  "question": "How should I reduce disease risk this week?"
+}
+```
+
+Or send coordinates directly:
+
+```json
+{
+  "latitude": 16.51,
+  "longitude": 80.52,
+  "location": "Vijayawada",
+  "crop": "tomato"
+}
+```
+
+`POST /api/process` resolves the coordinates, fetches seven consecutive daily
+records from NASA POWER, converts them to the ML request schema, calls ML, then
+calls RAG. You can set `target_date` to analyze a specific date. If omitted, it
+uses the current date in India Standard Time and fetches the seven preceding days.
+
+The fetched inputs include daily temperature (`T2M`), relative humidity (`RH2M`),
+solar radiation (`ALLSKY_SFC_SW_DWN`), precipitation (`PRECTOTCORR`), and surface
+soil wetness (`GWETTOP`). The soil-wetness value is a NASA model estimate, not a
+live soil probe measurement. Solar energy is converted to mean W/m² and wetness
+fraction to percent. NASA POWER daily data may be delayed; the API returns an
+error if it cannot supply a complete 7-day window rather than inventing readings.
+
+## Model locations
+
+The deployed ML model has static soil features for a finite set of trained points.
+Use `GET /api/locations` to retrieve them. For a submitted place or coordinate,
+the backend selects the nearest trained point within 250 km. It fetches weather
+at the requested coordinates but uses the nearest trained point for the model's
+static soil features. The response metadata reports both coordinate pairs and
+the distance. A request farther than 250 km from every trained point is rejected.
+
+## Configuration
+
+Set these values in `.env` locally or in the Render service environment:
+
+```text
+ML_API_URL=https://sarva-mitra-ml.onrender.com/predict
+RAG_API_URL=https://sarva-mitra-rag.onrender.com/advisory
+LATITUDE=16.51
+LONGITUDE=80.52
+LOCATION_NAME=Vijayawada
+ENABLE_SERIAL=false
+```
+
+`NASA_POWER_DAILY_URL` and `GEOCODING_URL` have public defaults. No API key is
+required for these data requests. The service caches external data briefly to
+reduce repeated calls.
+
+## Main endpoints
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/health` | Backend health |
+| `GET` | `/api/locations` | Coordinates supported by the ML model |
+| `POST` | `/api/process` | Fetch API data, call ML, then call RAG |
+| `GET` | `/api/weather` | Daily weather query |
+| `GET` | `/api/history` | Legacy local history records |
+
+The `/api/sensors/*` routes and firmware remain only for legacy hardware demos;
+they are not used by `/api/process`.

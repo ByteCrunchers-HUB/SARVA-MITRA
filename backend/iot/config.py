@@ -7,16 +7,15 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # Hardware Serial Port Settings (ESP32)
-    # Set ENABLE_SERIAL=false or SERIAL_PORT=disabled when deployed to cloud (e.g., Render)
-    enable_serial: bool = True
+    # Legacy serial settings retained for the optional compatibility endpoints.
     serial_port: str = "COM9"
     serial_baudrate: int = 115200
 
-    # Optional ThingSpeak cloud telemetry source.
-    thingspeak_channel_id: str = ""
-    thingspeak_read_api_key: str = ""
-    thingspeak_read_cache_seconds: int = 10
+    # External environmental data source used by API-only ML requests.
+    nasa_power_daily_url: str = "https://power.larc.nasa.gov/api/temporal/daily/point"
+    external_data_cache_seconds: int = 900
+    geocoding_url: str = "https://geocoding-api.open-meteo.com/v1/search"
+    model_location_max_distance_km: float = 250.0
 
     # Geographic Location (Defaults to Vijayawada trained point)
     latitude: float = 16.51
@@ -33,10 +32,10 @@ class Settings(BaseSettings):
     request_timeout: int = 60
 
     # History Duplication Strategy for ML Input
-    allow_duplicate_history: bool = True
+    allow_duplicate_history: bool = False
 
     # General System
-    device_id: str = "ESP32_01"
+    device_id: str = "API_CLIENT"
     log_level: str = "INFO"
     host: str = "127.0.0.1"
     port: int = 8000

@@ -39,7 +39,6 @@
 #define DHT_PIN         27        // DHT11 Data Pin connected to GPIO 27
 #define DHT_TYPE        DHT11     // DHT sensor model (DHT11)
 #define SOIL_PIN        35        // Soil Moisture Analog Pin connected to GPIO 35 (ADC1)
-#define STATUS_LED_PIN  2         // Onboard Blue LED for transmission heartbeat
 
 // ========== SENSOR CALIBRATION ==========
 // ADC values range from 0 to 4095 on 12-bit ESP32 ADC.
@@ -90,10 +89,6 @@ void setup() {
   // Serial interface matching backend SERIAL_BAUDRATE (115200)
   Serial.begin(115200);
 
-  // Status LED
-  pinMode(STATUS_LED_PIN, OUTPUT);
-  digitalWrite(STATUS_LED_PIN, LOW);
-
   // Initialize DHT11 sensor
   dht.begin();
 
@@ -112,10 +107,6 @@ void setup() {
   // Settle time for sensors on power up
   delay(1500);
 
-  // Startup ready blink
-  digitalWrite(STATUS_LED_PIN, HIGH);
-  delay(200);
-  digitalWrite(STATUS_LED_PIN, LOW);
 }
 
 // ========== MAIN LOOP (NON-BLOCKING) ==========
@@ -148,8 +139,7 @@ void loop() {
     // 2. Read Averaged Soil Moisture
     int soilMoisture = readFilteredSoilMoisture();
 
-    // 3. Emit Pure, Strict JSON Line for Python SerialReceiver
-    // IMPORTANT: Do NOT print extra non-JSON lines to prevent buffer desync
+    // Emit only the three requested measurements in the backend's JSON format.
     Serial.print("{\"device_id\":\"");
     Serial.print(DEVICE_ID);
     Serial.print("\",\"temperature\":");
@@ -160,7 +150,7 @@ void loop() {
     Serial.print(soilMoisture);
     Serial.println("}");
 
-    // ThingSpeak field mapping: 1=temperature, 2=humidity, 3=soil moisture.
+    // ThingSpeak fields: 1=temperature (°C), 2=humidity (%), 3=soil moisture (%).
     if (strlen(SECRET_SSID) > 0 && WiFi.status() != WL_CONNECTED) {
       WiFi.begin(SECRET_SSID, SECRET_PASS);
       Serial.println("Wi-Fi reconnect requested.");
@@ -179,9 +169,5 @@ void loop() {
       Serial.println("Wi-Fi is not connected; telemetry remains available on USB Serial.");
     }
 
-    // Visual transmission heartbeat blink
-    digitalWrite(STATUS_LED_PIN, HIGH);
-    delay(30);
-    digitalWrite(STATUS_LED_PIN, LOW);
   }
 }

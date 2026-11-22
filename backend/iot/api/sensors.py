@@ -1,23 +1,19 @@
-"""
-Sensor telemetry endpoints for reading live ESP32 hardware values.
-Supports both USB Serial ingestion and HTTP POST ingestion for cloud deployments.
-"""
+"""Legacy optional ESP32 endpoints; the main prediction workflow is API-only."""
 
 from datetime import datetime, timezone
 from fastapi import APIRouter, Request, HTTPException
 from config import settings
 from schemas.sensor_schema import ESP32SensorReading
-from services.thingspeak_service import fetch_latest_reading as fetch_thingspeak_reading
 from utils.validation import validate_sensor_ranges
 
 router = APIRouter(prefix="/sensors", tags=["Sensors"])
 
 
-@router.get("/latest", summary="Get latest ESP32 sensor telemetry from local receiver or ThingSpeak")
+@router.get("/latest", summary="Get optional legacy ESP32 sensor telemetry")
 async def get_latest_sensors(request: Request):
     """
-    Returns the most recent air temperature, air humidity, and soil moisture
-    readings captured over USB Serial or HTTP ingestion from the ESP32.
+    Returns a locally received reading. The API-only /process route uses external
+    daily agrometeorological data instead.
     """
     receiver = getattr(request.app.state, "serial_receiver", None)
     if not receiver:
@@ -25,9 +21,6 @@ async def get_latest_sensors(request: Request):
 
     reading = await receiver.get_latest_reading()
     source = "local_serial_or_http"
-    if not reading:
-        reading = await fetch_thingspeak_reading()
-        source = "thingspeak"
     if not reading:
         raise HTTPException(
             status_code=503,
@@ -83,16 +76,13 @@ async def get_serial_status(request: Request):
     receiver = getattr(request.app.state, "serial_receiver", None)
     is_connected = receiver.is_connected() if receiver else False
     latest = await receiver.get_latest_reading() if receiver else None
-    if not latest:
-        latest = await fetch_thingspeak_reading()
 
     return {
-        "serial_enabled": settings.enable_serial,
+        "serial_enabled": False,
         "serial_port": settings.serial_port,
         "baudrate": settings.serial_baudrate,
         "connected": is_connected,
-        "has_cached_reading": latest is not None,
-        "thingspeak_configured": bool(settings.thingspeak_channel_id.strip())
+        "has_cached_reading": latest is not None
     }
 
 

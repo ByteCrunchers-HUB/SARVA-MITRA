@@ -51,7 +51,7 @@ class RAGChatMessage(BaseModel):
 class RAGRequest(BaseModel):
     """
     Payload sent to the RAG Advisory API POST /advisory endpoint.
-    Combines field telemetry, weather context, ML prediction, and optional chat history.
+    Combines location context, environmental history, ML prediction, and optional chat history.
     """
     device_id: str = Field(default="unknown-device")
     location: Any = Field(default="Vijayawada", description="String name or Location object")
@@ -92,16 +92,16 @@ class RAGResponse(BaseModel):
 class ProcessRequest(BaseModel):
     """
     Input schema for the POST /api/process endpoint.
-    Latitude, longitude, location, device_id, date, crop, question can be passed from UI.
-    Defaults to Vijayawada coordinates (16.51, 80.52) if omitted by UI.
+    Latitude/longitude or a place name can be passed by a software client.
+    Defaults to the configured location if none is provided.
     """
     device_id: Optional[str] = None
     target_date: Optional[str] = None
-    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Latitude from UI (defaults to Vijayawada 16.51)")
-    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Longitude from UI (defaults to Vijayawada 80.52)")
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Farm latitude")
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Farm longitude")
     lat: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Alias for latitude")
     lon: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Alias for longitude")
-    location: Optional[str] = Field(default=None, description="Location name from UI (defaults to Vijayawada)")
+    location: Optional[str] = Field(default=None, description="Place name to geocode; coordinates can be supplied instead")
     crop: str = Field(default="tomato", description="Crop type for RAG advisory context")
     question: str = Field(default="", description="Optional natural-language question for RAG")
     use_stub_ml: bool = False
@@ -115,6 +115,7 @@ class ProcessResponse(BaseModel):
     device_id: str
     target_date: str
     status: str
+    environment_history: List[Dict[str, Any]] = Field(default_factory=list)
     sensor_data: Optional[Dict[str, Any]] = None
     weather_data: Optional[Dict[str, Any]] = None
     ml_response: Optional[Dict[str, Any]] = None

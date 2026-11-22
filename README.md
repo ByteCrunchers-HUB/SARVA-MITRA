@@ -1,243 +1,121 @@
-# 🌱 Sarva Mitra — Universal Farm Companion
+# SARVA-MITRA — API-first farm risk and advisory
 
-> **One device. Any farm. Any language.**
->
-> Sarva Mitra (“friend of all”) is a low-cost, profile-driven IoT and AI farming companion designed to monitor farm conditions, predict risks, trigger actions, and communicate practical guidance in **Telugu and Hindi**.
+SARVA-MITRA is a software-only hackathon project. A client submits a farm's place
+name or coordinates; the backend gets environmental history from public APIs,
+asks the ML service for a risk estimate, then asks the RAG service to explain the
+result and suggest actions. The analysis flow does not need an ESP32, COM port, or
+live sensor.
 
-![Sarva Mitra](assets/universal-farm-architecture.png)
+```text
+Client ── place name / coordinates ──► FastAPI orchestrator
+                                          ├─ Open-Meteo Geocoding
+                                          ├─ NASA POWER daily climate data
+                                          ├─ ML API: risk estimate
+                                          └─ RAG API: explanation and actions
+```
 
-## 🚜 What is Sarva Mitra?
+## What happens for one request
 
-Farmers often rely on manual observation and fixed schedules to decide when to irrigate, aerate, or respond to changing environmental conditions. Sarva Mitra brings sensor data, an AI/ML engine, configurable farm profiles, and a voice-first assistant together in one adaptable system.
+1. The client sends a location, crop, and optional question to `POST /api/process`.
+2. The backend geocodes a place name when coordinates were not supplied.
+3. It selects the nearest location supported by the trained ML model, within 250 km.
+4. It fetches the seven preceding daily records from NASA POWER for the requested
+   coordinates and maps them into the ML API's input schema.
+5. It sends the history and model-reference coordinates to the ML `/predict` API.
+6. It sends the ML response, climate history, location, crop, and question to the
+   RAG `/advisory` API and returns the combined result.
 
-Instead of making a separate product for every farm type, Sarva Mitra uses a **profile file** to define the sensors, thresholds, alerts, and actions needed for each environment.
+NASA POWER provides daily air temperature, relative humidity, solar radiation,
+precipitation, and a surface soil-wetness estimate. The soil-wetness estimate is
+not a live soil probe measurement. The backend converts the values to the units
+expected by this project's ML model and returns the seven source records with the
+analysis response. If the source does not return a complete seven-day history,
+the backend reports an error instead of inserting made-up sensor values.
 
-## 🎯 Problem
+## Run locally
 
-- **Late detection:** Important changes in soil, water, or environmental conditions can go unnoticed until damage occurs.
-- **Separate devices:** Different farming activities often need separate monitoring and control systems.
-- **Language barriers:** Many tools rely on English and screen-based interactions.
-- **Reactive alerts:** Threshold alarms may warn only after a condition becomes unsafe.
+From the repository root:
 
-## 💡 Our Solution
+```powershell
+cd backend/iot
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
 
-Sarva Mitra connects sensing, decision-making, control, and farmer assistance in one loop:
+API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-1. **Sense:** ESP32 collects readings from available sensors.
-2. **Analyze:** The AI/ML engine detects anomalies and forecasts short-term trends.
-3. **Decide:** The active farm profile determines whether a condition requires an action or warning.
-4. **Act:** Relay outputs can switch equipment such as a pump, valve, fan, or aerator.
-5. **Assist:** The farmer receives alerts and can ask questions in Telugu or Hindi through a voice-enabled assistant.
+## API usage
 
-## 🧩 System Architecture
+List the coordinate points available in the current ML model:
 
-The field node, cloud/API, ML engine, RAG assistant, and dashboard work through a shared backend.
+```http
+GET /api/locations
+```
 
-![Sarva Mitra universal system architecture](assets/universal-farm-architecture.png)
+Analyze a named location:
 
-### Architecture components
-
-| Component | Responsibility |
-|---|---|
-| ESP32 sensor node | Reads the connected sensor set and sends measurements |
-| Cloud/API | Shared interface for sensor readings, decisions, alerts, and app requests |
-| Profile loader | Applies the selected farm type's sensors, limits, messages, and actions |
-| AI/ML engine | Anomaly detection and short-term forecasting |
-| Relay outputs | Switch compatible equipment based on engine decisions |
-| Voice layer | Telugu/Hindi text-to-speech alerts and speech-to-text input |
-| Dashboard / bot | Displays readings, status, alerts, and farmer interactions |
-| RAG assistant | Answers questions using public advisories and live sensor context |
-
-## 🌾 Supported Farm Profiles
-
-The prototype concept is designed around reusable profiles. Switching profiles changes configuration—not the core device or engine.
-
-| Profile | Sensors / Inputs | Response | Status in project plan |
-|---|---|---|---|
-| 🐟 Fish / shrimp pond | Temperature, pH, TDS, turbidity | Risk alert, aerator control | Demo profile |
-| 🌿 Crop field | Soil moisture, temperature | Irrigation pulse and advisory | Demo profile |
-| 🐔 Poultry shed | Temperature, humidity | Fan control | Roadmap |
-| 🏡 Greenhouse | Temperature, humidity, soil moisture | Ventilation / fan / mist | Roadmap |
-
-> **Safety note:** The profile thresholds shown in the project plan are demo placeholders. Validate operating limits with qualified agriculture or fisheries experts before real-world deployment.
-
-## 🧠 AI & Machine Learning
-
-Sarva Mitra's ML layer is designed to work with generic sensor streams and profile-specific limits.
-
-### 1. Anomaly Detection
-
-Detects unusual readings—such as sudden temperature changes—relative to recent sensor behaviour.
-
-- Initial approach: rolling Z-score
-- Potential upgrade: Isolation Forest
-
-### 2. Short-Term Forecasting
-
-Predicts sensor values over the coming hours and warns when a forecast may cross a profile limit.
-
-- Candidate models: Linear Regression or Gradient Boosting
-- Inputs can include lagged sensor readings and time-of-day features
-
-### 3. Profile-Based Decisions
-
-The active JSON profile defines the relevant sensors, warning/critical limits, messages, and actions. The same engine can therefore be reused across different farm scenarios.
-
-> Pond temperature and pH can be used as risk indicators in the demo, but they are **not a direct dissolved-oxygen measurement**. The prototype should communicate risk—not claim to measure oxygen without a DO sensor.
-
-## 🔌 Hardware
-
-The planned prototype uses an ESP32 with interchangeable sensors and relay-controlled equipment.
-
-| Hardware | Purpose | Approx. cost (₹) |
-|---|---|---:|
-| ESP32 DevKit | Controller and Wi-Fi connectivity | 450 |
-| DS18B20 waterproof temperature probe | Water / air temperature | 150 |
-| Analog pH sensor kit | Pond pH | 1,200 |
-| TDS sensor | Dissolved solids | 450 |
-| Turbidity sensor | Water clarity | 350 |
-| Capacitive soil-moisture sensor | Field soil moisture | 100 |
-| 1-channel relay module | Switches the pump / aerator | 100 |
-| Mini water pump | Demonstration load | 200 |
-| Power, wiring, enclosure | Prototype assembly | 300 |
-
-**Estimated prototype total:** approximately **₹3,300** (about ₹2,100 without the pH kit). Prices are indicative and may change.
-
-### Hardware wiring concept
-
-![ESP32 sensor and relay wiring concept](assets/hardware-wiring.png)
-
-**Build precautions:**
-- Connect analog sensors to ESP32 ADC1 pins (GPIO 32–35) when using Wi-Fi.
-- The ESP32 GPIO inputs are limited to 3.3 V. Use suitable voltage division/level conditioning for sensor outputs that exceed this.
-- The DS18B20 requires a 4.7 kΩ pull-up between data and 3.3 V.
-- Power pumps separately and switch them through an appropriately rated relay. Follow electrical safety practices.
-
-## 🌦️ Weather-Aware Irrigation (Crop Profile)
-
-The crop-field mode is intended to combine soil moisture with weather forecasts to make an irrigation recommendation.
-
-- Monitor soil moisture and temperature.
-- Estimate how quickly the soil is drying.
-- Check the forecast (planned integration: Open-Meteo).
-- Recommend **irrigate** or **hold**, with a plain-language explanation.
-- Hold irrigation when forecast rain makes watering unnecessary, where the decision logic supports it.
-
-![Crop irrigation architecture](assets/crop-irrigation-architecture.png)
-
-## 🗣️ Voice & RAG Assistant
-
-Sarva Mitra is intended to reduce screen and language barriers for farmers.
-
-- Ask questions in Telugu or Hindi by text or voice.
-- Speech-to-text can convert voice notes to text (planned options include Bhashini or Whisper).
-- The RAG assistant retrieves relevant information from public crop/farm advisories.
-- Answers use advisory context together with current sensor readings and include source references.
-- Text-to-speech can read alerts and answers aloud.
-- WhatsApp or Telegram can serve as the farmer-facing channel, alongside a web dashboard.
-
-## 📱 Dashboard Concept
-
-The app/dashboard is planned to show:
-
-- Current sensor readings (moisture, temperature, humidity or water metrics)
-- Active farm profile
-- Pump / relay status
-- Latest ML decision and its reason
-- Dry-soil, rain-hold, or risk alerts
-- Ask-the-assistant screen with text/voice input
-- Profile switching and optional history charts
-
-## 🔁 Demo Workflow
-
-The demo highlights how the same hardware and engine can adapt by changing a profile.
-
-![Sarva Mitra demo workflow](assets/demo-workflow.png)
-
-1. Show the device and explain the farm-monitoring problem.
-2. Run the pond scenario and demonstrate sensor readings, a risk decision, relay action, and Telugu alert.
-3. Switch to the crop-field profile.
-4. Demonstrate dry-soil detection, irrigation action, and a Hindi advisory.
-5. Explain scalability: a new farm type can be introduced through a new profile file.
-
-## 🛠️ Planned Technology Stack
-
-| Layer | Technology / option |
-|---|---|
-| IoT | ESP32, sensor modules, relay |
-| API / backend | FastAPI (planned shared API) |
-| Data storage | Cloud database / sensor history store |
-| ML | Python, anomaly detection, short-term forecasting |
-| Forecast data | Open-Meteo (planned) |
-| AI assistant | LLM + Retrieval-Augmented Generation (RAG) |
-| Knowledge sources | Public agriculture / fisheries advisories |
-| Voice | Telugu/Hindi speech-to-text and text-to-speech services |
-| Farmer interface | Web dashboard + WhatsApp/Telegram bot concept |
-
-## 🗂️ Profile-Driven Design
-
-A farm profile is a configuration file that describes how the system should behave. Example (illustrative demo configuration):
+```http
+POST /api/process
+Content-Type: application/json
+```
 
 ```json
 {
-  "profile": "fish_pond",
-  "language_default": "te",
-  "sensors": ["temp_c", "ph", "tds", "turbidity"],
-  "limits": {
-    "temp_c": { "warn": 32, "critical": 34 },
-    "ph": { "min": 6.5, "max": 8.5 }
-  },
-  "forecast_horizon_hours": 4,
-  "actions": {
-    "on_risk": { "relay": 1, "state": "on", "label": "aerator" }
-  }
+  "location": "Vijayawada, Andhra Pradesh",
+  "crop": "tomato",
+  "question": "How can I reduce crop disease risk this week?"
 }
 ```
 
-*Thresholds above are illustrative only and must be reviewed for the target species, crop, environment, and local conditions.*
+Or supply coordinates directly:
 
-## 📈 Expected Impact
+```json
+{
+  "latitude": 16.51,
+  "longitude": 80.52,
+  "location": "Vijayawada",
+  "crop": "tomato"
+}
+```
 
-- Potentially reduce avoidable water and electricity usage through more informed irrigation decisions.
-- Provide earlier warnings to help farmers respond before conditions become severe.
-- Make farming information more accessible through Telugu and Hindi voice interactions.
-- Reduce the need for separate monitoring hardware by reusing a configurable device.
-- Support extension to additional crops and farm types through profile files.
+`target_date` is optional. It defaults to the current date in India Standard Time;
+the seven input records are the seven days immediately before it. The response
+includes `environment_history`, `ml_response`, `rag_response`, and metadata with
+the requested coordinates and the ML reference point.
 
-These are project goals and expected benefits—not measured field results yet.
+## Location/model limitation
 
-## 🚧 Project Status
+The deployed ML model has static soil features for a finite list of trained
+points. `GET /api/locations` exposes that list. Other coordinates are matched to
+the nearest trained point if they are within 250 km. Climate history is fetched
+for the requested coordinates, while static soil features come from the nearest
+trained point; the response identifies this approximation. Locations farther
+than 250 km from a trained point are rejected. The model's current training data
+is India-specific.
 
-**Prototype / hackathon build.** Sarva Mitra is a concept and development prototype. Hardware testing, model validation, sensor calibration, advisory verification, and field trials are needed before it can be relied on for real farm decisions.
+## Services and deployment
 
-## 👥 Team
+| Component | Responsibility |
+| --- | --- |
+| `backend/iot` | API orchestrator, geocoding, NASA POWER data mapping, ML/RAG calls |
+| `backend/ml_engine` | Trained risk model and `/predict` plus `/locations` endpoints |
+| `backend/rag_pipeline` | Retrieval-backed advisory API |
 
-| Member | Workstream |
-|---|---|
-| Teja | IoT, firmware, and app integration |
-| Venkat | RAG assistant and advisory knowledge flow |
-| Priyanshu | Machine Learning and decision engine |
-| Tanaka | UI/UX and API integration |
+The API orchestrator can be deployed as a Render web service with its root
+directory set to `backend/iot`. Configure `ML_API_URL` and `RAG_API_URL` in its
+environment. The ML service also needs to deploy the `/locations` endpoint from
+`backend/ml_engine/backend.py` so the orchestrator can match supported model
+points.
 
-## 🔮 Future Scope
+Example environment values are in [`backend/iot/.env.example`](backend/iot/.env.example).
+NASA POWER and Open-Meteo Geocoding are called without API keys. The optional
+`/api/sensors/*` endpoints and ESP32 firmware remain in the repository for older
+demos, but they are not part of the main request path.
 
-- Support more crops, ponds, poultry, and greenhouse profiles
-- Add real sensor datasets and field validation
-- Improve forecasting and anomaly detection as more data becomes available
-- Add history, multiple fields per account, and notification integrations
-- Expand language and voice support
-- Improve offline and simulated-data fallback modes
+## Project status
 
-## 🤝 Contributing
-
-Contributions, suggestions, and prototype improvements are welcome. Open an issue to discuss a change or submit a pull request with a clear description of what was improved.
-
-
-## 📄 License
-
-A license has not been selected yet. Add a license file before publishing this repository for open-source reuse.
-
-
----
-
-<p align="center"><b>Sarva Mitra — One device. Any farm. Any language. 🌱</b></p>
+Hackathon prototype. Data-source coverage, model location matching, risk
+calibration, and RAG advisories need validation before real farm decisions.
