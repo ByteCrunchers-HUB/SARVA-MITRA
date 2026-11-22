@@ -92,11 +92,17 @@ class RAGResponse(BaseModel):
 class ProcessRequest(BaseModel):
     """
     Input schema for the POST /api/process endpoint.
-    All fields are optional with automatic defaults from config and hardware.
+    Latitude, longitude, location, device_id, date, crop, question can be passed from UI.
+    Defaults to Vijayawada coordinates (16.51, 80.52) if omitted by UI.
     """
     device_id: Optional[str] = None
     target_date: Optional[str] = None
-    crop: str = Field(default="unknown", description="Crop type for RAG advisory context")
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Latitude from UI (defaults to Vijayawada 16.51)")
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Longitude from UI (defaults to Vijayawada 80.52)")
+    lat: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Alias for latitude")
+    lon: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Alias for longitude")
+    location: Optional[str] = Field(default=None, description="Location name from UI (defaults to Vijayawada)")
+    crop: str = Field(default="tomato", description="Crop type for RAG advisory context")
     question: str = Field(default="", description="Optional natural-language question for RAG")
     use_stub_ml: bool = False
     use_stub_rag: bool = False

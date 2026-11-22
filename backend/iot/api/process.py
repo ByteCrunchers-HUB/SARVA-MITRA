@@ -28,24 +28,40 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     """
     Main integration pipeline:
     1. Read latest ESP32 sensor telemetry from PySerial receiver.
-    2. Fetch environmental weather parameters from Open-Meteo.
-    3. Persist daily combined record in SQLite.
-    4. Compile consecutive daily history records.
-    5. Construct ML request and call ML Engine API (POST /predict).
-    6. Forward combined context + prediction to RAG Advisory API (POST /advisory).
-    7. Deliver the unified result to the frontend.
+    2. Read coordinates from UI (defaults to Vijayawada: lat=16.51, lon=80.52).
+    3. Fetch environmental weather parameters from Open-Meteo for the location.
+    4. Persist daily combined record in SQLite.
+    5. Compile consecutive daily history records.
+    6. Construct ML request and call ML Engine API (POST /predict).
+    7. Forward combined context + prediction to RAG Advisory API (POST /advisory).
+    8. Deliver the unified result to the frontend.
     """
     device_id = payload.device_id or settings.device_id
     target_date = payload.target_date or date.today().strftime("%Y-%m-%d")
 
+    # Resolve latitude & longitude: provided by UI, or default to Vijayawada
+    resolved_lat = payload.latitude if payload.latitude is not None else (
+        payload.lat if payload.lat is not None else settings.latitude
+    )
+    resolved_lon = payload.longitude if payload.longitude is not None else (
+        payload.lon if payload.lon is not None else settings.longitude
+    )
+    resolved_location = payload.location or settings.location_name
+
     if not validate_date_format(target_date):
         raise HTTPException(status_code=400, detail=f"Invalid target_date format: {target_date}. Expected YYYY-MM-DD.")
 
-    logger.info("--- Starting End-to-End Processing for Device: %s, Date: %s ---", device_id, target_date)
+    logger.info(
+        "--- Starting Processing for Device: %s, Date: %s, Location: %s (%.2f, %.2f) ---",
+        device_id, target_date, resolved_location, resolved_lat, resolved_lon
+    )
     metadata = {
         "initiated_at": datetime.now(timezone.utc).isoformat(),
         "device_id": device_id,
         "target_date": target_date,
+        "location": resolved_location,
+        "latitude": resolved_lat,
+        "longitude": resolved_lon,
         "crop": payload.crop,
         "warnings": []
     }
@@ -69,8 +85,8 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     from services.weather_service import fetch_weather
     try:
         weather_data = await fetch_weather(
-            lat=settings.latitude,
-            lon=settings.longitude,
+            lat=resolved_lat,
+            lon=resolved_lon,
             target_date=target_date
         )
     except Exception as w_err:
@@ -130,8 +146,8 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     # --------------------------------------------------------------------------
     ml_request_obj = build_ml_request(
         device_id=device_id,
-        lat=settings.latitude,
-        lon=settings.longitude,
+        lat=resolved_lat,
+        lon=resolved_lon,
         target_date=target_date,
         history_records=ml_history,
         current_reading=curr_reading
@@ -158,8 +174,8 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     rag_history = to_rag_history(ml_history)
     rag_request_obj = build_rag_request(
         device_id=device_id,
-        lat=settings.latitude,
-        lon=settings.longitude,
+        lat=resolved_lat,
+        lon=resolved_lon,
         target_date=target_date,
         sensor_data=sensor_data,
         weather_data=weather_data,
