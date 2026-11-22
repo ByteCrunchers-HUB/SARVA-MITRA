@@ -16,7 +16,9 @@ Client ── place name / coordinates ──► FastAPI orchestrator
 
 ## What happens for one request
 
-1. The client sends a location, crop, and optional question to `POST /api/process`.
+1. The UI sends a place name or both coordinates, a crop, and optional question
+   as fields in the `POST /api/process` JSON body. The backend does not silently
+   replace missing UI values with defaults.
 2. The backend geocodes a place name when coordinates were not supplied.
 3. It selects the nearest location supported by the trained ML model, within 250 km.
 4. It fetches the seven preceding daily records from NASA POWER for the requested

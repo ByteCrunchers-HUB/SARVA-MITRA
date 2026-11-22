@@ -54,7 +54,9 @@ Or send coordinates directly:
 }
 ```
 
-`POST /api/process` resolves the coordinates, fetches seven consecutive daily
+`POST /api/process` requires a place name or both coordinates and a crop from the
+UI request body; it does not substitute server-default location or crop values.
+The backend resolves the coordinates, fetches seven consecutive daily
 records from NASA POWER, converts them to the ML request schema, calls ML, then
 calls RAG. You can set `target_date` to analyze a specific date. If omitted, it
 uses the current date in India Standard Time and fetches the seven preceding days.

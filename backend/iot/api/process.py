@@ -6,7 +6,6 @@ from typing import Dict, Any
 
 from fastapi import APIRouter, HTTPException
 
-from config import settings
 from schemas.rag_schema import ProcessRequest, ProcessResponse
 from services.data_integration import build_ml_request
 from services.history_service import to_rag_history
@@ -44,9 +43,10 @@ async def process_telemetry(payload: ProcessRequest):
         requested_lon = geocoded["longitude"]
         location_name = ", ".join(part for part in (geocoded["name"], geocoded.get("admin1")) if part)
     elif requested_lat is None:
-        requested_lat = settings.latitude
-        requested_lon = settings.longitude
-        location_name = payload.location or settings.location_name
+        raise HTTPException(
+            status_code=422,
+            detail="The UI must provide a place name or both latitude and longitude.",
+        )
     else:
         location_name = payload.location or f"{float(requested_lat):.4f}, {float(requested_lon):.4f}"
 

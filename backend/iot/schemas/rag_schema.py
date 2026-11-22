@@ -5,7 +5,7 @@ Conforms to the actual deployed API contract at https://sarva-mitra-rag.onrender
 """
 
 from typing import Optional, Dict, Any, List, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, model_validator
 
 
 # ---------- RAG Advisory API Request Schemas ----------
@@ -92,20 +92,29 @@ class RAGResponse(BaseModel):
 class ProcessRequest(BaseModel):
     """
     Input schema for the POST /api/process endpoint.
-    Latitude/longitude or a place name can be passed by a software client.
-    Defaults to the configured location if none is provided.
+    A UI client must submit a place name or both coordinates, plus the selected crop.
     """
     device_id: Optional[str] = None
     target_date: Optional[str] = None
-    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Farm latitude")
-    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Farm longitude")
-    lat: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Alias for latitude")
-    lon: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Alias for longitude")
-    location: Optional[str] = Field(default=None, description="Place name to geocode; coordinates can be supplied instead")
-    crop: str = Field(default="tomato", description="Crop type for RAG advisory context")
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Farm latitude supplied by the UI")
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Farm longitude supplied by the UI")
+    lat: Optional[float] = Field(default=None, ge=-90.0, le=90.0, description="Alias for UI latitude")
+    lon: Optional[float] = Field(default=None, ge=-180.0, le=180.0, description="Alias for UI longitude")
+    location: Optional[str] = Field(default=None, description="Place name supplied by the UI; geocoded by the backend")
+    crop: str = Field(..., min_length=1, description="Crop selected in the UI")
     question: str = Field(default="", description="Optional natural-language question for RAG")
     use_stub_ml: bool = False
     use_stub_rag: bool = False
+
+    @model_validator(mode="after")
+    def require_location_input(self):
+        latitude = self.latitude if self.latitude is not None else self.lat
+        longitude = self.longitude if self.longitude is not None else self.lon
+        if (latitude is None) != (longitude is None):
+            raise ValueError("Provide both latitude and longitude, or provide a place name.")
+        if latitude is None and not (self.location and self.location.strip()):
+            raise ValueError("Provide a place name or both latitude and longitude from the UI.")
+        return self
 
 
 class ProcessResponse(BaseModel):
