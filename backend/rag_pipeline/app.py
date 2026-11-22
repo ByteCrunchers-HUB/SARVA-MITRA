@@ -12,11 +12,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 try:
-    from .config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL, RAG_USE_VECTOR_SEARCH
+    from .config import (
+        CHAT_HISTORY_LIMIT,
+        EMBEDDING_CACHE_DIR,
+        EMBEDDING_DIMENSION,
+        EMBEDDING_MODEL,
+        ML_ENGINE_URL,
+        RAG_USE_VECTOR_SEARCH,
+    )
     from .config import MONGODB_DATABASE, MONGODB_COLLECTION
     from .config import GROQ_API_KEY, mongodb_uri
 except ImportError:
-    from config import CHAT_HISTORY_LIMIT, ML_ENGINE_URL, RAG_USE_VECTOR_SEARCH
+    from config import (
+        CHAT_HISTORY_LIMIT,
+        EMBEDDING_CACHE_DIR,
+        EMBEDDING_DIMENSION,
+        EMBEDDING_MODEL,
+        ML_ENGINE_URL,
+        RAG_USE_VECTOR_SEARCH,
+    )
     from config import MONGODB_DATABASE, MONGODB_COLLECTION
     from config import GROQ_API_KEY, mongodb_uri
 
@@ -100,10 +114,19 @@ app.add_middleware(
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "chat_mode": "stateless", "ml_engine_url": ML_ENGINE_URL}
+    return {
+        "status": "ok",
+        "chat_mode": "stateless",
+        "ml_engine_url": ML_ENGINE_URL,
+        "embedding": {
+            "model": EMBEDDING_MODEL,
+            "dimension": EMBEDDING_DIMENSION,
+            "cache": EMBEDDING_CACHE_DIR,
+        },
+    }
 
 
-@app.get("/ready")
+@app.get("/ready", include_in_schema=False)
 def ready():
     return {"status": "ready", "mode": "stateless"}
 
@@ -127,6 +150,8 @@ def diagnostics():
         "groq_configured": bool(GROQ_API_KEY),
         "ml_engine_url": ML_ENGINE_URL,
         "ml_status": ml_status,
+        "embedding_model": EMBEDDING_MODEL,
+        "embedding_dimension": EMBEDDING_DIMENSION,
         "mongodb_database": MONGODB_DATABASE,
         "mongodb_collection": MONGODB_COLLECTION,
     }
@@ -195,7 +220,6 @@ def call_ml_engine(request: AdvisoryRequest) -> dict:
 
 
 @app.post("/v1/advisory")
-@app.post("/advisory")
 def advisory(request: AdvisoryRequest):
     prediction = request.ml_prediction or call_ml_engine(request)
     output = ml_output(prediction, request.ml_output)
@@ -251,7 +275,12 @@ def advisory(request: AdvisoryRequest):
     }
 
 
-@app.post("/predict-and-advice")
+@app.post("/advisory", deprecated=True)
+def advisory_alias(request: AdvisoryRequest):
+    return advisory(request)
+
+
+@app.post("/predict-and-advice", deprecated=True)
 def predict_and_advice(request: AdvisoryRequest):
     if request.ml_prediction is not None:
         return advisory(request)

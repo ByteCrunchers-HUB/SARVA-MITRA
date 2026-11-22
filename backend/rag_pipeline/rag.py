@@ -19,11 +19,13 @@ try:
         MONGODB_VECTOR_INDEX,
         mongodb_uri,
         RAG_USE_VECTOR_SEARCH,
+        EMBEDDING_DIMENSION,
     )
 except ImportError:
     from config import (
         DOCS_DIR,
         EMBEDDING_MODEL,
+        EMBEDDING_DIMENSION,
         GROQ_API_KEY,
         GROQ_MODEL,
         MONGODB_DATABASE,
@@ -40,7 +42,6 @@ except ImportError:
 
 
 _embeddings = None
-_stores = {}
 
 
 def build_query(readings: dict, ml_output: int, crop: str, location: str, question: str) -> str:
@@ -72,6 +73,35 @@ def parent_is_compatible(doc_id: str, text: str, crop: str) -> bool:
     return crop.lower() in text.lower()
 
 
+def crop_specific_parent_ids(crop: str) -> list[str]:
+    crop_name = crop.lower()
+    if "tomato" in crop_name:
+        return [
+            "tomato_field_checklist",
+            "tomato_soil_moisture_bands",
+            "tomato_nutrient_deficiencies",
+            "tomato_blight_leafspot_comparison",
+        ]
+    if "chilli" in crop_name or "chili" in crop_name:
+        return [
+            "chilli_field_checklist",
+            "chilli_soil_moisture_bands",
+            "chilli_nutrient_deficiencies",
+            "chilli_heat_stress",
+            "chilli_viral_diseases",
+            "chilli_wilt_damping_off",
+            "chilli_bacterial_leaf_spot",
+        ]
+    if "ragi" in crop_name or "finger millet" in crop_name:
+        return [
+            "ragi_field_checklist",
+            "ragi_soil_moisture_bands",
+            "ragi_blast_detailed",
+            "ragi_foliar_comparison",
+        ]
+    return []
+
+
 class RAGPipeline:
     def __init__(self, collection_name: str | None = None) -> None:
         self.collection_name = collection_name
@@ -99,6 +129,22 @@ class RAGPipeline:
             socketTimeoutMS=10000,
         ) as client:
             collection = client[MONGODB_DATABASE][self.collection_name or MONGODB_COLLECTION]
+            child = collection.find_one({
+                "corpus": "sarva-mitra-rag",
+                "kind": "child",
+            })
+            if child:
+                metadata = child.get("metadata", {})
+                indexed_model = metadata.get("embedding_model")
+                indexed_dimension = metadata.get("embedding_dimension")
+                if indexed_model and indexed_model != EMBEDDING_MODEL:
+                    raise RuntimeError(
+                        f"Indexed with {indexed_model}, but runtime uses {EMBEDDING_MODEL}. Re-run ingest --apply"
+                    )
+                if indexed_dimension and indexed_dimension != EMBEDDING_DIMENSION:
+                    raise RuntimeError(
+                        f"Indexed at {indexed_dimension} dimensions, but runtime uses {EMBEDDING_DIMENSION}. Re-run ingest --apply"
+                    )
             parent_ids: list[str] = []
             matches: list[dict] = []
 
@@ -110,6 +156,7 @@ class RAGPipeline:
                     "19_heat_stress_fruit_set_tomato",
                     "20_soil_salinity_ec_tomato",
                 ]
+                parent_ids.extend(crop_specific_parent_ids(crop))
             else:
                 try:
                     from langchain_mongodb import MongoDBAtlasVectorSearch
@@ -164,6 +211,7 @@ class RAGPipeline:
                 parent_ids.insert(0, "02_weather_thresholds_by_disease")
                 if any(key in readings for key in ("soil_moisture_pct", "soil_moisture")):
                     parent_ids.append("21_soil_moisture_effects_by_disease")
+                parent_ids.extend(crop_specific_parent_ids(crop))
                 if "ragi" in crop.lower() or "finger millet" in crop.lower():
                     parent_ids.extend(["15_ragi_blast", "16_ragi_weather_uas_bengaluru_tables"])
 

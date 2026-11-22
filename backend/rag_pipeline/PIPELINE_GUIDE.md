@@ -60,7 +60,8 @@ Endpoints:
 
 - `GET /health`
 - `POST /v1/advisory`
-- `POST /advisory`
+- `POST /advisory` (legacy compatibility alias; deprecated)
+- `POST /predict-and-advice` (demo convenience; deprecated)
 
 Example request:
 
@@ -415,6 +416,8 @@ MONGODB_DATABASE=soil-rag-db
 MONGODB_COLLECTION=soil-rag-collection
 MONGODB_VECTOR_INDEX=rag_vector_index
 RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+RAG_EMBEDDING_DIMENSION=384
+FASTEMBED_CACHE_PATH=/app/.fastembed-cache
 GROQ_MODEL=openai/gpt-oss-120b
 CHAT_HISTORY_LIMIT=12
 ```

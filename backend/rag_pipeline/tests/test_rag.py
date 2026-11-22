@@ -16,6 +16,35 @@ class SimplifiedRAGTests(unittest.TestCase):
         paths = app.openapi()["paths"]
         self.assertIn("/predict-and-advice", paths)
         self.assertIn("/v1/advisory", paths)
+        self.assertIn("/advisory", paths)
+
+    def test_legacy_advisory_endpoint_is_deprecated(self) -> None:
+        from backend.rag_pipeline.app import app
+        operation = app.openapi()["paths"]["/advisory"]["post"]
+        self.assertTrue(operation["deprecated"])
+
+    def test_embedding_model_is_exposed_by_health(self) -> None:
+        from backend.rag_pipeline.app import health
+        payload = health()
+        self.assertEqual(payload["embedding"]["dimension"], 384)
+        self.assertEqual(
+            payload["embedding"]["model"],
+            "sentence-transformers/all-MiniLM-L6-v2",
+        )
+
+    def test_new_claude_corpus_documents_exist(self) -> None:
+        docs = ROOT / "backend" / "rag_pipeline" / "docs"
+        for filename in (
+            "08_tomato_bacterial_leaf_spot.txt",
+            "tomato_blight_leafspot_comparison.txt",
+            "chilli_bacterial_leaf_spot.txt",
+            "chilli_heat_stress.txt",
+            "ragi_blast_detailed.txt",
+            "tomato_soil_moisture_bands.txt",
+            "chilli_field_checklist.txt",
+            "ragi_field_checklist.txt",
+        ):
+            self.assertTrue((docs / filename).is_file(), filename)
 
     def test_five_verified_scenarios_are_documented(self) -> None:
         guide = ROOT / "backend" / "rag_pipeline" / "PIPELINE_GUIDE.md"

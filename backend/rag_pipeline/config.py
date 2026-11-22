@@ -21,7 +21,6 @@ def mongodb_uri() -> str:
     if not username or not password:
         raise RuntimeError("MONGODB_URI or MONGODB_USERNAME/MONGODB_PASSWORD is required")
     host = os.getenv("MONGODB_HOST", "soil-rag-cluster.dzecwut.mongodb.net")
-    from urllib.parse import quote_plus
     return f"mongodb+srv://{quote_plus(username)}:{quote_plus(password)}@{host}/"
 
 
@@ -29,6 +28,8 @@ MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "soil-rag-db")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "soil-rag-collection")
 MONGODB_VECTOR_INDEX = os.getenv("MONGODB_VECTOR_INDEX", "rag_vector_index")
 EMBEDDING_MODEL = os.getenv("RAG_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+EMBEDDING_DIMENSION = int(os.getenv("RAG_EMBEDDING_DIMENSION", "384"))
+EMBEDDING_CACHE_DIR = os.getenv("FASTEMBED_CACHE_PATH", "/tmp/.fastembed-cache")
 HF_TOKEN = os.getenv("HF_TOKEN")
 if HF_TOKEN:
     os.environ["HF_TOKEN"] = HF_TOKEN

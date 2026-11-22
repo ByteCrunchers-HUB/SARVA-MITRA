@@ -11,6 +11,7 @@ from pymongo import MongoClient
 try:
     from .config import (
         DOCS_DIR,
+        EMBEDDING_DIMENSION,
         EMBEDDING_MODEL,
         MONGODB_DATABASE,
         MONGODB_COLLECTION,
@@ -19,6 +20,7 @@ try:
 except ImportError:
     from config import (
         DOCS_DIR,
+        EMBEDDING_DIMENSION,
         EMBEDDING_MODEL,
         MONGODB_DATABASE,
         MONGODB_COLLECTION,
@@ -123,13 +125,42 @@ def main() -> None:
                                  {**metadata, "kind": "child", "section": section_name}))
 
     vectors = embeddings.embed_documents([text for text, _ in children])
+    if vectors:
+        dimension = len(vectors[0])
+        if any(len(vector) != dimension for vector in vectors):
+            raise RuntimeError("Embedding vectors have inconsistent dimensions")
+        if dimension != EMBEDDING_DIMENSION:
+            raise RuntimeError(
+                f"Embedding dimension mismatch: generated {dimension}, configured {EMBEDDING_DIMENSION}"
+            )
+    indexed_at = datetime.now(timezone.utc).isoformat()
     records = [
-        {"corpus": MARKER, "kind": "parent", "text": text, "metadata": metadata}
+        {
+            "corpus": MARKER,
+            "kind": "parent",
+            "text": text,
+            "metadata": {
+                **metadata,
+                "embedding_model": EMBEDDING_MODEL,
+                "embedding_dimension": EMBEDDING_DIMENSION,
+                "indexed_at": indexed_at,
+            },
+        }
         for text, metadata in parents
     ]
     records.extend(
-        {"corpus": MARKER, "kind": "child", "text": text, "embedding": vector,
-         "metadata": metadata}
+        {
+            "corpus": MARKER,
+            "kind": "child",
+            "text": text,
+            "embedding": vector,
+            "metadata": {
+                **metadata,
+                "embedding_model": EMBEDDING_MODEL,
+                "embedding_dimension": EMBEDDING_DIMENSION,
+                "indexed_at": indexed_at,
+            },
+        }
         for (text, metadata), vector in zip(children, vectors, strict=True)
     )
 

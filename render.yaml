@@ -26,6 +26,10 @@ services:
         value: rag_vector_index
       - key: RAG_EMBEDDING_MODEL
         value: sentence-transformers/all-MiniLM-L6-v2
+      - key: RAG_EMBEDDING_DIMENSION
+        value: "384"
+      - key: FASTEMBED_CACHE_PATH
+        value: /app/.fastembed-cache
       - key: RAG_USE_VECTOR_SEARCH
         value: "true"
       - key: GROQ_MODEL
