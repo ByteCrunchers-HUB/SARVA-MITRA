@@ -1,11 +1,13 @@
 """
 Non-blocking Python Serial Receiver for ESP32 hardware communication using PySerial.
 Continuously reads JSON packets, validates them, and stores the latest readings safely.
+Supports cloud/headless environments gracefully where no local hardware COM port exists.
 """
 
 import asyncio
 import json
 import logging
+import sys
 import serial
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
@@ -22,18 +24,33 @@ class SerialReceiver:
     Ensures the FastAPI main event loop is never blocked by serial I/O.
     """
 
-    def __init__(self, port: str = "COM9", baudrate: int = 115200):
+    def __init__(self, port: str = "COM9", baudrate: int = 115200, enabled: bool = True):
         self.port = port
         self.baudrate = baudrate
+        self.enabled = enabled
         self.is_running = False
         self._task: Optional[asyncio.Task] = None
         self._latest_reading: Optional[Dict[str, Any]] = None
         self._lock = asyncio.Lock()
         self._connected = False
         self._last_error: Optional[str] = None
+        self._missing_port_logged = False
 
     async def start(self):
-        """Starts the background reading loop."""
+        """Starts the background reading loop if enabled."""
+        if not self.enabled or self.port.lower() in ("none", "disabled", "false", ""):
+            logger.info("Serial receiver is disabled (cloud/server mode). Accepting readings via HTTP API.")
+            return
+
+        # Check for Windows COM port on Linux/cloud host
+        if sys.platform != "win32" and self.port.upper().startswith("COM"):
+            logger.info(
+                "Detected cloud/Linux host with Windows port name '%s'. "
+                "Serial port disabled in cloud environment. Telemetry can be submitted via POST /api/sensors/data.",
+                self.port
+            )
+            return
+
         if self.is_running:
             logger.warning("Serial receiver already active.")
             return
@@ -64,23 +81,28 @@ class SerialReceiver:
         """Returns True if the serial connection is currently open and communicating."""
         return self._connected
 
-    async def set_reading_for_testing(self, reading: Dict[str, Any]):
-        """Helper to inject simulated readings during testing or when hardware is not plugged in."""
+    async def update_reading(self, reading: Dict[str, Any]):
+        """Sets or updates the latest reading (used by HTTP ingest, forwarder, or testing)."""
         async with self._lock:
             self._latest_reading = reading
+
+    async def set_reading_for_testing(self, reading: Dict[str, Any]):
+        """Helper alias for updating readings."""
+        await self.update_reading(reading)
 
     async def _read_loop(self):
         """
         Continuous non-blocking serial reading loop.
-        Catches disconnection and auto-retries every 5 seconds.
+        Catches disconnection and auto-retries. Backs off cleanly if port does not exist on host.
         """
         loop = asyncio.get_running_loop()
 
         while self.is_running:
             ser = None
             try:
-                logger.info("Attempting to connect to ESP32 on port %s...", self.port)
-                # Open serial port in an executor thread to avoid blocking event loop
+                if not self._missing_port_logged:
+                    logger.info("Attempting to connect to ESP32 on port %s...", self.port)
+
                 ser = await loop.run_in_executor(
                     None,
                     lambda: serial.Serial(
@@ -91,11 +113,11 @@ class SerialReceiver:
                 )
                 self._connected = True
                 self._last_error = None
+                self._missing_port_logged = False
                 logger.info("Connected to ESP32 on %s successfully.", self.port)
 
                 # Reading loop
                 while self.is_running:
-                    # Read line in thread executor
                     raw_line = await loop.run_in_executor(None, ser.readline)
                     if not raw_line:
                         await asyncio.sleep(0.05)
@@ -107,11 +129,6 @@ class SerialReceiver:
                             continue
 
                         data = json.loads(line_str)
-
-                        # ESP32 reports sensor faults as JSON with an "error" key
-                        if "error" in data:
-                            logger.warning("ESP32 reported a sensor fault: %s", data.get("error"))
-                            continue
 
                         # Validate with Pydantic model
                         parsed = ESP32SensorReading(**data)
@@ -146,18 +163,25 @@ class SerialReceiver:
                     except Exception as err:
                         logger.error("Unexpected error processing serial line: %s", err)
 
-            except serial.SerialException as se:
+            except (serial.SerialException, FileNotFoundError, OSError) as se:
                 self._connected = False
-                msg = str(se)
-                if msg != self._last_error:
-                    logger.warning(
-                        "Serial port %s unavailable: %s. Will keep retrying every 5s "
-                        "(close Serial Monitor / check COM port).", self.port, msg
-                    )
-                    self._last_error = msg
+                err_str = str(se)
+
+                # Check if port doesn't exist on this machine (e.g. running on Linux cloud without USB)
+                if "No such file or directory" in err_str or "could not open port" in err_str:
+                    if not self._missing_port_logged:
+                        logger.warning(
+                            "Serial port %s is not available on this host: %s. "
+                            "If running in cloud (Render), this is normal — send telemetry via POST /api/sensors/data.",
+                            self.port, err_str
+                        )
+                        self._missing_port_logged = True
+                    # Back off to avoid spamming the log
+                    await asyncio.sleep(30)
                 else:
-                    logger.debug("Serial still unavailable on %s", self.port)
-                await asyncio.sleep(5)
+                    logger.warning("Serial connection error on %s: %s. Retrying in 5 seconds...", self.port, se)
+                    await asyncio.sleep(5)
+
             except asyncio.CancelledError:
                 break
             except Exception as e:

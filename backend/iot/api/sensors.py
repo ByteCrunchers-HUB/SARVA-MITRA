@@ -1,7 +1,9 @@
 """
 Sensor telemetry endpoints for reading live ESP32 hardware values.
+Supports both USB Serial ingestion and HTTP POST ingestion for cloud deployments.
 """
 
+from datetime import datetime, timezone
 from fastapi import APIRouter, Request, HTTPException
 from config import settings
 from schemas.sensor_schema import ESP32SensorReading
@@ -14,7 +16,7 @@ router = APIRouter(prefix="/sensors", tags=["Sensors"])
 async def get_latest_sensors(request: Request):
     """
     Returns the most recent air temperature, air humidity, and soil moisture
-    readings captured over USB Serial from the ESP32.
+    readings captured over USB Serial or HTTP ingestion from the ESP32.
     """
     receiver = getattr(request.app.state, "serial_receiver", None)
     if not receiver:
@@ -25,8 +27,8 @@ async def get_latest_sensors(request: Request):
         raise HTTPException(
             status_code=503,
             detail=(
-                f"No sensor readings currently available on port {settings.serial_port}. "
-                "Ensure ESP32 is powered, transmitting JSON, and connected."
+                f"No sensor readings currently cached. "
+                "Ensure ESP32 is transmitting over Serial or sending telemetry via POST /api/sensors/data."
             )
         )
 
@@ -34,6 +36,36 @@ async def get_latest_sensors(request: Request):
         "status": "success",
         "data": reading,
         "is_serial_connected": receiver.is_connected()
+    }
+
+
+@router.post("/data", summary="Ingest live sensor telemetry via HTTP (for ESP32 WiFi or serial forwarder)")
+async def ingest_sensor_data(reading: ESP32SensorReading, request: Request):
+    """
+    HTTP Ingestion Endpoint:
+    Allows an ESP32 connected to WiFi or a local serial forwarder running on a laptop
+    to push live sensor telemetry directly to the cloud backend (Render).
+    """
+    valid, errors = validate_sensor_ranges(reading.temperature, reading.humidity, reading.soil_moisture)
+    if not valid:
+        raise HTTPException(status_code=400, detail=f"Validation failed: {errors}")
+
+    reading_dict = {
+        "device_id": reading.device_id,
+        "temperature": reading.temperature,
+        "humidity": reading.humidity,
+        "soil_moisture": reading.soil_moisture,
+        "timestamp": reading.timestamp or datetime.now(timezone.utc).isoformat()
+    }
+
+    receiver = getattr(request.app.state, "serial_receiver", None)
+    if receiver:
+        await receiver.update_reading(reading_dict)
+
+    return {
+        "status": "success",
+        "message": "Telemetry received and cached",
+        "data": reading_dict
     }
 
 
@@ -47,6 +79,7 @@ async def get_serial_status(request: Request):
     latest = await receiver.get_latest_reading() if receiver else None
 
     return {
+        "serial_enabled": settings.enable_serial,
         "serial_port": settings.serial_port,
         "baudrate": settings.serial_baudrate,
         "connected": is_connected,

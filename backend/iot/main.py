@@ -41,10 +41,11 @@ async def lifespan(app: FastAPI):
     # 1. Initialize SQLite Database
     await init_db()
 
-    # 2. Initialize and Start ESP32 Serial Receiver
+    # 2. Initialize and Start ESP32 Serial Receiver (handles cloud/local mode)
     serial_receiver = SerialReceiver(
         port=settings.serial_port,
-        baudrate=settings.serial_baudrate
+        baudrate=settings.serial_baudrate,
+        enabled=settings.enable_serial
     )
     app.state.serial_receiver = serial_receiver
     await serial_receiver.start()
@@ -70,7 +71,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Enable CORS for frontend client applications
+# Enable CORS for Frontend UI integration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -79,12 +80,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount API Routers under /api
+# Register Subsystem Routers
 app.include_router(health_router, prefix="/api")
 app.include_router(sensors_router, prefix="/api")
 app.include_router(weather_router, prefix="/api")
 app.include_router(history_router, prefix="/api")
 app.include_router(process_router, prefix="/api")
+
+
+@app.get("/", summary="Root Health Check & Welcome")
+async def root():
+    """Root route returning service identity and health."""
+    return {
+        "status": "online",
+        "service": "Sarva Mitra Smart Agriculture IoT Backend",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/api/health"
+    }
 
 
 if __name__ == "__main__":

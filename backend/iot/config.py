@@ -7,11 +7,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # Serial Port Settings
+    # Hardware Serial Port Settings (ESP32)
+    # Set ENABLE_SERIAL=false or SERIAL_PORT=disabled when deployed to cloud (e.g., Render)
+    enable_serial: bool = True
     serial_port: str = "COM9"
     serial_baudrate: int = 115200
 
-    # Geographic Location
+    # Geographic Location (Defaults to Vijayawada trained point)
     latitude: float = 16.51
     longitude: float = 80.52
     location_name: str = "Vijayawada"
