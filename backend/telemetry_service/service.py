@@ -289,9 +289,12 @@ class TelemetryService:
                 {
                     "date": row["date"],
                     "soil_moisture_pct": row["soil_moisture_pct"],
+                    "air_temperature_c": row.get("air_temperature_c", 25.0),
+                    "humidity_pct": row.get("humidity_pct", 65.0),
                     "sunlight_wm2": row["sunlight_wm2"],
                     "rainfall_mm": row["rainfall_mm"],
                     "leaf_wet_days": row["leaf_wet_days"],
+
                 }
                 for row in history
             ],
@@ -344,9 +347,12 @@ class TelemetryService:
                 {
                     "date": row["date"],
                     "soil_moisture_pct": row["soil_moisture_pct"],
+                    "air_temperature_c": row.get("air_temperature_c", 25.0),
+                    "humidity_pct": row.get("humidity_pct", 65.0),
                     "sunlight_wm2": row["sunlight_wm2"],
                     "rainfall_mm": row["rainfall_mm"],
                     "leaf_wet_days": row["leaf_wet_days"],
+
                 }
                 for row in history
             ],

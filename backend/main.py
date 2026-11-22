@@ -38,6 +38,9 @@ from backend.rag_pipeline.config import (
     MONGODB_COLLECTION,
     MONGODB_VECTOR_INDEX,
     mongodb_uri,
+    OLLAMA_API_KEY,
+    OLLAMA_MODEL,
+    LLM_PROVIDER,
 )
 from backend.rag_pipeline.rag import RAGPipeline
 from backend.rag_pipeline.app import AdvisoryRequest, CurrentSensorData, WeatherData, ml_output as parse_ml_output
@@ -189,6 +192,9 @@ def system_health(request: Request):
 
     rag_status = {
         "mongodb_configured": mongo_ok,
+        "llm_provider": LLM_PROVIDER,
+        "ollama_configured": bool(OLLAMA_API_KEY),
+        "ollama_model": OLLAMA_MODEL,
         "groq_configured": len(GROQ_API_KEYS) > 0,
         "groq_keys_count": len(GROQ_API_KEYS),
         "groq_model": GROQ_MODEL,

@@ -34,8 +34,34 @@ from pydantic import BaseModel, Field, field_validator
 
 SCHEMA_VERSION = "1.0"
 IST = timezone(timedelta(hours=5, minutes=30))
-MODEL_PATH = Path(os.getenv("SARVA_MODEL_PATH", "models/sarva_mitra_risk_model.joblib"))
-STATIC_PATH = Path(os.getenv("SARVA_STATIC_PATH", "models/static_features.csv"))
+
+_ML_DIR = Path(__file__).resolve().parent
+_DEFAULT_MODEL_PATH = _ML_DIR / "models" / "sarva_mitra_risk_model.joblib"
+_DEFAULT_STATIC_PATH = _ML_DIR / "models" / "static_features.csv"
+
+def get_model_path() -> Path:
+    env = os.getenv("SARVA_MODEL_PATH")
+    if env and Path(env).exists():
+        return Path(env)
+    if Path("models/sarva_mitra_risk_model.joblib").exists():
+        return Path("models/sarva_mitra_risk_model.joblib")
+    if Path("backend/ml_engine/models/sarva_mitra_risk_model.joblib").exists():
+        return Path("backend/ml_engine/models/sarva_mitra_risk_model.joblib")
+    return _DEFAULT_MODEL_PATH
+
+def get_static_path() -> Path:
+    env = os.getenv("SARVA_STATIC_PATH")
+    if env and Path(env).exists():
+        return Path(env)
+    if Path("models/static_features.csv").exists():
+        return Path("models/static_features.csv")
+    if Path("backend/ml_engine/models/static_features.csv").exists():
+        return Path("backend/ml_engine/models/static_features.csv")
+    return _DEFAULT_STATIC_PATH
+
+MODEL_PATH = get_model_path()
+STATIC_PATH = get_static_path()
+
 
 # Inputs measured each day (from the 15-column record, or the sensors)
 DYNAMIC = ["soil_moisture_pct", "air_temperature_c", "humidity_pct", "sunlight_wm2", "rainfall_mm"]
@@ -164,14 +190,14 @@ def error_body(code: str, message: str, details=None) -> dict:
 # ---------- loading ----------
 
 def load_bundle() -> dict:
-    bundle = joblib.load(MODEL_PATH)
+    bundle = joblib.load(get_model_path())
     if list(bundle["features"]) != FEATURES:
         raise RuntimeError("model features do not match backend.FEATURES; retrain the model")
     return bundle
 
 
 def load_static() -> dict:
-    df = pd.read_csv(STATIC_PATH)
+    df = pd.read_csv(get_static_path())
     return {(round(r["lat"], 2), round(r["lon"], 2)): r for r in df.to_dict("records")}
 
 
@@ -181,9 +207,11 @@ def merge_inputs(req: PredictRequest, static: dict, today: Day):
     """Returns (combined DataFrame of prior days + sensed day, warnings)."""
     key = (round(req.lat, 2), round(req.lon, 2))
     if key not in static:
-        raise HistoryError("unknown_location", f"no trained point at lat={req.lat}, lon={req.lon}", 404)
+        # Gracefully snap custom coordinates to nearest trained soil point
+        key = min(static.keys(), key=lambda pt: (pt[0] - req.lat) ** 2 + (pt[1] - req.lon) ** 2)
     table = static[key]
     warnings = []
+
 
     rows = []
     for r in req.history:
@@ -223,7 +251,13 @@ def merge_inputs(req: PredictRequest, static: dict, today: Day):
     return hist, target, key, table, warnings
 
 
-def run_prediction(req: PredictRequest, bundle: dict, static: dict, today: Day) -> dict:
+def run_prediction(req: PredictRequest, bundle: dict | None = None, static: dict | None = None, today: Day | None = None) -> dict:
+    if bundle is None:
+        bundle = load_bundle()
+    if static is None:
+        static = load_static()
+    if today is None:
+        today = datetime.now(IST).date()
     hist, target, key, table, warnings = merge_inputs(req, static, today)
 
     target_row = {"date": target, "lat": key[0], "lon": key[1], **{c: table[c] for c in RECORD_STATIC},
@@ -251,10 +285,12 @@ def run_prediction(req: PredictRequest, bundle: dict, static: dict, today: Day) 
         "prediction": {
             "risk_pct": round(pred, 2),
             "risk_label": risk_label(pred),
+            "risk_level": risk_label(pred),
             "risk_bands": {"low_max": RISK_LOW_MAX, "moderate_max": RISK_MODERATE_MAX},
             "index_type": INDEX_TYPE,
             "validated": False,
         },
+
         "model": {"name": bundle["selected_model"], "trained_through": bundle["trained_through"]},
         "inputs": [{
             "date": r.date.date().isoformat(),
