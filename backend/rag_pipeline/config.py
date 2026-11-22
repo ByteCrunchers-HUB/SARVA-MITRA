@@ -38,3 +38,13 @@ GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 ML_ENGINE_URL = os.getenv("ML_ENGINE_URL", "https://sarvamitra.onrender.com").rstrip("/")
 CHAT_HISTORY_LIMIT = int(os.getenv("CHAT_HISTORY_LIMIT", "12"))
 RAG_USE_VECTOR_SEARCH = os.getenv("RAG_USE_VECTOR_SEARCH", "true").lower() in {"1", "true", "yes"}
+
+GROQ_API_KEYS = [
+    value.strip()
+    for value in (
+        GROQ_API_KEY,
+        os.getenv("GROQ_API_KEY_2"),
+        os.getenv("GROQ_API_KEY_3"),
+    )
+    if value and value.strip() and "replace_with_" not in value
+]

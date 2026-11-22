@@ -1,6 +1,6 @@
 # ML and RAG Sample Records Tested
 
-**Tested:** 2026-11-22  
+**Tested:** 2026-11-22
 **Environment:** Local ML engine and local RAG API  
 **Result:** PASS - 5 of 5 ML predictions and 5 of 5 RAG advisories succeeded
 
@@ -80,6 +80,32 @@ Each RAG request used this structure:
 - Retrieved documents: `22_healthy_state_betterments`, `24_field_hygiene`, `21_soil_moisture_effects_by_disease`, `19_heat_stress_fruit_set_tomato`, tomato field and irrigation documents.
 
 **Verdict:** PASS
+
+## Groq key rotation
+
+The RAG service supports three keys configured in `.env`:
+
+- `GROQ_API_KEY`
+- `GROQ_API_KEY_2`
+- `GROQ_API_KEY_3`
+
+Keys are selected round-robin for each LLM invocation. If an invocation fails with a Groq API error, the service tries the remaining configured keys once each before returning a 503 advisory-service error.
+
+## Six-request live Groq load check
+
+**Tested:** 2026-11-22
+**Method:** Six sequential real `/advisory` requests, each using a Groq LLM invocation.
+
+| Request | Device | RAG mode | HTTP status | Answer generated |
+|---:|---|---|---:|---|
+| 1 | LOAD_TEST_1 | healthy | 200 | Yes |
+| 2 | LOAD_TEST_2 | abnormality | 200 | Yes |
+| 3 | LOAD_TEST_3 | abnormality | 200 | Yes |
+| 4 | LOAD_TEST_4 | healthy | 200 | Yes |
+| 5 | LOAD_TEST_5 | abnormality | 200 | Yes |
+| 6 | LOAD_TEST_6 | abnormality | 200 | Yes |
+
+**Result:** PASS - 6 of 6 live requests returned HTTP 200. No Groq rate-limit error was observed across the check.
 
 ## 2. Moderate-risk wet chilli
 

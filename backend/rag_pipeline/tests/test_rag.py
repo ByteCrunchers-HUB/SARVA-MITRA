@@ -131,6 +131,32 @@ class SimplifiedRAGTests(unittest.TestCase):
             1,
         )
 
+    def test_groq_keys_rotate_in_round_robin_order(self) -> None:
+        from backend.rag_pipeline import config
+        with patch.dict(
+            "os.environ",
+            {
+                "GROQ_API_KEY": "key-a",
+                "GROQ_API_KEY_2": "key-b",
+                "GROQ_API_KEY_3": "key-c",
+            },
+        ):
+            original_keys = config.GROQ_API_KEYS
+            config.GROQ_API_KEYS = ["key-a", "key-b", "key-c"]
+            try:
+                import backend.rag_pipeline.rag as rag
+                rag.GROQ_API_KEYS = ["key-a", "key-b", "key-c"]
+                original_index = rag._groq_key_index
+                rag._groq_key_index = 0
+                keys = [rag.next_groq_api_key() for _ in range(6)]
+            finally:
+                config.GROQ_API_KEYS = original_keys
+                if "rag" in locals():
+                    rag.GROQ_API_KEYS = original_keys
+                    rag._groq_key_index = original_index
+
+        self.assertEqual(keys, ["key-a", "key-b", "key-c", "key-a", "key-b", "key-c"])
+
     def test_backend_ml_envelope_is_accepted(self) -> None:
         payload = {
             "device_id": "ESP32_01",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 
 from langchain_core.documents import Document
 from pymongo import MongoClient
@@ -17,6 +18,7 @@ try:
         MONGODB_DATABASE,
         MONGODB_COLLECTION,
         MONGODB_VECTOR_INDEX,
+        GROQ_API_KEYS,
         mongodb_uri,
         RAG_USE_VECTOR_SEARCH,
         EMBEDDING_DIMENSION,
@@ -31,6 +33,7 @@ except ImportError:
         MONGODB_DATABASE,
         MONGODB_COLLECTION,
         MONGODB_VECTOR_INDEX,
+        GROQ_API_KEYS,
         mongodb_uri,
         RAG_USE_VECTOR_SEARCH,
     )
@@ -42,6 +45,18 @@ except ImportError:
 
 
 _embeddings = None
+_groq_key_lock = threading.Lock()
+_groq_key_index = 0
+
+
+def next_groq_api_key() -> str:
+    global _groq_key_index
+    if not GROQ_API_KEYS:
+        raise RuntimeError("Set GROQ_API_KEY in the root .env")
+    with _groq_key_lock:
+        key = GROQ_API_KEYS[_groq_key_index % len(GROQ_API_KEYS)]
+        _groq_key_index = (_groq_key_index + 1) % len(GROQ_API_KEYS)
+        return key
 
 
 def build_query(readings: dict, ml_output: int, crop: str, location: str, question: str) -> str:
@@ -147,10 +162,8 @@ class RAGPipeline:
             if _embeddings is None:
                 _embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
             self.embeddings = _embeddings
-        if not GROQ_API_KEY or "replace_with_" in GROQ_API_KEY:
+        if not GROQ_API_KEYS:
             raise RuntimeError("Set GROQ_API_KEY in the root .env")
-        from langchain_groq import ChatGroq
-        self.llm = ChatGroq(api_key=GROQ_API_KEY, model=GROQ_MODEL, temperature=0)
         self.master_prompt = (DOCS_DIR / "23_master_prompt.txt").read_text(encoding="utf-8")
 
     def retrieve(self, readings: dict, ml_output: int, crop: str, location: str, question: str) -> list[Document]:
@@ -358,13 +371,25 @@ class RAGPipeline:
             "possible_conditions, watch_list, recommendations, uncertainty, "
             "next_step, documents_used."
         )
-        try:
-            content = str(self.llm.invoke([
-                SystemMessage(content=self.master_prompt),
-                HumanMessage(content=human),
-            ]).content)
-        except APIError as exc:
-            raise RuntimeError(f"Groq request failed: {exc}") from exc
+        last_error: APIError | None = None
+        content = ""
+        from langchain_groq import ChatGroq
+        for _ in range(len(GROQ_API_KEYS)):
+            try:
+                llm = ChatGroq(
+                    api_key=next_groq_api_key(),
+                    model=GROQ_MODEL,
+                    temperature=0,
+                )
+                content = str(llm.invoke([
+                    SystemMessage(content=self.master_prompt),
+                    HumanMessage(content=human),
+                ]).content)
+                break
+            except APIError as exc:
+                last_error = exc
+        if not content:
+            raise RuntimeError(f"Groq request failed: {last_error}") from last_error
         match = re.search(
             r"BEGIN_STRUCTURED_JSON\s*(\{[\s\S]*\})\s*END_STRUCTURED_JSON",
             content,
