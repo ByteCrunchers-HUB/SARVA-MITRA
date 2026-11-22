@@ -1,0 +1,64 @@
+DOC_ID: ragi_soil_moisture_bands
+TITLE: Ragi (finger millet) soil moisture - field-relevant bands and crop-stage guidance
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document summarizes field-relevant soil moisture information for ragi. It does NOT provide a universal soil_moisture_pct threshold. Ragi is predominantly rainfed (kharif); irrigation is rare. The sensor column soil_moisture_pct uses different units than research sources (per cent available soil moisture - PASM, % field capacity, kPa tension). Always confirm units before comparing.
+
+CORPUS RULE: No universal soil moisture target exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+FIELD-RELEVANT CONTEXT FROM SOURCES
+
+- (OBS, IN, Karnataka) UAS GKVK Bengaluru long-term study (2014-19) on finger millet: per cent available soil moisture (PASM) and yield. At 58% PASM, yield was ~50% of normal; at 40% PASM, yield was ~25% of normal [S1]. This is the most Karnataka-relevant soil moisture finding for ragi in this corpus.
+- (OBS, IN) Finger millet is about 90% kharif rainfed; prefers loamy to sandy soil with good drainage [S2].
+- (OBS, IN) Karnataka has the largest ragi area, with significant production in Bengaluru, Kolar, Tumakuru, Chitradurga, Hassan districts [S3].
+- (OBS, IN) ICAR-IIMR: seedling diseases (root rot, damping-off) appear at seedling stage; blast is the major disease [S4].
+- (OBS, IN) Rainfall variability impact study (Karnataka): finger millet showed moisture stress in deficit years (2016, 2018) across Karnataka [S5].
+- UNAVAILABLE: No Karnataka study directly measuring soil_moisture_pct sensor units for ragi was found. The UAS GKVK study used PASM (per cent available soil moisture), which is not the same as the sensor unit.
+
+CROP STAGE GUIDANCE (rainfed kharif context)
+
+Sowing to establishment (July - early August):
+- Sowing window depends on monsoon onset; UAS Bengaluru tables define sowing windows [S6][S7].
+- Adequate soil moisture at sowing is critical for germination [S2].
+- Seedling damping-off (11) favoured by cool, wet, poorly drained soil [S8].
+
+Vegetative / tillering (August - September):
+- Rainfed; soil moisture depends on monsoon.
+- Blast (15, ragi_blast_detailed) favoured by high humidity, cloudy, 25-28°C - not directly soil moisture but canopy humidity [S9].
+
+Flowering to grain filling (September - October):
+- CRITICAL PERIOD for yield. Moisture stress at this stage severely reduces grain fill [S1][S5].
+- Neck blast and finger blast (ragi_blast_detailed) occur during this period; favoured by high humidity/cloudy weather [S9].
+
+Maturity to harvest (October - November):
+- Dry weather needed for harvest.
+- High soil moisture/humidity at maturity can cause grain mold (17_ragi_other) [S2].
+
+SENSOR READING INTERPRETATION HINTS
+
+- LOW soil_moisture_pct sustained during flowering/grain fill (Sept-Oct) → moisture stress, yield loss likely (UAS GKVK: 40% PASM = 25% yield) [S1].
+- HIGH soil_moisture_pct + high humidity_pct + cloudy (low sunlight_wm2) during flowering → conditions favour blast (ragi_blast_detailed, 15) [S9].
+- VERY HIGH soil_moisture_pct + poor drainage reported at seedling stage → conditions favour damping-off/root rot (11, 17_ragi_other) [S8].
+- SWINGING soil_moisture_pct (dry-wet cycles) during grain fill → may affect grain quality, but no specific ragi study in corpus.
+- CORPUS RULE: These are conditions that favour problems. They do not confirm any disease or disorder. Field inspection is required.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No soil_moisture_pct sensor bands for ragi. The UAS GKVK PASM values (40%, 58%) are the closest but use different units.
+- The UAS GKVK study is the only Karnataka soil moisture study for ragi in this corpus.
+- Ragi is predominantly rainfed; irrigation-based soil moisture management is not typical.
+
+SOURCE GEOGRAPHY
+[S1] UAS GKVK Bengaluru, Karnataka (long-term study 2014-19); [S2] ICAR Indian Farming (Oct 2025); [S3] UAS Bengaluru, Mysore Journal of Agricultural Sciences; [S4] ICAR-IIMR; [S5] Meteorological Applications (Wiley) - rainfall variability Karnataka; [S6] UAS Bengaluru Zone 6 Mysore tables; [S7] UAS Bengaluru Zone 5 Bengaluru tables; [S8] 11_damping_off_seedlings; [S9] 15_ragi_blast, ragi_blast_detailed.
+
+REFERENCES
+[S1] Indian Journal of Agricultural Sciences, Soil moisture induced yield variability in major crops of Karnataka, https://epubs.icar.org.in/index.php/IJAgS/article/view/104382
+[S2] ICAR Indian Farming (Oct 2025), finger millet overview, https://epubs.icar.org.in/index.php/IndFarm/article/download/174434/64149/505234
+[S3] UAS Bengaluru, Mysore Journal of Agricultural Sciences 59(2), 2025, https://www.uasbangalore.edu.in/wp-content/uploads/2025/06/37.pdf
+[S4] ICAR-IIMR, Disease management for improved millet production (Jan 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132580/49107/348434
+[S5] Meteorological Applications, Impact of rainfall variability on major crops using DRIP: Karnataka case study, https://rmets.onlinelibrary.wiley.com/doi/10.1002/met.70032
+[S6] UAS Bengaluru, Zone 6 (Mysore) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
+[S7] UAS Bengaluru, Zone 5 (Bangalore district) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-5-(bangalore -disrtict)- ragi.pdf
+[S8] 11_damping_off_seedlings
+[S9] 15_ragi_blast, ragi_blast_detailed

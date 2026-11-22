@@ -8,40 +8,73 @@ PURPOSE
 - CORPUS RULE: This is a lookup index. Each line repeats a statement from a disease file named in brackets, with its own source tag [S#] listed in this document's REFERENCES. Use the disease file for detail. Every value shows conditions that favour a problem. No value here confirms a disease.
 
 ORIGIN SUMMARY
-- CORPUS NOTE: Karnataka/UAS Bengaluru values are present only for ragi (see 16_ragi_weather_uas_bengaluru_tables, uncertain alignment). India values (TNAU, NIPHM, ICAR) cover chilli and some tomato and ragi items; TNAU is a Tamil Nadu body. All other values are international research from the USA, Canada, Australia, France and elsewhere. Ragi blast temperature and cloud conditions come from course (secondary) material.
+- CORPUS NOTE: Karnataka/UAS Bengaluru values are present only for ragi (see 16_ragi_weather_uas_bengaluru_tables, uncertain alignment). India values (TNAU, NIPHM, ICAR, UAS GKVK, UHS Bagalkote) cover chilli, some tomato, and ragi; TNAU is a Tamil Nadu body. All other values are international research from the USA, Canada, Australia, France and elsewhere. Ragi blast temperature and cloud conditions come from course (secondary) material.
 
 LEAF WETNESS AND HUMIDITY
+
+Tomato diseases:
 - Late blight, tomato (03): 10-12 hours of leaf wetness at 15-21°C favours spore formation [S3]. Cool 10-21°C with humidity above 80% and dew or fog [S1]. A potato/tomato risk model counts 10 hours of leaf wetness or humidity above 90% at temperature above 10°C [S2]. (FAV, INTL)
 - Early blight, tomato (04): alternating wet and dry periods; spores form between about 5 and 30°C [S4]. Disease develops at 15-27°C with humidity of 90% or more or heavy dew [S5]. (FAV, INTL)
 - Septoria leaf spot, tomato (05): high humidity, 20-25°C, dew or wet leaves, poor airflow [S6]. (FAV, INTL)
-- Powdery mildew, tomato and chilli (06): high humidity with about 16-25°C; free water on leaves is not needed and harms spores [S7]. For chilli, cool dry weather favours spore germination and high humidity favours development [S8]. (FAV, INTL and IN)
-- Gray mold, tomato and chilli (07): humidity above 80% at 15.5-24°C [S9]; needs high humidity, not leaf wetness [S10]. For chilli, a dense canopy gives long night leaf wetness [S11]. (FAV, INTL and IN)
-- Bacterial leaf spot, tomato and chilli (08): moist weather, splashing rain, high humidity or persistent dew; no temperature threshold available [S12]. (FAV, IN)
-- Chilli anthracnose (13): about 28°C with humidity of 95% [S13]; humidity above 97% in another Indian source [S14]. (FAV, IN)
-- Ragi blast (15): humidity above 90%, cloudy skies, frequent rain or drizzle, 25-28°C for spore germination [S15]. Secondary course material. (FAV, SEC)
-- Ragi blast, UAS Bengaluru tables (16): morning humidity 90-94% and more than 3 cloudy days in the Zone 6 (Mysore) tables [S16]. Alignment is uncertain. (FAV, KA, WEAK)
+- Powdery mildew, tomato (06): high humidity with about 16-25°C; free water on leaves is not needed and harms spores [S7]. (FAV, INTL)
+- Gray mold, tomato (07): humidity above 80% at 15.5-24°C [S9]; needs high humidity, not leaf wetness [S10]. (FAV, INTL)
+- Bacterial leaf spot, tomato (08): moist weather, splashing rain, high humidity or persistent dew; no temperature threshold available [S12]. Optimum 24-30°C with humidity above 85% [S41]. (FAV, IN)
+- Tomato leaf curl virus (12): no reliable sensor threshold [S13]. (UNAVAILABLE)
+
+Chilli diseases:
+- Powdery mildew, chilli (06): cool dry weather favours spore germination; high humidity favours development [S8]. (FAV, IN)
+- Gray mold, chilli (07): dense canopy gives long night leaf wetness [S11]. (FAV, IN)
+- Bacterial leaf spot, chilli (chilli_bacterial_leaf_spot): moderate temperature, high humidity, intermittent rain; optimum 25-30°C with humidity above 85% [S42]. Seed-borne primary. (FAV, IN)
+- Chilli anthracnose (13): about 28°C with humidity of 95% [S14]; humidity above 97% in another Indian source [S15]. Frequent rain as fruit ripens [S14]. (FAV, IN)
+- Chilli wilt/damping-off (chilli_wilt_damping_off): Phytophthora/Pythium - high soil moisture with 25-30°C; Rhizoctonia - high soil moisture with 30-35°C [S43]. (FAV, IN)
+- Chilli viral diseases (chilli_viral_diseases): no reliable sensor threshold [S44]. (UNAVAILABLE)
+- Chilli heat stress (chilli_heat_stress): day >32°C and/or night >24°C reduces fruit set; low humidity <50% compounds it [S45]. (PHYS, INTL/IN)
+
+Ragi diseases:
+- Ragi blast (15, ragi_blast_detailed): humidity above 90%, cloudy skies, frequent rain or drizzle, 25-28°C for spore germination [S16]. (FAV, SEC)
+- Ragi blast, UAS Bengaluru tables (16): morning humidity 90-94% and more than 3 cloudy days in the Zone 6 (Mysore) tables [S17]. Alignment is uncertain. (FAV, KA, WEAK)
+- Ragi rust (17, ragi_foliar_comparison): no sensor threshold available in this corpus. (UNAVAILABLE)
+- Ragi leaf spot Cercospora/Helminthosporium (17, ragi_foliar_comparison): no sensor threshold available in this corpus. (UNAVAILABLE)
 
 SOIL CONDITIONS
-- Bacterial wilt (09): high soil moisture with about 29-35°C [S17]. (FAV, INTL)
-- Fusarium wilt of tomato (10): about 28°C, low soil moisture, light sandy acidic soil [S18]. (FAV, IN)
-- Damping-off (11): Pythium and Phytophthora in cool, wet, poorly drained soil; Fusarium and Rhizoctonia more common in warm, dry conditions [S19]. For chilli, high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia) [S14]. (FAV, INTL and IN)
-- Blossom-end rot, tomato (18, physiological disorder): dry or fluctuating soil moisture, heat and high salinity are listed factors [S20]. Ontario states it is primarily caused by dry soil [S21]. (PHYS, INTL)
-- Salt stress, tomato (20, physiological): the yield threshold is 2.5 dS/m (ECe) [S22]. (PHYS, INTL)
+
+Tomato:
+- Bacterial wilt (09): high soil moisture with about 29-35°C [S18]. (FAV, INTL)
+- Fusarium wilt of tomato (10): about 28°C, low soil moisture, light sandy acidic soil [S19]. (FAV, IN)
+- Damping-off (11): Pythium/Phytophthora in cool, wet, poorly drained soil; Fusarium/Rhizoctonia more common in warm, dry conditions [S20]. (FAV, INTL)
+- Blossom-end rot, tomato (18, physiological): dry or fluctuating soil moisture, heat and high salinity are listed factors [S21]. Ontario states it is primarily caused by dry soil [S22]. (PHYS, INTL)
+- Salt stress, tomato (20, physiological): the yield threshold is 2.5 dS/m (ECe) [S23]. (PHYS, INTL)
+- Tomato soil moisture bands (tomato_soil_moisture_bands): UHS Bagalkote - highest yield at 80% CPE + mulch; unit differs from sensor [S46]. (OBS, KA)
+
+Chilli:
+- Chilli soil moisture bands (chilli_soil_moisture_bands): NIPHM - high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia); Fusarium wilt linked to relatively high soil moisture (contradicts tomato) [S47]. (FAV, IN)
+- Chilli Fusarium wilt (14): relatively high soil moisture and soil temperature [S48]. (FAV, IN, WEAK)
+- Chilli blossom-end rot (physiological): fluctuating soil moisture, heat, high salinity [S49]. (PHYS, INTL/IN)
+
+Ragi:
+- Ragi soil moisture bands (ragi_soil_moisture_bands): UAS GKVK - 40% PASM = 25% yield, 58% PASM = 50% yield; PASM unit differs from sensor [S50]. (OBS, KA)
 
 TEMPERATURE EXTREMES
-- Heat stress, tomato (19, physiological): day/night temperature above 26/20°C can significantly affect fruit set and yield [S23]. (PHYS, INTL)
+
+- Heat stress, tomato (19, physiological): day/night temperature above 26/20°C can significantly affect fruit set and yield [S24]. (PHYS, INTL)
+- Heat stress, chilli (chilli_heat_stress): day >32°C and/or night >24°C reduces fruit set [S45]. (PHYS, INTL/IN)
+- Ragi heat stress: no threshold available. (UNAVAILABLE)
 
 SUNLIGHT
+
 - Late blight spores survive about 1 hour in sunny dry conditions and up to about 4 hours in cloudy weather [S3]. (FAV, INTL)
-- Powdery mildew spores are sensitive to extreme heat (above about 32°C) and direct sunlight [S24]. (FAV, INTL)
+- Powdery mildew spores are sensitive to extreme heat (above about 32°C) and direct sunlight [S25]. (FAV, INTL)
+- Ragi blast favoured by cloudy skies (low sunlight_wm2) [S16]. (FAV, SEC)
 
 NOT AVAILABLE
 - UNAVAILABLE: No Karnataka-measured thresholds are available for tomato or chilli diseases in this corpus.
-- UNAVAILABLE: Thresholds for chilli heat stress, chilli salinity and ragi salinity are not available.
-- UNAVAILABLE: No universal soil_moisture_pct target is given by any source (see 21_soil_moisture_effects_by_disease).
+- UNAVAILABLE: Thresholds for chilli salinity and ragi salinity are not available.
+- UNAVAILABLE: No universal soil_moisture_pct target is given by any source (see 21_soil_moisture_effects_by_disease, tomato_soil_moisture_bands, chilli_soil_moisture_bands, ragi_soil_moisture_bands).
+- UNAVAILABLE: No Karnataka nutrient deficiency thresholds.
+- UNAVAILABLE: No sensor threshold for any viral disease (tomato or chilli).
 
 SOURCE GEOGRAPHY
-[S1] Florida, USA; [S2] Oregon, USA; [S3] Massachusetts, USA; [S4] Michigan, USA; [S5] Minnesota, USA; [S6] Wisconsin, USA; [S7] Connecticut, USA; [S8] TNAU/NIPHM, India; [S9] Minnesota, USA; [S10] New Jersey, USA; [S11] TNAU (Tamil Nadu), India; [S12] NIPHM and TNAU, India; [S13] TNAU (Tamil Nadu), India; [S14] NIPHM, India; [S15] TNAU-affiliated college course material, India; [S16] UAS Bengaluru, Karnataka; [S17] Florida, USA; [S18] TNAU (Tamil Nadu), India; [S19] Mississippi, USA; [S20] Washington, USA; [S21] Ontario, Canada; [S22] California, USA; [S23] review article (location not verified); [S24] California, USA.
+[S1] Florida, USA; [S2] Oregon, USA; [S3] Massachusetts, USA; [S4] Michigan, USA; [S5] Minnesota, USA; [S6] Wisconsin, USA; [S7] Connecticut, USA; [S8] TNAU/NIPHM, India; [S9] Minnesota, USA; [S10] New Jersey, USA; [S11] TNAU (Tamil Nadu), India; [S12] NIPHM and TNAU, India; [S13] TNAU (Tamil Nadu), India; [S14] TNAU (Tamil Nadu), India; [S15] NIPHM, India; [S16] TNAU-affiliated college course material, India; [S17] UAS Bengaluru, Karnataka; [S18] Florida, USA; [S19] TNAU (Tamil Nadu), India; [S20] Mississippi, USA; [S21] Washington, USA; [S22] Ontario, Canada; [S23] California, USA; [S24] review article (location not verified); [S25] California, USA; [S41] Illinois, USA; [S42] TNAU/NIPHM, India; [S43] NIPHM, India; [S44] Virology Journal; [S45] Minnesota/Punjab/TNAU; [S46] UHS Bagalkote, Karnataka; [S47] NIPHM, India; [S48] NIPHM, India; [S49] Extrapolated from tomato; [S50] UAS GKVK, Karnataka.
 
 REFERENCES
 [S1] UF/IFAS, Late Blight on Potato and Tomato, https://edis.ifas.ufl.edu/publication/PP301/pdf
@@ -50,21 +83,32 @@ REFERENCES
 [S4] Michigan State University Extension, Early Blight E2991, https://www.canr.msu.edu/resources/potato_diseases_early_blight_e2991
 [S5] University of Minnesota Extension, Early blight on tomato, https://extension.umn.edu/disease-management/early-blight-tomato
 [S6] University of Wisconsin Vegetable Pathology, Tomato Septoria Leaf Spot, https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
-[S7] UConn IPM, Tomato Powdery Mildew, https://ipm.cahnr.uconn.edu/tomato-powdery-mildew/ ; University of Missouri IPM, Powdery Mildew, https://ipm.missouri.edu/MPG/2018/7/powderyMildew
+[S7] UConn IPM, Tomato Powdery Mildew, https://ipm.cahnr.uconn.edu/tomato-powdery-mildew/
 [S8] TNAU Agritech, chilli powdery mildew, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_3.html
 [S9] University of Minnesota Extension, Gray mold on tomatoes, https://extension.umn.edu/disease-management/gray-mold-tomatoes
 [S10] Rutgers Plant and Pest Advisory, Botrytis in high tunnel and greenhouse tomato, https://plant-pest-advisory.rutgers.edu/identifying-and-controlling-botrytis-in-high-tunnel-and-greenhouse-tomato-production-2-2-2/
 [S11] TNAU Agritech, chilli grey mould, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_3.html
-[S12] NIPHM via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en ; TNAU Agritech, tomato disease page, https://agritech.tnau.ac.in/crop_protection/tomato_diseases_11.html
-[S13] TNAU Agritech, Chilli anthracnose, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html
-[S14] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases
-[S15] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast
-[S16] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
-[S17] UF/IFAS, Bacterial Wilt, https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
-[S18] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
-[S19] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
-[S20] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
-[S21] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
-[S22] UC ANR, tomato salinity data, https://ucanr.edu/media/307064
-[S23] Review on tomato heat stress response, https://pmc.ncbi.nlm.nih.gov/articles/PMC7938145
-[S24] UC IPM, Powdery mildew on tomato, https://ipm.ucanr.edu/PMG/GARDEN/VEGES/DISEASES/tompowmildew.html
+[S12] NIPHM via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en
+[S13] TNAU Agritech, Tomato leaf curl, https://agritech.tnau.ac.in/crop_protection/tomato_diseases_6.html
+[S14] TNAU Agritech, Chilli anthracnose, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html
+[S15] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases
+[S16] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast
+[S17] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
+[S18] UF/IFAS, Bacterial Wilt, https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
+[S19] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S20] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
+[S21] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S22] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
+[S23] UC ANR, tomato salinity data, https://ucanr.edu/media/307064
+[S24] Review on tomato heat stress response, https://pmc.ncbi.nlm.nih.gov/articles/PMC7938145
+[S25] UC IPM, Powdery mildew on tomato, https://ipm.ucanr.edu/PMG/GARDEN/VEGES/DISEASES/tompowmildew.html
+[S41] Illinois Extension, Bacterial Diseases of Solanaceous Crops, https://extension.illinois.edu/plant-problems/bacterial-diseases-solanaceous-crops
+[S42] TNAU Agritech, Chilli bacterial leaf spot, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_4.html
+[S43] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S44] Al Abdallat et al. 2010, Virology Journal 7:84, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2874538/
+[S45] chilli_heat_stress (Punjab/TNAU/USA sources)
+[S46] UHS Bagalkote, tomato mulches and irrigation levels, https://epubs.icar.org.in/index.php/AAZ/article/view/153636
+[S47] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S48] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S49] 18_blossom_end_rot_tomato, chilli_nutrient_deficiencies
+[S50] Indian Journal of Agricultural Sciences, Soil moisture induced yield variability in major crops of Karnataka, https://epubs.icar.org.in/index.php/IJAgS/article/view/104382

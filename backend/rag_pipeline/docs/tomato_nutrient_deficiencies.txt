@@ -1,0 +1,87 @@
+DOC_ID: tomato_nutrient_deficiencies
+TITLE: Tomato nutrient deficiencies and physiological leaf curl - symptoms and sensor links
+CROPS: tomato
+SENSOR_SIGNALS: soil_ec_dsm; soil_moisture_pct; temperature_c; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This document covers physiological disorders from nutrient imbalances. These are NOT infectious diseases. Sensor readings (soil EC, moisture swings, heat) can indicate conditions that favour these disorders, but cannot confirm them. Blossom-end rot (calcium-related) is in 18_blossom_end_rot_tomato.txt. Heat stress is in 19_heat_stress_fruit_set_tomato.txt. Salt stress is in 20_soil_salinity_ec_tomato.txt.
+
+IDENTIFICATION
+- (PHYS, IN, INTL) Nutrient deficiencies and toxicities are physiological disorders. They do not spread from plant to plant. Fungicides and insecticides do not control them [S1][S2].
+- (PHYS, IN) ICAR/Vikaspedia lists nutritional disorders as a major cause of reduced yield and quality in tomato [S1].
+- (PHYS, INTL) INRAE ePhytia provides detailed deficiency symptom atlases for tomato [S2].
+
+SYMPTOMS BY NUTRIENT
+
+Calcium (Ca) deficiency:
+- (INSP, IN, INTL) YOUNG leaves first: margins turn pale green, then necrotic (brown) lesions. Terminal buds die, stalling growth [S1][S2].
+- (INSP, IN, INTL) FRUIT: Blossom-end rot (BER) - water-soaked, sunken, dark leathery spot at blossom end [S1][S3]. See 18_blossom_end_rot_tomato.
+- (PHYS, IN) BER is driven by water stress (fluctuating soil moisture) more than soil calcium lack [S3][S4].
+
+Magnesium (Mg) deficiency:
+- (INSP, IN, INTL) OLDER leaves first (Mg is mobile): interveinal chlorosis - tissue between veins turns yellow, veins stay dark green [S1][S2].
+- (INSP, IN, INTL) Progression: yellowing turns to necrotic spots; leaves may drop [S1][S2].
+
+Potassium (K) deficiency:
+- (INSP, IN, INTL) OLDER leaves first: marginal necrosis (browning/burning of leaf edges) and interveinal chlorosis [S1][S2].
+- (INSP, IN, INTL) Leaves may become curled, crinkled, or brittle [S1][S2].
+- (INSP, IN, INTL) Fruit: uneven ripening (blotchy ripening) [S1].
+
+Boron (B) deficiency:
+- (INSP, IN, INTL) YOUNG leaves first: brittle, deformed, or curled leaves; growing point may die [S1][S2].
+- (INSP, IN, INTL) Fruit: "hollow" fruit, corky lesions [S1].
+
+Nitrogen (N) deficiency:
+- (INSP, IN, INTL) OLDER leaves first: uniform yellowing (chlorosis) starting from tips; stunted growth [S1][S2].
+- (PHYS, IN) Excess N causes lush growth, delays flowering, increases disease susceptibility [S5][S6].
+
+Phosphorus (P) deficiency:
+- (INSP, IN, INTL) OLDER leaves: dark green with purplish tinge, especially undersides; stunted growth [S1][S2].
+
+Physiological leaf curl (non-parasitic):
+- (PHYS, IN) Upward curling of lower leaves; leaves become thick and leathery but remain green [S1][S3].
+- (PHYS, IN) Causes: excessive nitrogen, high light intensity, heavy pruning, sudden dry spells followed by heavy rain/irrigation [S1][S3].
+- CORPUS NOTE: Distinct from viral leaf curl (12_tomato_leaf_curl_virus_whitefly) which has stunting, crinkling, bushy look, and whiteflies present.
+
+SENSOR LINKS (conditions that favour these disorders)
+
+- HIGH soil_ec_dsm (salinity) → reduces nutrient uptake, can induce Ca, Mg, K deficiencies [S4][S7]. See 20_soil_salinity_ec_tomato.
+- SWINGING soil_moisture_pct (dry-wet cycles) → disrupts Ca transport, triggers BER [S3][S4]. See 18_blossom_end_rot_tomato.
+- LOW soil_moisture_pct sustained → reduces nutrient mobility, especially Ca, Mg, K [S3][S4].
+- HIGH temperature_c (>30°C day) → reduces pollen viability, can cause physiological leaf curl [S5][S6]. See 19_heat_stress_fruit_set_tomato.
+- HIGH sunlight_wm2 (intense sun after cloudy) → can cause physiological leaf curl [S1][S3].
+- HIGH soil_moisture_pct + HIGH temperature_c → can increase salt concentration in root zone if EC is high [S7].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+- Check YOUNG leaves for: pale margins, necrotic tips, dead growing point → Ca or B deficiency [S1][S2].
+- Check OLDER leaves for: interveinal yellowing (veins green) → Mg deficiency [S1][S2].
+- Check OLDER leaves for: edge burning, curling/crinkling → K deficiency [S1][S2].
+- Check OLDER leaves for: uniform yellowing from tips → N deficiency [S1][S2].
+- Check OLDER leaves for: purplish undersides → P deficiency [S1][S2].
+- Check LOWER leaves for: upward curl, thick leathery, green → physiological leaf curl [S1][S3].
+- Check FRUIT for: blossom-end rot → Ca/water stress [S1][S3].
+- Check FRUIT for: blotchy ripening → K deficiency [S1].
+- CORPUS NOTE: Soil test is the only reliable way to confirm nutrient status. Sensor readings only show conditions that may favour disorders.
+
+MANAGEMENT
+- (OBS, IN, INTL) Soil test before planting; fertilise based on test results [S1][S2].
+- (OBS, IN, INTL) Foliar calcium sprays are NOT effective for BER (calcium moves poorly to fruit) [S3][S4]. See 18_blossom_end_rot_tomato.
+- (OBS, IN, INTL) Maintain even soil moisture; mulch helps [S3][S4].
+- (OBS, IN, INTL) Avoid excessive nitrogen; balance with potassium [S5][S6].
+- (OBS, IN, INTL) If soil_ec_dsm is high, use drip irrigation, leach salts, moderate fertiliser [S7]. See 20_soil_salinity_ec_tomato.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-specific nutrient deficiency thresholds or soil test interpretations in this corpus.
+- CORPUS RULE: Nutrient disorders are physiological, not infectious. Sensor readings (soil EC, moisture, temperature) show conditions that may favour them. They do not confirm any deficiency. Soil test and KVK confirmation are required.
+
+SOURCE GEOGRAPHY
+[S1] Vikaspedia (ICAR-linked), India; [S2] INRAE ePhytia (France); [S3] Ontario OMAFRA (Canada); [S4] WSU/UC ANR (USA); [S5] BMC Plant Biology/review; [S6] 22_healthy_state_betterments; [S7] 20_soil_salinity_ec_tomato.
+
+REFERENCES
+[S1] Vikaspedia, Nutritional deficiencies of tomato, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/nutritional-deficiencies-of-tomato?lgn=en
+[S2] INRAE ePhytia, Tomato nutritional disorders, https://ephytia.inrae.fr/en/C/5333/Tomato-Nutritional-disorders-deficiencies
+[S3] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
+[S4] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S5] BMC Plant Biology 2021, heat tolerance in tomato, https://pmc.ncbi.nlm.nih.gov/articles/PMC8296629
+[S6] 22_healthy_state_betterments
+[S7] 20_soil_salinity_ec_tomato

@@ -1,0 +1,83 @@
+DOC_ID: chilli_nutrient_deficiencies
+TITLE: Chilli nutrient deficiencies and physiological disorders - symptoms and sensor links
+CROPS: chilli
+SENSOR_SIGNALS: soil_ec_dsm; soil_moisture_pct; temperature_c; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This document covers physiological disorders from nutrient imbalances in chilli. These are NOT infectious diseases. Sensor readings can indicate conditions that favour these disorders, but cannot confirm them. No chilli-specific nutrient deficiency document existed in the previous corpus. Tomato nutrient deficiencies are in tomato_nutrient_deficiencies.txt; principles are similar but chilli-specific sources are cited where available.
+
+IDENTIFICATION
+- (PHYS, IN, INTL) Nutrient deficiencies and toxicities are physiological disorders. They do not spread from plant to plant. Fungicides and insecticides do not control them [S1][S2].
+- (PHYS, IN) TNAU and ICAR sources describe nutritional disorders in chilli affecting yield and quality [S1][S3].
+
+SYMPTOMS BY NUTRIENT (chilli-specific where available, else extrapolated from solanaceous crops)
+
+Calcium (Ca) deficiency:
+- (INSP, IN, INTL) YOUNG leaves first: distorted, hooked, or cupped new growth; tip burn [S1][S2].
+- (INSP, IN, INTL) FRUIT: Blossom-end rot (BER) - sunken, leathery spot at blossom end. Similar mechanism to tomato: driven by water stress disrupting Ca transport [S2][S4].
+- (PHYS, IN) Fluctuating soil moisture is the primary trigger for BER in chilli [S4].
+
+Magnesium (Mg) deficiency:
+- (INSP, IN, INTL) OLDER leaves first: interveinal chlorosis (yellow between veins, veins green); may develop necrotic spots [S1][S2].
+- (INSP, IN) Common in acidic, sandy soils or high potassium soils [S1].
+
+Potassium (K) deficiency:
+- (INSP, IN, INTL) OLDER leaves first: marginal scorching/browning (edge burn), curling; interveinal chlorosis [S1][S2].
+- (INSP, IN, INTL) Fruit: poor size, uneven ripening, reduced pungency [S1][S3].
+
+Boron (B) deficiency:
+- (INSP, IN, INTL) YOUNG leaves first: brittle, thickened, deformed; growing point dies; "rosette" appearance [S1][S2].
+- (INSP, IN, INTL) Fruit: cracked, corky, or deformed [S1].
+
+Nitrogen (N) deficiency:
+- (INSP, IN, INTL) OLDER leaves first: uniform pale green to yellow; stunted growth; reduced flowering [S1][S2].
+- (PHYS, IN) Excess N: excessive vegetative growth, delayed flowering, reduced fruit set, increased disease susceptibility [S5].
+
+Phosphorus (P) deficiency:
+- (INSP, IN, INTL) OLDER leaves: dark green with purplish tinge on undersides; stunted; delayed maturity [S1][S2].
+
+Physiological leaf curl (non-parasitic):
+- (PHYS, IN) Upward curling of leaves, thickened, leathery; distinct from viral leaf curl (chilli_viral_diseases) which has mosaic, stunting, bushy look, and vectors present [S1][S6].
+- (PHYS, IN) Causes: high temperature, moisture stress, excessive nitrogen, high light intensity [S1][S6].
+
+SENSOR LINKS (conditions that favour these disorders)
+
+- HIGH soil_ec_dsm (salinity) → reduces nutrient uptake, can induce Ca, Mg, K deficiencies [S4][S7]. Tomato salinity threshold 2.5 dS/m (20_soil_salinity_ec_tomato); chilli threshold UNAVAILABLE.
+- SWINGING soil_moisture_pct (dry-wet cycles) → disrupts Ca transport, triggers BER [S4]. See tomato 18_blossom_end_rot_tomato (mechanism shared).
+- LOW soil_moisture_pct sustained → reduces nutrient mobility, especially Ca, Mg, K [S4].
+- HIGH temperature_c (>32°C day) + LOW humidity_pct → heat stress, flower drop, physiological leaf curl [S5][S6]. See chilli_heat_stress.txt.
+- HIGH sunlight_wm2 (intense sun) → can cause physiological leaf curl [S1][S6].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+- Check YOUNG leaves for: distorted/hooked growth, tip burn, dead growing point → Ca or B deficiency [S1][S2].
+- Check OLDER leaves for: interveinal yellowing (veins green) → Mg deficiency [S1][S2].
+- Check OLDER leaves for: edge burning, curling → K deficiency [S1][S2].
+- Check OLDER leaves for: uniform yellowing from tips → N deficiency [S1][S2].
+- Check OLDER leaves for: purplish undersides → P deficiency [S1][S2].
+- Check LEAVES for: upward curl, thick leathery, green → physiological leaf curl [S1][S6].
+- Check FRUIT for: blossom-end rot → Ca/water stress [S2][S4].
+- Check FRUIT for: poor size, uneven color, low pungency → K deficiency [S1][S3].
+- CORPUS NOTE: Soil test is the only reliable way to confirm nutrient status. Sensor readings only show conditions that may favour disorders.
+
+MANAGEMENT
+- (OBS, IN, INTL) Soil test before planting; fertilise based on test results [S1][S3].
+- (OBS, IN, INTL) Maintain even soil moisture; mulch helps in irrigated chilli [S4].
+- (OBS, IN, INTL) Avoid excessive nitrogen; balance with potassium for fruit quality [S3][S5].
+- (OBS, IN, INTL) If soil_ec_dsm is high, use drip irrigation, moderate fertiliser [S7]. Tomato threshold 2.5 dS/m; chilli UNAVAILABLE.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-specific nutrient deficiency thresholds or soil test interpretations for chilli in this corpus.
+- UNAVAILABLE: No chilli salinity threshold (soil_ec_dsm) in this corpus.
+- CORPUS RULE: Nutrient disorders are physiological, not infectious. Sensor readings (soil EC, moisture, temperature) show conditions that may favour them. They do not confirm any deficiency. Soil test and KVK confirmation are required.
+
+SOURCE GEOGRAPHY
+[S1] TNAU Agritech / Vikaspedia (ICAR-linked), India; [S2] INRAE ePhytia (France, solanaceous principles); [S3] TNAU Chilli production technology, India; [S4] Extrapolated from tomato (18, 19, 20); [S5] 22_healthy_state_betterments; [S6] chilli_heat_stress; [S7] 20_soil_salinity_ec_tomato.
+
+REFERENCES
+[S1] Vikaspedia / TNAU, Chilli nutritional disorders, https://agritech.tnau.ac.in/crop_protection/chilli_nutritional_disorders.html
+[S2] INRAE ePhytia, Pepper nutritional disorders, https://ephytia.inrae.fr/en/C/5071/Pepper-Nutritional-disorders-deficiencies
+[S3] TNAU Agritech, Chilli production technology, https://agritech.tnau.ac.in/crop_production/crop_production_vegetable_chilli.html
+[S4] 18_blossom_end_rot_tomato, 19_heat_stress_fruit_set_tomato, 20_soil_salinity_ec_tomato
+[S5] 22_healthy_state_betterments
+[S6] chilli_heat_stress
+[S7] 20_soil_salinity_ec_tomato

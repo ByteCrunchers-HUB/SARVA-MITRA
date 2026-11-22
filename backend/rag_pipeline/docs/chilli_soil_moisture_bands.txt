@@ -1,0 +1,62 @@
+DOC_ID: chilli_soil_moisture_bands
+TITLE: Chilli soil moisture - field-relevant bands and crop-stage guidance
+CROPS: chilli
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document summarizes field-relevant soil moisture information for chilli. It does NOT provide a universal soil_moisture_pct threshold. The sensor column soil_moisture_pct uses different units than research sources (field capacity %, % max water-holding capacity, kPa tension). Always confirm units before comparing.
+
+CORPUS RULE: No universal soil moisture target exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+FIELD-RELEVANT CONTEXT FROM SOURCES
+
+- (OBS, IN) NIPHM: chilli damping-off favoured by heavy rainfall, excessive/frequent irrigation, poorly drained soil, high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia) [S1].
+- (OBS, IN) NIPHM: chilli Fusarium wilt favoured by relatively high soil moisture and soil temperature; spread by soil and implements [S1]. CORPUS NOTE: This differs from tomato Fusarium wilt (10) which is linked to LOW soil moisture. The difference is not resolved here.
+- (OBS, IN) Phytophthora crown rot/wilt in chilli: waterlogged fields, high soil moisture, heavy rainfall, poor drainage, temperature 25-30°C [S2][S3].
+- (OBS, INTL) Chilli root rot pathogens (Phytophthora, Pythium) thrive in wet, poorly drained soils [S2][S3][S4].
+- (OBS, INTL) Rhizoctonia can cause disease in both wet and dry conditions, but is more common in warm, moist soil [S3][S4].
+- (OBS, INTL) Blossom-end rot in chilli (physiological) is linked to fluctuating soil moisture and calcium transport issues, similar to tomato [S5].
+- UNAVAILABLE: No Karnataka chilli deficit irrigation or soil moisture band study was found in this corpus.
+
+CROP STAGE GUIDANCE (general principles from Indian extension sources)
+
+Establishment (transplant to 2 weeks):
+- Keep soil consistently moist but well-drained; raised beds recommended [S1][S2].
+- Avoid waterlogging which favours Phytophthora and Pythium [S2][S3].
+
+Vegetative growth:
+- Allow mild drying between irrigations to encourage deep rooting [S4].
+- High soil moisture + warm temperature (30-35°C) → conditions favour Rhizoctonia [S1].
+
+Flowering and fruit set:
+- Maintain even soil moisture; avoid fluctuations [S5].
+- High soil moisture + high humidity favours foliar diseases (anthracnose 13, bacterial leaf spot chilli_bacterial_leaf_spot, powdery mildew 06) [see relevant docs].
+
+Fruit development to harvest:
+- Continue even moisture; water stress reduces fruit size and pungency [S5].
+- Avoid overhead irrigation near harvest to reduce anthracnose spread on ripening fruit [S6].
+
+SENSOR READING INTERPRETATION HINTS
+
+- Steadily HIGH soil_moisture_pct over days + temperature_c 25-30°C + heavy rainfall_mm → conditions favour Phytophthora/Pythium wilt and damping-off (chilli_wilt_damping_off).
+- Steadily HIGH soil_moisture_pct + temperature_c 30-35°C → conditions favour Rhizoctonia (chilli_wilt_damping_off).
+- HIGH soil_moisture_pct + warm soil temp (NIPHM) → conditions favour chilli Fusarium wilt per NIPHM (14_chilli_other) - note contradiction with tomato Fusarium.
+- SWINGING soil_moisture_pct + high temperature_c + high soil_ec_dsm → conditions linked to blossom-end rot (physiological, similar to tomato 18).
+- VERY HIGH soil_moisture_pct after heavy rainfall_mm + poor drainage reported → conditions favour Pythium/Phytophthora damping-off (chilli_wilt_damping_off, 11).
+- CORPUS RULE: These are conditions that favour problems. They do not confirm any disease or disorder. Field inspection is required.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-measured soil_moisture_pct bands for chilli in this corpus.
+- (WEAK, IN) The NIPHM source gives temperature ranges with "high soil moisture" but does not define the soil moisture unit or value.
+- CORPUS NOTE: The contradiction between chilli Fusarium wilt (high soil moisture per NIPHM) and tomato Fusarium wilt (low soil moisture per TNAU) is not resolved in this corpus.
+
+SOURCE GEOGRAPHY
+[S1] NIPHM (India); [S2] CCARI Goa (ICAR), India; [S3] NRI IPM (India); [S4] Frontiers review (international); [S5] General solanaceous physiology (extrapolated from tomato); [S6] TNAU (Tamil Nadu), India.
+
+REFERENCES
+[S1] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S2] CCARI (ICAR), Extension Folder No. 95 - Chilli diseases, https://ccari.res.in/Extension%20Folder%20No.%2095.pdf
+[S3] NRI IPM, Chilli English folder, https://nriipm.res.in/NCIPMPDFs/FOLDERS/chilienglish_.pdf
+[S4] Frontiers in Microbiology, Integrated management strategies for damping-off disease in chilli, https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2024.1479957/full
+[S5] Extrapolated from tomato blossom-end rot physiology (18_blossom_end_rot_tomato)
+[S6] TNAU Agritech, Chilli anthracnose, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html

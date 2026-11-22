@@ -1,0 +1,72 @@
+DOC_ID: ragi_blast_detailed
+TITLE: Ragi (finger millet) blast - Karnataka conditions, varieties, and field inspection
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: humidity_pct; temperature_c; sunlight_wm2 (cloudy days); rainfall_mm (frequent rain or drizzle); nitrogen use (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document expands 15_ragi_blast.txt with Karnataka-specific blast conditions from UAS Bengaluru, resistant variety details, and a detailed field inspection checklist for leaf/neck/finger blast. Ragi rust and leaf spot distinctions are in ragi_foliar_comparison.txt.
+
+IDENTIFICATION
+- (OBS, IN) Blast (Pyricularia grisea / Magnaporthe grisea) is the most important and destructive fungal disease of finger millet. It causes leaf blast, neck blast and finger (ear) blast [S1][S2][S3].
+- (OBS, IN) The disease occurs almost every year in finger millet in Karnataka [S4].
+
+KARNATAKA WEATHER CONDITIONS FAVOURING BLAST
+- (FAV, KA) UAS Bengaluru AICRP Agrometeorology tables for Kharif ragi (Zone 6, Mysore district, Southern Dry Zone): "congenial weather for pest and disease" shows morning humidity 90-94%, evening humidity 58-66%, and more than 3 cloudy days per week. Mean temperature range across weeks roughly 11-28.5°C (mix of min/mean values; alignment uncertain) [S5][S6].
+- (FAV, KA) Zone 5 (Bengaluru district, Eastern Dry Zone): weekly minimum temperature ~15-19.6°C; neck and finger blast incidence 4.8-96.25% across weeks [S7].
+- (FAV, SEC) TNAU-affiliated college course material lists favourable conditions: cloudy skies, frequent rain/drizzle, high nitrogen, humidity above 90%, and 25-28°C for spore germination [S2]. This is secondary material.
+- (FAV, IN) ICAR: blast is favoured by high humidity, cloudy weather, and temperatures of 25-28°C [S1][S3].
+- UNAVAILABLE: A single clean Karnataka-measured threshold for ragi blast risk is not available in this corpus. The UAS tables show weather patterns alongside incidence; week-level alignment is uncertain. Use as rough ranges only.
+- CORPUS NOTE: Morning humidity 90-94% with cloudy days is the strongest Karnataka signal. Temperature ranges are wide and uncertain.
+
+KARNATAKA RESISTANT / TOLERANT VARIETIES (UAS BANGALORE / ICAR)
+- (OBS, IN) GPU-28: Released by UAS Bangalore. Widely grown in Karnataka. Moderate blast resistance; high yield under good conditions. Resistant to finger blast, neck blast, banded blight, foot rot [S8][S9][S10].
+- (OBS, IN) GPU-48: Released by UAS Bangalore. Moderate blast resistance [S8].
+- (OBS, IN) GPU-101: Released by UAS Bangalore (2025-26). May have improved blast resistance over earlier GPU varieties [S11].
+- (OBS, IN) ML-322: Released by UAS Bangalore (2022-23). Carries blast-tolerance traits [S11].
+- (OBS, IN) CFMV-1 (Indravathi): Recommended for Karnataka, AP, TN, Puducherry, Odisha. Resistant to finger blast, neck blast, banded blight, foot rot [S12].
+- (OBS, IN) CFMV-2: Resistant to leaf blast, foot rot, brown spot, grain mold; moderately resistant to neck/finger blast and banded blight [S12].
+- (OBS, IN) Indaf-5, Indaf-9: ICAR-IIMR releases with strong blast resistance [S9].
+- CORPUS NOTE: Variety suitability for a given farm should be confirmed with the local KVK or UAS Bengaluru. The ICAR list is national; Karnataka-specific performance may vary.
+
+SYMPTOMS
+- (INSP, IN) Leaf blast: Greyish spots on leaves that enlarge and join, drying the leaf. Spots are typically elliptical with grey centres and brown margins [S1][S3].
+- (INSP, IN) Neck blast: Browning then blackening near the ear (peduncle) with olive-grey fungal growth. Blocks nutrient flow to grain [S1][S3].
+- (INSP, IN) Finger (ear) blast: Starts at tip of finger (rachis) and spreads to base before turning brown. Fingers become brown, chaffy, and empty at seed set [S1][S3].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+- (INSP, IN) Leaf blast: Check leaves (especially lower/middle canopy) for greyish elliptical spots with brown margins. Spots join and dry leaves [S1][S3].
+- (INSP, IN) Neck blast: Check the neck (peduncle just below the ear) for browning/blackening and olive-grey growth. This is the most yield-damaging stage [S1][S3].
+- (INSP, IN) Finger blast: Check finger tips for browning spreading toward base. Empty, chaffy fingers at seed set [S1][S3].
+- (INSP, IN) Scout fields during flowering to grain-filling stage (critical period) [S2].
+- (INSP, IN) Check low-lying, shaded, and heavily fertilized (high N) areas first [S2].
+
+MANAGEMENT
+- (OBS, IN) Resistant varieties are always preferred (see variety list above) [S1][S3].
+- (OBS, SEC) Early sowing (July) reduced blast severity in course material [S2].
+- (OBS, SEC) Suggested crop rotations: ragi-groundnut-maize, ragi-chickpea-wheat, ragi-cowpea/pigeonpea-sorghum [S2].
+- (OBS, IN) Because ragi is mostly rainfed and grown by small farmers, chemical control is hard to apply widely; preventive measures are mostly followed [S4][S3].
+- (WEAK, IN) One AICRP small-millets result (Uttarakhand centre) reported a chemical spray as effective against neck and finger blast; product name, dose and timing not included here. Ask the KVK [S13].
+- (WEAK, IN) Pseudomonas fluorescens strains were maintained for use against blast and foot rot; this is not evidence of field effectiveness [S13].
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, KA) UAS Bengaluru table alignment is uncertain; exact week-by-week thresholds not verified [S5][S6][S7].
+- (WEAK, SEC) The 25-28°C temperature for spore germination comes from course material, not a primary Karnataka study [S2].
+- CORPUS RULE: Matching humidity, cloud, or temperature readings show conditions that favour blast. They do not confirm it. Field inspection of leaves, neck, and fingers is required.
+
+SOURCE GEOGRAPHY
+[S1] ICAR (India); [S2] TNAU-affiliated college course material (Tamil Nadu, India); [S3] Indian Journal of Genetics and Plant Breeding (India); [S4] ICAR-IIMR (India); [S5] UAS Bengaluru, Zone 6 Mysore, Karnataka; [S6] UAS Bengaluru, Zone 6 Mysore, Karnataka (sowing window 2); [S7] UAS Bengaluru, Zone 5 Bengaluru district, Karnataka; [S8] TNAU Agritech (Tamil Nadu); [S9] Organic Mandya / ICAR-IIMR; [S10] ICAR Indian Farming (Apr 2023); [S11] UAS Bangalore variety release list 2016-2025; [S12] ICAR Indian Farming (Oct 2025); [S13] AICRP Small Millets, Uttarakhand centre.
+
+REFERENCES
+[S1] ICAR Indian Farming, Blast disease: A threat to finger millet (Apr 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132291/50019/360140
+[S2] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast
+[S3] Indian Journal of Genetics and Plant Breeding 85(3), finger millet blast, https://www.isgpb.org/journal/index.php/IJGPB/article/download/3888/3183
+[S4] ICAR-IIMR, Disease management for improved millet production (Jan 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132580/49107/348434
+[S5] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, sowing window 1, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf
+[S6] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, sowing window 2, https://www.old.uasbangalore.edu.in/images/attachments/crop_weather/zone-6-(mysore)-ragi- (sowing-window-2).pdf
+[S7] UAS Bengaluru, AICRP on Agrometeorology, Zone 5 (Bangalore district) ragi, https://mail.uasbangalore.edu.in/images/crop_weather/zone-5-(bangalore -disrtict)- ragi.pdf
+[S8] TNAU Agritech, Season & Varieties - Ragi, https://agritech.tnau.ac.in/expert_system/ragi/season_varieties.html
+[S9] Organic Mandya, Ragi Farming Guide, https://www.organicmandya.com/farming/crops/ragi-finger-millet-farming
+[S10] ICAR Indian Farming (Apr 2023), Blast disease, https://epubs.icar.org.in/index.php/IndFarm/article/download/132291/50019/360140
+[S11] UAS Bangalore, List of crop varieties released 2016-2025, https://www.uasbangalore.edu.in/wp-content/uploads/2026/08/List-of-Crop-Varieties-10-years-E.pdf
+[S12] ICAR Indian Farming (Oct 2025), finger millet overview, https://epubs.icar.org.in/index.php/IndFarm/article/download/174434/64149/505234
+[S13] AICRP on Small Millets (Uttarakhand centre) report, https://www.uuhf.ac.in/wp-content/uploads/2019/06/AICRP-Small-Millets.pdf
