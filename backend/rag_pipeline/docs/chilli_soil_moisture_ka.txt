@@ -1,0 +1,83 @@
+DOC_ID: chilli_soil_moisture_ka
+TITLE: Chilli soil moisture - Karnataka verified thresholds and crop-stage guidance
+CROPS: chilli
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document replaces chilli_soil_moisture_bands.txt with Karnataka-specific data from UAS/UHS sources. The sensor column soil_moisture_pct is volumetric water content (%). Research sources use different units (field capacity %, % max water-holding capacity, kPa tension, CPE). Always confirm units before comparing.
+
+CORPUS RULE: No universal soil moisture target exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+IDENTIFICATION
+- (OBS, KA) Chilli (Capsicum annuum) is a major spice crop in Karnataka, grown in kharif, rabi, and summer seasons across Bengaluru Rural, Kolar, Chikkaballapur, Hassan, Chitradurga, and Mysuru districts [S1].
+- (OBS, KA) UAS Bengaluru Package of Practices and UHS Bagalkote research provide crop-stage soil moisture guidance for Karnataka conditions [S1][S2].
+
+KARNATAKA SOIL MOISTURE THRESHOLDS (UAS/UHS SOURCES)
+
+Seedling / Nursery (0-25 days after transplanting):
+- (FAV, KA) UHS Bagalkote: Maintain soil at 75-80% of field capacity (FC) for optimal root establishment [S2].
+- (FAV, KA) UAS Bengaluru: Frequent light irrigation to keep surface soil moist; avoid waterlogging which favours Phytophthora/Pythium [S1].
+- (FAV, KA) Sensor correlate: soil_moisture_pct ~60-70% (volumetric) on sandy loam at 75-80% FC [S2]. UNAVAILABLE: Direct sensor calibration for other soil types.
+
+Vegetative Growth (25-50 DAT):
+- (FAV, KA) UHS Bagalkote: Allow soil to deplete to 55-60% FC between irrigations to encourage deep rooting [S2].
+- (FAV, KA) UAS Bengaluru: Irrigate at 0.6-0.8 IW/CPE ratio (irrigation water / cumulative pan evaporation) [S1].
+- (FAV, KA) Sensor correlate: soil_moisture_pct ~45-55% (volumetric) on sandy loam at 55-60% FC [S2].
+
+Flowering & Fruit Set (50-80 DAT) - CRITICAL STAGE:
+- (FAV, KA) UHS Bagalkote: Maintain 70-75% FC consistently; moisture stress at this stage causes flower drop and poor fruit set [S2].
+- (FAV, KA) UAS Bengaluru: Irrigate at 0.8-1.0 IW/CPE ratio; avoid fluctuations [S1].
+- (FAV, KA) Sensor correlate: soil_moisture_pct ~55-65% (volumetric) on sandy loam at 70-75% FC [S2].
+- (FAV, KA) High soil moisture + high humidity at this stage favours anthracnose (13_chilli_anthracnose_dieback_fruit_rot) and bacterial leaf spot (chilli_bacterial_leaf_spot) [S1][S3].
+
+Fruit Development & Maturity (80-120 DAT):
+- (FAV, KA) UHS Bagalkote: Reduce to 60-65% FC; mild deficit can improve pungency and dry matter [S2].
+- (FAV, KA) UAS Bengaluru: Irrigate at 0.6 IW/CPE; stop irrigation 10-15 days before final harvest [S1].
+- (FAV, KA) Sensor correlate: soil_moisture_pct ~45-55% (volumetric) on sandy loam at 60-65% FC [S2].
+
+SOIL TYPE ADJUSTMENTS (Karnataka)
+- (OBS, KA) Red sandy loam (Bengaluru, Kolar, Chikkaballapur): Lower water holding capacity; irrigate more frequently at lower volumes [S1].
+- (OBS, KA) Black cotton soil (North Karnataka - Bidar, Kalaburagi, Vijayapura): Higher water holding capacity; longer intervals, deeper irrigation [S1].
+- (OBS, KA) Laterite soil (Coastal - Dakshina Kannada, Udupi): Rapid drainage; frequent irrigation needed [S1].
+- UNAVAILABLE: Soil_moisture_pct sensor thresholds calibrated for each soil type in Karnataka.
+
+IRRIGATION METHOD EFFECTS
+- (OBS, KA) UHS Bagalkote: Drip irrigation at 80% CPE + mulch gives highest yield and water use efficiency; saves 30-40% water vs flood [S2].
+- (OBS, KA) UAS Bengaluru: Drip recommended for all chilli; reduces foliar disease spread (anthracnose, bacterial leaf spot) by keeping foliage dry [S1].
+- (FAV, KA) Overhead irrigation increases leaf wetness duration, favouring anthracnose (13) and bacterial leaf spot (chilli_bacterial_leaf_spot) [S1][S3].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Steadily HIGH soil_moisture_pct (>70% on sandy loam) + temperature_c 25-30°C + rainfall_mm:
+→ Conditions favour Phytophthora/Pythium wilt and damping-off (chilli_wilt_damping_off) [S4].
+
+Steadily HIGH soil_moisture_pct + temperature_c 30-35°C:
+→ Conditions favour Rhizoctonia root/stem rot (chilli_wilt_damping_off) [S4].
+
+SWINGING soil_moisture_pct (dry-wet cycles >20% variation) + high temperature_c + high soil_ec_dsm:
+→ Conditions linked to blossom-end rot (physiological) [S5].
+
+VERY HIGH soil_moisture_pct after heavy rainfall_mm + poor drainage reported:
+→ Conditions favour Pythium/Phytophthora damping-off (chilli_wilt_damping_off, 11) [S4].
+
+HIGH soil_moisture_pct + high humidity_pct during flowering/fruiting:
+→ Conditions favour anthracnose (13) and bacterial leaf spot (chilli_bacterial_leaf_spot) [S3].
+
+CORPUS RULE: These are conditions that favour problems. They do not confirm any disease or disorder. Field inspection is required.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UHS Bagalkote and UAS Bengaluru provide Karnataka-specific irrigation scheduling (IW/CPE, % FC).
+- UNAVAILABLE: Direct soil_moisture_pct sensor calibration for Karnataka chilli on all soil types.
+- UNAVAILABLE: Karnataka chilli soil moisture thresholds for salinity interaction.
+- (WEAK, IN) NIPHM temperature ranges with "high soil moisture" retained from previous doc but units undefined [S4].
+- CORPUS NOTE: The chilli Fusarium wilt contradiction (high soil moisture per NIPHM vs low for tomato) remains unresolved.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops (Chilli); [S2] UHS Bagalkote, Chilli irrigation and fertigation research; [S3] 13_chilli_anthracnose_dieback_fruit_rot, chilli_bacterial_leaf_spot; [S4] chilli_wilt_damping_off (ICAR/CCARI/NIPHM); [S5] 18_blossom_end_rot_tomato (physiological principle).
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Chilli, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] UHS Bagalkote, Research on chilli irrigation scheduling and water use efficiency, https://uhsbagalkote.karnataka.gov.in/research
+[S3] 13_chilli_anthracnose_dieback_fruit_rot; chilli_bacterial_leaf_spot
+[S4] chilli_wilt_damping_off (ICAR/CCARI Goa, NIPHM, NRI IPM sources)
+[S5] 18_blossom_end_rot_tomato

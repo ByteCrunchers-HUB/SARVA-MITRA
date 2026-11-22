@@ -275,12 +275,12 @@ def advisory(request: AdvisoryRequest):
     }
 
 
-@app.post("/advisory", deprecated=True)
+@app.post("/advisory")
 def advisory_alias(request: AdvisoryRequest):
     return advisory(request)
 
 
-@app.post("/predict-and-advice", deprecated=True)
+@app.post("/predict-and-advice")
 def predict_and_advice(request: AdvisoryRequest):
     if request.ml_prediction is not None:
         return advisory(request)

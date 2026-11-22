@@ -1,0 +1,115 @@
+DOC_ID: irrigation_chilli
+TITLE: Chilli irrigation and drainage - Karnataka guidance by crop stage and soil type
+CROPS: chilli
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; sunlight_wm2; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document provides irrigation scheduling and drainage guidance for chilli in Karnataka. Sensor soil_moisture_pct is volumetric water content (%). Research uses IW/CPE, % field capacity, kPa. Always confirm units. No product names, doses, or schedules - only principles.
+
+CORPUS RULE: No universal irrigation threshold exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+IDENTIFICATION
+- (OBS, KA) Chilli is grown in three seasons in Karnataka: kharif (Jun-Oct), rabi (Oct-Feb), summer (Feb-May) [S1].
+- (OBS, KA) Major districts: Bengaluru Rural, Kolar, Chikkaballapur, Hassan, Chitradurga, Mysuru, Belagavi, Dharwad, Gadag [S1].
+- (OBS, KA) UAS Bengaluru Package of Practices, UHS Bagalkote, IIHR Bengaluru provide Karnataka-specific irrigation guidance [S1][S2][S3].
+
+KARNATAKA IRRIGATION SCHEDULING (UAS/UHS/IIHR)
+
+General Principle:
+- (OBS, KA) Irrigate at 0.6-1.0 IW/CPE ratio depending on stage [S1].
+- (OBS, KA) UHS Bagalkote: Drip irrigation at 80% CPE + mulch gives highest yield & water use efficiency [S2].
+- (OBS, KA) Critical stages: flowering, fruit set, fruit development [S1][S2].
+- (FAV, KA) Drip STRONGLY recommended - keeps foliage dry, reduces anthracnose (13) and bacterial leaf spot (chilli_bacterial_leaf_spot) [S1][S3].
+
+Crop Stage Guidance:
+
+Transplanting to Establishment (0-25 DAT):
+- (FAV, KA) Frequent light irrigation to maintain 75-80% field capacity (FC) [S1][S2].
+- (FAV, KA) Drip: daily 15-25 min (1.5-2.5 L/plant/day) [S2].
+- (FAV, KA) Raised beds essential - avoids Phytophthora/Pythium (chilli_wilt_damping_off) [S1][S4].
+
+Vegetative Growth (25-50 DAT):
+- (FAV, KA) Irrigate at 0.6-0.8 IW/CPE; allow depletion to 55-60% FC [S1][S2].
+- (FAV, KA) Drip: alternate day, 25-35 min (3-4 L/plant/day) [S2].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~45-55% volumetric [S2].
+
+Flowering & Fruit Set (50-80 DAT) - MOST CRITICAL:
+- (FAV, KA) Maintain 70-75% FC consistently; NO fluctuations [S1][S2].
+- (FAV, KA) Irrigate at 0.8-1.0 IW/CPE; daily drip [S1][S2].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~55-65% volumetric [S2].
+- (FAV, KA) High soil moisture + high humidity = anthracnose (13) & bacterial leaf spot (chilli_bacterial_leaf_spot) risk [S3].
+
+Fruit Development (80-110 DAT):
+- (FAV, KA) Reduce to 60-65% FC; mild deficit improves pungency & dry matter [S2].
+- (FAV, KA) Irrigate at 0.6 IW/CPE [S1].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~45-55% volumetric [S2].
+
+Maturity to Harvest (110+ DAT):
+- (FAV, KA) Reduce to 55-60% FC; stop irrigation 10-15 days before final harvest [S1].
+- (FAV, KA) Improves fruit colour, pungency, storage quality [S2].
+
+SOIL TYPE ADJUSTMENTS (KARNATAKA)
+
+Red Sandy Loam (Bengaluru, Kolar, Chikkaballapur, Chitradurga):
+- (OBS, KA) Low water holding capacity (~22% FC, ~8% WP) [S2].
+- (FAV, KA) Frequent, low-volume drip; mulching critical [S1][S2].
+
+Black Cotton Soil (North Karnataka - Bidar, Kalaburagi, Vijayapura, Gadag):
+- (OBS, KA) High water holding capacity (~35% FC, ~18% WP) [S1].
+- (FAV, KA) Longer intervals, deeper irrigation; avoid cracking [S1].
+- (FAV, KA) Wider drip lateral spacing (1.2-1.5 m) [S2].
+
+Laterite Soil (Coastal - Dakshina Kannada, Udupi):
+- (OBS, KA) Rapid drainage, low retention [S1].
+- (FAV, KA) Very frequent drip; organic matter addition [S1].
+
+IRRIGATION METHOD RECOMMENDATIONS
+
+Drip Irrigation (STRONGLY RECOMMENDED):
+- (OBS, KA) UHS Bagalkote: 80% CPE + mulch = highest yield, 30-40% water saving [S2].
+- (OBS, KA) Foliage stays dry - critical for anthracnose (13) and bacterial leaf spot (chilli_bacterial_leaf_spot) management [S1][S3].
+- (OBS, KA) Fertigation enables precise nutrient management [S2].
+
+Furrow / Flood (NOT RECOMMENDED):
+- (FAV, KA) Increases leaf wetness, spreads anthracnose & bacterial leaf spot [S3].
+- (FAV, KA) Uneven on sandy soils; waterlogging in heavy soils [S1].
+
+Sprinkler (LIMITED):
+- (FAV, KA) Only for establishment; switch to drip before flowering [S1].
+
+DRAINAGE GUIDANCE
+- (OBS, KA) Raised beds (15-20 cm) MANDATORY for chilli - prevents Phytophthora/Pythium (chilli_wilt_damping_off) [S1][S4].
+- (OBS, KA) Field slope 0.5-1% for surface drainage [S1].
+- (OBS, KA) Subsurface drainage in waterlogged black soils [S1].
+- (FAV, KA) Poor drainage + high soil moisture = Phytophthora crown rot, bacterial wilt risk [S4].
+
+SENSOR-BASED IRRIGATION DECISIONS
+
+If soil_moisture_pct <40% (sandy loam) at vegetative stage:
+→ Irrigate immediately; moisture stress reduces growth [S2].
+
+If soil_moisture_pct <50% (sandy loam) at flowering/fruit set:
+→ URGENT irrigation; flower drop and poor fruit set risk [S2][S3].
+
+If soil_moisture_pct >70% (sandy loam) sustained + rainfall_mm forecast:
+→ Skip irrigation; monitor for anthracnose/bacterial leaf spot conditions [S3].
+
+If soil_moisture_pct >80% + poor drainage reported:
+→ Drainage intervention; Phytophthora/Pythium risk (chilli_wilt_damping_off) [S4].
+
+CORPUS RULE: These are guiding principles. Actual irrigation depends on soil type, variety, season, and real-time sensor data. KVK consultation recommended.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, UHS Bagalkote drip studies, IIHR provide Karnataka-specific guidance.
+- UNAVAILABLE: Soil_moisture_pct sensor thresholds for all Karnataka soil types.
+- UNAVAILABLE: Real-time IW/CPE from sensor data.
+- (WEAK, IN) International studies included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Chilli; [S2] UHS Bagalkote, Chilli drip irrigation research; [S3] 13_chilli_anthracnose_dieback_fruit_rot, chilli_bacterial_leaf_spot; [S4] chilli_wilt_damping_off.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] UHS Bagalkote, Chilli irrigation and water use efficiency research, https://uhsbagalkote.karnataka.gov.in/research
+[S3] 13_chilli_anthracnose_dieback_fruit_rot; chilli_bacterial_leaf_spot
+[S4] chilli_wilt_damping_off

@@ -1,0 +1,102 @@
+DOC_ID: pest_fruit_borer
+TITLE: Fruit borers and pod borers - weather relationships, sensor conditions, and field signs
+CROPS: tomato; chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; sunlight_wm2; leaf_wet
+EMBED: yes
+
+CORPUS NOTE: This document covers tomato fruit borer (Helicoverpa armigera) and chilli pod borer (Helicoverpa armigera, Spodoptera litura). Same species complex; different crop names. Sensor conditions indicate moth activity and egg-laying risk.
+
+CORPUS RULE: Sensors show conditions that favour pest activity and oviposition. They do not confirm infestation. Field scouting for eggs, larvae, and damage required. KVK confirmation recommended.
+
+IDENTIFICATION
+- (OBS, KA) Helicoverpa armigera (American bollworm / tomato fruit borer / chilli pod borer) - major pest of tomato and chilli in Karnataka [S1][S2].
+- (OBS, KA) Spodoptera litura (tobacco caterpillar / chilli leaf-eating caterpillar) - secondary pest, feeds on leaves and pods [S2].
+- (OBS, KA) Both are nocturnal moths; larvae bore into fruits/pods causing direct yield loss [S1][S2].
+
+KARNATAKA WEATHER & SENSOR CONDITIONS FAVOURING ACTIVITY
+
+Helicoverpa armigera (Fruit/Pod Borer):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 25-30°C for development; generation time ~28 days at 27°C [S1].
+- (FAV, KA) IIHR Bengaluru: Moth flight and oviposition peak at 25-28°C, humidity 60-75% [S2].
+- (FAV, KA) UAS Bengaluru: Low rainfall, clear nights favour moth flight; heavy rain washes off eggs/young larvae [S1].
+- (FAV, IN) TNAU/NIPHM: Temperature 27-30°C, humidity 65-75%, low wind favour oviposition [S3].
+- (FAV, INTL) High sunlight_wm2 during day + clear nights = high moth activity [S4].
+
+Spodoptera litura (Leaf-eating Caterpillar):
+- (FAV, KA) UAS Bengaluru: Optimal temperature 25-30°C; survives 12-35°C [S1].
+- (FAV, KA) IIHR Bengaluru: Favours high humidity (>80%) and moderate temperatures (25-28°C) [S2].
+- (FAV, KA) Outbreaks often follow dry spell after heavy rain [S1].
+- (FAV, IN) TNAU: Temperature 26-30°C, humidity 75-85% favour rapid development [S3].
+
+SEASONAL ACTIVITY (KARNATAKA)
+
+Kharif (Jun-Oct):
+- (OBS, KA) Helicoverpa: Moderate; peaks in late kharif (Sep-Oct) on tomato/chilli [S1].
+- (OBS, KA) Spodoptera: Builds up in Aug-Sep; leaf feeding damage visible [S2].
+
+Rabi (Oct-Feb):
+- (OBS, KA) Helicoverpa: HIGH activity (Nov-Jan) on rabi tomato/chilli; peak pod/fruit damage [S1][S2].
+- (OBS, KA) Spodoptera: Moderate; declines in cool months (Dec-Jan) [S2].
+
+Summer (Feb-May):
+- (OBS, KA) Helicoverpa: HIGH activity (Mar-Apr) on summer tomato/chilli [S1].
+- (OBS, KA) Spodoptera: Low; heat suppresses [S2].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+
+Helicoverpa armigera:
+- (INSP, KA) Pheromone traps (Helilure): 5-10 traps/ha; monitor male moth catches [S1][S2].
+- (INSP, KA) Eggs: Spherical, creamy-white, laid singly on flower buds, young fruit, leaves [S1].
+- (INSP, KA) Larvae: Variable colour (green, brown, pink); distinct dark stripes; bore into fruit/pod [S1][S2].
+- (INSP, KA) Damage: Circular entry holes with frass; internal feeding; premature fruit drop [S1].
+- (INSP, KA) Check 10-20 plants/acre; count damaged fruits/pods [S2].
+
+Spodoptera litura:
+- (INSP, KA) Egg masses: Covered with hair scales, laid on underside of leaves [S2].
+- (INSP, KA) Larvae: Gregarious young larvae (scrape leaf surface); solitary older larvae (defoliate) [S2].
+- (INSP, KA) Damage: Skeletonized leaves, irregular holes in pods, frass accumulation [S2].
+
+MANAGEMENT (CULTURAL, BIOLOGICAL, MECHANICAL - NO CHEMICAL DOSES)
+- (OBS, KA) Pheromone trapping: Helicoverpa (Helilure), Spodoptera (Spodolure) - monitoring + mass trapping [S1][S2].
+- (OBS, KA) Light traps: 1 trap/ha for adult monitoring [S1].
+- (OBS, KA) Bird perches: 10-15/ha attract insectivorous birds [S1].
+- (OBS, KA) Natural enemies: Trichogramma spp. (egg parasitoids); Bracon, Campoletis (larval parasitoids); NPV (nucleopolyhedrovirus) [S1][S2].
+- (OBS, KA) Neem seed kernel extract (NSKE) 5%; Bacillus thuringiensis (Bt) formulations; consult KVK [S1].
+- (OBS, KA) Deep summer ploughing exposes pupae [S1].
+- (OBS, KA) Remove and destroy infested fruits/pods [S2].
+- (OBS, KA) Intercropping with marigold, coriander reduces oviposition [S2].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Helicoverpa oviposition risk HIGH:
+- temperature_c 25-28°C (night) + humidity_pct 60-75% + low rainfall_mm + clear nights (high sunlight_wm2 day) + rabi/summer season [S1][S2].
+
+Helicoverpa oviposition risk MODERATE:
+- temperature_c 22-25°C or 28-32°C + humidity_pct 50-60% or 75-85% [S1][S2].
+
+Spodoptera risk HIGH:
+- temperature_c 25-28°C + humidity_pct >80% + recent rainfall_mm followed by dry spell [S2].
+
+Both species risk LOW:
+- Heavy rainfall_mm (washes eggs/larvae) + temperature_c <15°C or >35°C [S1][S2].
+
+Peak damage risk:
+- Helicoverpa: Fruit/pod formation stage (50-90 DAT) + HIGH oviposition risk conditions [S1].
+- Spodoptera: Vegetative to early fruiting stage + HIGH risk conditions [S2].
+
+CORPUS RULE: These are conditions that favour pest activity. They do not confirm infestation. Field scouting with pheromone traps and plant inspection required. KVK confirmation for species identification.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR technical bulletins provide Karnataka seasonal dynamics.
+- UNAVAILABLE: Karnataka-specific degree-day models for Helicoverpa/Spodoptera forecasting.
+- UNAVAILABLE: Sensor thresholds for economic threshold levels (ETL).
+- (WEAK, IN) TNAU/NIPHM temperature-humidity ranges included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops; [S2] IIHR Bengaluru, Technical bulletins on fruit/pod borer management; [S3] TNAU Agritech / NIPHM Vikaspedia; [S4] International pest ecology literature.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Technical Bulletin on Fruit Borer Management, https://www.iihr.res.in/publications
+[S3] TNAU Agritech, Helicoverpa armigera management, https://agritech.tnau.ac.in/crop_protection/
+[S4] CABI Invasive Species Compendium, Helicoverpa armigera / Spodoptera litura

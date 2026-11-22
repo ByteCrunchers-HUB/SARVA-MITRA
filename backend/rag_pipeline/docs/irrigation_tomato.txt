@@ -1,0 +1,118 @@
+DOC_ID: irrigation_tomato
+TITLE: Tomato irrigation and drainage - Karnataka guidance by crop stage and soil type
+CROPS: tomato
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; sunlight_wm2; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document provides irrigation scheduling and drainage guidance for tomato in Karnataka. Sensor soil_moisture_pct is volumetric water content (%). Research uses IW/CPE, % field capacity, kPa. Always confirm units. No product names, doses, or schedules - only principles.
+
+CORPUS RULE: No universal irrigation threshold exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+IDENTIFICATION
+- (OBS, KA) Tomato is grown in three seasons in Karnataka: kharif (Jun-Oct), rabi (Oct-Feb), summer (Feb-May) [S1].
+- (OBS, KA) Major districts: Kolar, Chikkaballapur, Bengaluru Rural, Belagavi, Dharwad, Haveri, Chitradurga [S1].
+- (OBS, KA) UAS Bengaluru Package of Practices, UHS Bagalkote, IIHR Bengaluru provide Karnataka-specific irrigation guidance [S1][S2][S3].
+
+KARNATAKA IRRIGATION SCHEDULING (UAS/UHS/IIHR)
+
+General Principle:
+- (OBS, KA) Irrigate at 0.8-1.0 IW/CPE ratio (Irrigation Water / Cumulative Pan Evaporation) for most stages [S1].
+- (OBS, KA) UHS Bagalkote: Drip irrigation at 80% CPE + polythene mulch gives highest yield & water use efficiency [S2].
+- (OBS, KA) Critical stages for moisture stress: flowering, fruit set, fruit development [S1][S2].
+
+Crop Stage Guidance:
+
+Transplanting to Establishment (0-15 DAT):
+- (FAV, KA) Frequent light irrigation to maintain 75-80% field capacity (FC) [S1][S2].
+- (FAV, KA) Drip: daily 20-30 min (2-3 L/plant/day) depending on soil [S2].
+- (FAV, KA) Avoid waterlogging - favours bacterial wilt (09) and damping-off (11) [S1].
+
+Vegetative Growth (15-40 DAT):
+- (FAV, KA) Irrigate at 0.6-0.8 IW/CPE; allow mild depletion to 55-60% FC for deep rooting [S1][S2].
+- (FAV, KA) Drip: alternate day, 30-45 min (4-5 L/plant/day) [S2].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~45-55% volumetric [S2].
+
+Flowering & Fruit Set (40-70 DAT) - MOST CRITICAL:
+- (FAV, KA) Maintain 70-75% FC consistently; NO moisture stress [S1][S2].
+- (FAV, KA) Irrigate at 0.8-1.0 IW/CPE; daily drip irrigation [S1][S2].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~55-65% volumetric [S2].
+- (FAV, KA) Fluctuations trigger blossom-end rot (18) [S3].
+- (FAV, KA) High soil moisture + high humidity favours foliar diseases (03, 04, 05, 06, 07) [S1].
+
+Fruit Development (70-100 DAT):
+- (FAV, KA) Reduce to 65-70% FC; mild deficit can improve fruit quality (Brix) [S2].
+- (FAV, KA) Irrigate at 0.6-0.8 IW/CPE [S1].
+- (FAV, KA) Soil_moisture_pct target on sandy loam: ~50-60% volumetric [S2].
+
+Maturity to Harvest (100+ DAT):
+- (FAV, KA) Reduce further to 60% FC; stop irrigation 7-10 days before final harvest [S1].
+- (FAV, KA) Improves fruit firmness and shelf life [S2].
+
+SOIL TYPE ADJUSTMENTS (KARNATAKA)
+
+Red Sandy Loam (Bengaluru, Kolar, Chikkaballapur, Chitradurga):
+- (OBS, KA) Low water holding capacity (~22% FC, ~8% WP volumetric) [S2].
+- (FAV, KA) Frequent, low-volume irrigation; drip essential [S1][S2].
+- (FAV, KA) Mulching critical to reduce evaporation [S2].
+
+Black Cotton Soil (North Karnataka - Bidar, Kalaburagi, Vijayapura):
+- (OBS, KA) High water holding capacity (~35% FC, ~18% WP) [S1].
+- (FAV, KA) Longer intervals, deeper irrigation; avoid cracking [S1].
+- (FAV, KA) Drip lateral spacing wider (1.2-1.5 m) [S2].
+
+Laterite Soil (Coastal - Dakshina Kannada, Udupi):
+- (OBS, KA) Rapid drainage, low retention [S1].
+- (FAV, KA) Very frequent irrigation; drip with higher flow rate [S1].
+- (FAV, KA) Organic matter addition improves retention [S1].
+
+IRRIGATION METHOD RECOMMENDATIONS
+
+Drip Irrigation (RECOMMENDED):
+- (OBS, KA) UHS Bagalkote: 80% CPE + mulch = highest yield, 30-40% water saving vs flood [S2].
+- (OBS, KA) Keeps foliage dry - reduces late blight (03), early blight (04), bacterial leaf spot (08), gray mold (07) [S1].
+- (OBS, KA) Enables fertigation - precise nutrient delivery [S2].
+
+Furrow / Flood (NOT RECOMMENDED):
+- (FAV, KA) Increases leaf wetness, disease spread, water loss [S1].
+- (FAV, KA) Uneven distribution on sandy soils [S1].
+
+Sprinkler (LIMITED USE):
+- (FAV, KA) Only for establishment; switch to drip before flowering [S1].
+- (FAV, KA) Increases foliar disease risk [S1].
+
+DRAINAGE GUIDANCE
+- (OBS, KA) Raised beds (15-20 cm) essential in heavy rainfall areas (Malenadu, Coastal) [S1].
+- (OBS, KA) Field slope 0.5-1% for surface drainage [S1].
+- (OBS, KA) Subsurface drainage (tiles) in waterlogged black soils [S1].
+- (FAV, KA) Poor drainage + high soil moisture = bacterial wilt (09), Phytophthora, Pythium risk [S1][S4].
+
+SENSOR-BASED IRRIGATION DECISIONS
+
+If soil_moisture_pct <40% (sandy loam) at vegetative stage:
+→ Irrigate immediately; moisture stress reduces vegetative growth [S2].
+
+If soil_moisture_pct <50% (sandy loam) at flowering/fruit set:
+→ URGENT irrigation; blossom-end rot and flower drop risk [S2][S3].
+
+If soil_moisture_pct >70% (sandy loam) sustained + rainfall_mm forecast:
+→ Skip irrigation; monitor for disease-favouring conditions [S1].
+
+If soil_moisture_pct >80% + poor drainage reported:
+→ Drainage intervention needed; bacterial wilt (09) risk [S4].
+
+CORPUS RULE: These are guiding principles. Actual irrigation depends on soil type, variety, season, and real-time sensor data. KVK consultation recommended for farm-specific scheduling.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, UHS Bagalkote drip studies, IIHR provide Karnataka-specific guidance.
+- UNAVAILABLE: Soil_moisture_pct sensor thresholds calibrated for all Karnataka soil types.
+- UNAVAILABLE: Real-time IW/CPE calculation from sensor data.
+- (WEAK, IN) International deficit irrigation studies (California) included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Tomato; [S2] UHS Bagalkote, Tomato drip irrigation and mulching research; [S3] IIHR Bengaluru, Tomato production technology; [S4] 09_bacterial_wilt_ralstonia.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] UHS Bagalkote, Tomato irrigation and water use efficiency research, https://uhsbagalkote.karnataka.gov.in/research
+[S3] IIHR Bengaluru, Tomato Production Technology, https://www.iihr.res.in/publications
+[S4] 09_bacterial_wilt_ralstonia

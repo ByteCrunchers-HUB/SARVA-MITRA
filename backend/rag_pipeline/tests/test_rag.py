@@ -18,10 +18,10 @@ class SimplifiedRAGTests(unittest.TestCase):
         self.assertIn("/v1/advisory", paths)
         self.assertIn("/advisory", paths)
 
-    def test_legacy_advisory_endpoint_is_deprecated(self) -> None:
+    def test_legacy_advisory_endpoint_is_normal(self) -> None:
         from backend.rag_pipeline.app import app
         operation = app.openapi()["paths"]["/advisory"]["post"]
-        self.assertTrue(operation["deprecated"])
+        self.assertFalse(operation.get("deprecated", False))
 
     def test_embedding_model_is_exposed_by_health(self) -> None:
         from backend.rag_pipeline.app import health
@@ -38,13 +38,34 @@ class SimplifiedRAGTests(unittest.TestCase):
             "08_tomato_bacterial_leaf_spot.txt",
             "tomato_blight_leafspot_comparison.txt",
             "chilli_bacterial_leaf_spot.txt",
-            "chilli_heat_stress.txt",
+            "chilli_heat_ka.txt",
             "ragi_blast_detailed.txt",
             "tomato_soil_moisture_bands.txt",
+            "chilli_soil_moisture_ka.txt",
+            "ragi_soil_moisture_ka.txt",
+            "pest_aphids_thrips.txt",
+            "pest_whitefly.txt",
+            "irrigation_tomato.txt",
+            "irrigation_chilli.txt",
+            "irrigation_ragi.txt",
+            "crop_stage_tomato.txt",
+            "crop_stage_chilli.txt",
+            "crop_stage_ragi.txt",
+            "nutrient_discrimination.txt",
+            "stress_vs_disease.txt",
             "chilli_field_checklist.txt",
             "ragi_field_checklist.txt",
         ):
             self.assertTrue((docs / filename).is_file(), filename)
+
+    def test_superseded_claude_documents_are_removed(self) -> None:
+        docs = ROOT / "backend" / "rag_pipeline" / "docs"
+        for filename in (
+            "chilli_heat_stress.txt",
+            "chilli_soil_moisture_bands.txt",
+            "ragi_soil_moisture_bands.txt",
+        ):
+            self.assertFalse((docs / filename).exists(), filename)
 
     def test_five_verified_scenarios_are_documented(self) -> None:
         guide = ROOT / "backend" / "rag_pipeline" / "PIPELINE_GUIDE.md"

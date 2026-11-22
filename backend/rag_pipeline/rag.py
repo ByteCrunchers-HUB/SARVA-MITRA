@@ -81,23 +81,58 @@ def crop_specific_parent_ids(crop: str) -> list[str]:
             "tomato_soil_moisture_bands",
             "tomato_nutrient_deficiencies",
             "tomato_blight_leafspot_comparison",
+            "crop_stage_tomato",
+            "irrigation_tomato",
+            "stress_vs_disease",
         ]
     if "chilli" in crop_name or "chili" in crop_name:
         return [
             "chilli_field_checklist",
-            "chilli_soil_moisture_bands",
+            "chilli_soil_moisture_ka",
             "chilli_nutrient_deficiencies",
-            "chilli_heat_stress",
+            "chilli_heat_ka",
             "chilli_viral_diseases",
             "chilli_wilt_damping_off",
             "chilli_bacterial_leaf_spot",
+            "crop_stage_chilli",
+            "irrigation_chilli",
+            "stress_vs_disease",
         ]
     if "ragi" in crop_name or "finger millet" in crop_name:
         return [
             "ragi_field_checklist",
-            "ragi_soil_moisture_bands",
+            "ragi_soil_moisture_ka",
             "ragi_blast_detailed",
             "ragi_foliar_comparison",
+            "crop_stage_ragi",
+            "irrigation_ragi",
+            "stress_vs_disease",
+        ]
+    return []
+
+
+def low_risk_crop_parent_ids(crop: str) -> list[str]:
+    crop_name = crop.lower()
+    if "tomato" in crop_name:
+        return [
+            "tomato_field_checklist",
+            "tomato_soil_moisture_bands",
+            "19_heat_stress_fruit_set_tomato",
+            "irrigation_tomato",
+        ]
+    if "chilli" in crop_name or "chili" in crop_name:
+        return [
+            "chilli_field_checklist",
+            "chilli_soil_moisture_ka",
+            "chilli_heat_ka",
+            "irrigation_chilli",
+        ]
+    if "ragi" in crop_name or "finger millet" in crop_name:
+        return [
+            "ragi_field_checklist",
+            "ragi_soil_moisture_ka",
+            "irrigation_ragi",
+            "crop_stage_ragi",
         ]
     return []
 
@@ -156,7 +191,7 @@ class RAGPipeline:
                     "19_heat_stress_fruit_set_tomato",
                     "20_soil_salinity_ec_tomato",
                 ]
-                parent_ids.extend(crop_specific_parent_ids(crop))
+                parent_ids.extend(low_risk_crop_parent_ids(crop))
             else:
                 try:
                     from langchain_mongodb import MongoDBAtlasVectorSearch
@@ -212,6 +247,28 @@ class RAGPipeline:
                 if any(key in readings for key in ("soil_moisture_pct", "soil_moisture")):
                     parent_ids.append("21_soil_moisture_effects_by_disease")
                 parent_ids.extend(crop_specific_parent_ids(crop))
+                if "tomato" in crop.lower():
+                    parent_ids.extend([
+                        "pest_whitefly",
+                        "pest_fruit_borer",
+                        "pest_armyworm_mite",
+                        "viral_vector_confirmation",
+                        "nutrient_discrimination",
+                    ])
+                if "chilli" in crop.lower() or "chili" in crop.lower():
+                    parent_ids.extend([
+                        "pest_aphids_thrips",
+                        "pest_whitefly",
+                        "pest_fruit_borer",
+                        "pest_armyworm_mite",
+                        "viral_vector_confirmation",
+                        "nutrient_discrimination",
+                    ])
+                if "ragi" in crop.lower() or "finger millet" in crop.lower():
+                    parent_ids.extend([
+                        "pest_aphids_thrips",
+                        "pest_armyworm_mite",
+                    ])
                 if "ragi" in crop.lower() or "finger millet" in crop.lower():
                     parent_ids.extend(["15_ragi_blast", "16_ragi_weather_uas_bengaluru_tables"])
 

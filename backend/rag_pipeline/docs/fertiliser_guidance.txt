@@ -1,0 +1,102 @@
+DOC_ID: fertiliser_guidance
+TITLE: Fertiliser and soil amendment guidance - principles for tomato, chilli, and ragi in Karnataka
+CROPS: tomato; chilli; ragi (finger millet)
+SENSOR_SIGNALS: soil_ec_dsm; soil_moisture_pct; temperature_c
+EMBED: yes
+
+CORPUS NOTE: This document provides fertiliser and soil amendment principles only. NO product names, doses, mixing ratios, or spray schedules. All quantities and timings must be obtained from KVK or agriculture officer based on soil test. Refer chemical decisions to local KVK.
+
+CORPUS RULE: Sensors show conditions (soil EC, moisture) that affect nutrient availability. They do not replace soil testing. Soil test before every season is essential.
+
+IDENTIFICATION
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR Bengaluru, and KVK network provide crop-specific fertiliser recommendations for Karnataka [S1][S2].
+- (OBS, KA) Recommendations are soil-test-based and vary by district, soil type, season, and variety [S1].
+- (OBS, KA) Integrated Nutrient Management (INM) - combining organic, inorganic, and biofertilisers - is the standard approach [S1][S2].
+
+GENERAL PRINCIPLES (ALL CROPS)
+
+Soil Testing:
+- (OBS, KA) Test soil every season (pre-sowing/transplanting) for pH, EC, OC, N, P, K, S, Zn, Fe, Mn, Cu, B [S1].
+- (OBS, KA) Karnataka Soil Health Card portal provides village-level fertility maps [S3].
+- (OBS, KA) Sensor soil_ec_dsm trends can indicate salinity buildup between tests [S2].
+
+Organic Manures (Baseline):
+- (OBS, KA) FYM / compost: 10-25 t/ha depending on crop; improves soil structure, water holding, microbial activity [S1][S2].
+- (OBS, KA) Green manuring (dhaincha, sunhemp) before kharif ragi/tomato adds N and organic matter [S1].
+- (OBS, KA) Vermicompost, poultry manure: concentrated sources; use based on nutrient content [S2].
+
+Biofertilisers (Soil Health):
+- (OBS, KA) Azotobacter / Azospirillum (N-fixing): seed/seedling treatment for all crops [S1][S2].
+- (OBS, KA) PSB (Phosphate solubilising bacteria): all crops, especially in P-fixing soils [S1].
+- (OBS, KA) KSB (Potash solubilising bacteria): tomato, chilli [S2].
+- (OBS, KA) Blue-green algae (Nostoc, Anabaena): for ragi in wet conditions [S1].
+- (OBS, KA) Trichoderma / Pseudomonas: seed treatment for disease suppression + growth promotion [S1][S2].
+
+Inorganic Fertilisers (Supplement based on Soil Test):
+- (OBS, KA) Apply ONLY what soil test recommends; avoid blanket recommendations [S1].
+- (OBS, KA) Split N application: 50% basal + 25% at early vegetative + 25% at flowering/fruit set [S1].
+- (OBS, KA) P & K: mostly basal; K can be split for tomato/chilli fruit quality [S1][S2].
+- (OBS, KA) Micronutrients (Zn, Fe, B): soil application if deficient; foliar if soil pH limits uptake [S1][S2].
+
+Soil Amendments (pH/EC Correction):
+- (OBS, KA) Acidic soils (pH <5.5, common in Malenadu): Lime (CaCO3) 2-5 t/ha based on LR test [S1].
+- (OBS, KA) Sodic soils (ESP >15, North Karnataka): Gypsum (CaSO4) 2-10 t/ha based on ESP [S1].
+- (OBS, KA) Saline soils (HIGH soil_ec_dsm): Leaching with good quality water; organic matter; salt-tolerant varieties [S1][S2].
+- (OBS, KA) Sensor soil_ec_dsm rising trend = monitor salinity buildup; leach if >crop threshold [S2].
+
+CROP-SPECIFIC GUIDANCE (KA PRINCIPLES)
+
+Tomato:
+- (OBS, KA) High N demand; split application critical [S1].
+- (OBS, KA) Ca supplementation (gypsum/calcium nitrate) for BER prevention in prone varieties/soils [S1][S2].
+- (OBS, KA) K critical for fruit quality (colour, firmness, shelf life) [S1].
+- (OBS, KA) Avoid excess N during fruiting - increases disease (03, 04, 06, 07) [S1].
+
+Chilli:
+- (OBS, KA) Moderate N; excess delays flowering, reduces pungency [S1].
+- (OBS, KA) K critical for pungency, colour, dry matter [S1][S2].
+- (OBS, KA) Ca for BER prevention; S for pungency compounds [S1].
+- (OBS, KA) Micronutrients (Zn, Fe, B) often needed in Karnataka soils [S1].
+
+Ragi:
+- (OBS, KA) Low nutrient demand compared to vegetables [S1].
+- (OBS, KA) N: modest (40-60 kg/ha); split 50% basal + 50% at tillering [S1].
+- (OBS, KA) P: critical for root/tiller development; basal [S1].
+- (OBS, KA) Zn: ESSENTIAL in Karnataka alkaline soils (North Karnataka) - "khaira disease" prevention [S1][S3].
+- (OBS, KA) Fe: foliar in high pH soils [S1].
+
+FERTIGATION (DRIP-IRRIGATED TOMATO/CHILLI)
+- (OBS, KA) UHS Bagalkote: Fertigation increases nutrient use efficiency 30-50% [S2].
+- (OBS, KA) Weekly/biweekly nutrient solution based on crop stage [S2].
+- (OBS, KA) EC of fertigation solution: monitor to avoid salt buildup (target <2.5 dS/m tomato) [S2][20].
+- (OBS, KA) pH of solution: 5.5-6.5 for optimal uptake [S2].
+
+SENSOR LINKS TO FERTILISER MANAGEMENT
+
+Rising soil_ec_dsm trend:
+→ Possible salt buildup from over-fertilisation or saline irrigation; leach, reduce fertiliser EC [S2][20].
+
+Low soil_moisture_pct sustained:
+→ Reduced nutrient diffusion/mass flow; N, Ca, Mg, S uptake limited [S2].
+
+High soil_moisture_pct sustained:
+→ Leaching of N, K, S; denitrification (N loss); anaerobic conditions [S2].
+
+High temperature_c + high soil_moisture_pct:
+→ Rapid mineralisation but also rapid loss; split N more frequently [S2].
+
+CORPUS RULE: These are principles. Actual fertiliser type, rate, and timing MUST come from KVK/agriculture officer based on soil test. No product names or doses in this corpus.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, IIHR technical bulletins, KVK advisories provide Karnataka-specific guidance.
+- UNAVAILABLE: Sensor-based fertiliser decision rules (requires soil test).
+- UNAVAILABLE: Real-time nutrient availability from sensor data alone.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops / Millets; [S2] UHS Bagalkote / IIHR Bengaluru, Fertigation and INM research; [S3] Karnataka Soil Health Card Portal.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] UHS Bagalkote, Research on fertigation and nutrient management, https://uhsbagalkote.karnataka.gov.in/research
+[S3] Karnataka Soil Health Card Portal, https://soilhealth.karnataka.gov.in
+[S4] 20_soil_salinity_ec_tomato

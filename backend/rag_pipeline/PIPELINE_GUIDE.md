@@ -60,8 +60,8 @@ Endpoints:
 
 - `GET /health`
 - `POST /v1/advisory`
-- `POST /advisory` (legacy compatibility alias; deprecated)
-- `POST /predict-and-advice` (demo convenience; deprecated)
+- `POST /advisory` (compatibility alias)
+- `POST /predict-and-advice` (combined demo convenience endpoint)
 
 Example request:
 
