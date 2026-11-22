@@ -44,7 +44,10 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
-        extra="ignore"
+        extra="ignore",
+        # Allow the model_location_* configuration fields without Pydantic
+        # treating the "model_" prefix as a reserved model method namespace.
+        protected_namespaces=("settings_",),
     )
 
 
