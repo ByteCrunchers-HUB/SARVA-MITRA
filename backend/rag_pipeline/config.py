@@ -48,3 +48,9 @@ GROQ_API_KEYS = [
     )
     if value and value.strip() and "replace_with_" not in value
 ]
+
+# Ollama / OpenAI-compatible configuration
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY") or os.getenv("OLLAMA_KEY")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "https://ollama.com/v1").rstrip("/")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "deepseek-v4.1-flash")
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama" if OLLAMA_API_KEY else "groq").lower()

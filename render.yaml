@@ -1,23 +1,16 @@
 services:
+  # ---------------------------------------------------------
+  # 1. Interactive Streamlit Web UI
+  # ---------------------------------------------------------
   - type: web
-    name: sarva-mitra-ml
+    name: sarva-mitra-ui
     runtime: docker
-    dockerfilePath: backend/ml_engine/Dockerfile
-    dockerContext: backend/ml_engine
+    dockerfilePath: frontend/Dockerfile
+    dockerContext: .
     plan: free
-    healthCheckPath: /health
     envVars:
       - key: SARVA_MODEL_PATH
-        value: models/sarva_mitra_risk_model.joblib
-
-  - type: web
-    name: sarva-mitra-rag
-    runtime: docker
-    dockerfilePath: backend/rag_pipeline/Dockerfile
-    dockerContext: backend/rag_pipeline
-    plan: free
-    healthCheckPath: /health
-    envVars:
+        value: backend/ml_engine/models/sarva_mitra_risk_model.joblib
       - key: MONGODB_DATABASE
         value: soil-rag-db
       - key: MONGODB_COLLECTION
@@ -26,19 +19,61 @@ services:
         value: rag_vector_index
       - key: RAG_EMBEDDING_MODEL
         value: sentence-transformers/all-MiniLM-L6-v2
-      - key: RAG_EMBEDDING_DIMENSION
-        value: "384"
-      - key: FASTEMBED_CACHE_PATH
-        value: /app/.fastembed-cache
-      - key: RAG_USE_VECTOR_SEARCH
-        value: "true"
       - key: GROQ_MODEL
         value: openai/gpt-oss-120b
-      - key: ML_ENGINE_URL
-        sync: false
       - key: MONGODB_URI
         sync: false
       - key: GROQ_API_KEY
         sync: false
-      - key: HF_TOKEN
+      - key: GROQ_API_KEY_2
+        sync: false
+      - key: GROQ_API_KEY_3
+        sync: false
+      - key: WEATHERAPI_KEY
+        sync: false
+      - key: TOMORROW_IO_API_KEY
+        sync: false
+      - key: AGROMONITORING_API_KEY
+        sync: false
+      - key: OPENWEATHERMAP_API_KEY
+        sync: false
+
+  # ---------------------------------------------------------
+  # 2. Unified Backend API (FastAPI)
+  # ---------------------------------------------------------
+  - type: web
+    name: sarva-mitra-api
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: SARVA_MODEL_PATH
+        value: backend/ml_engine/models/sarva_mitra_risk_model.joblib
+      - key: MONGODB_DATABASE
+        value: soil-rag-db
+      - key: MONGODB_COLLECTION
+        value: soil-rag-collection
+      - key: MONGODB_VECTOR_INDEX
+        value: rag_vector_index
+      - key: RAG_EMBEDDING_MODEL
+        value: sentence-transformers/all-MiniLM-L6-v2
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: MONGODB_URI
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_API_KEY_2
+        sync: false
+      - key: GROQ_API_KEY_3
+        sync: false
+      - key: WEATHERAPI_KEY
+        sync: false
+      - key: TOMORROW_IO_API_KEY
+        sync: false
+      - key: AGROMONITORING_API_KEY
+        sync: false
+      - key: OPENWEATHERMAP_API_KEY
         sync: false
