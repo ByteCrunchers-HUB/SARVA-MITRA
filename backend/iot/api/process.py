@@ -1,7 +1,7 @@
 """
 Central orchestration endpoint (POST /api/process).
 Coordinates the full lifecycle:
-ESP32 -> Serial -> Weather -> Database -> 8-Day ML History -> ML Engine -> RAG Pipeline -> Frontend
+ESP32 -> Serial -> Weather -> Database -> History -> ML Engine -> RAG Advisory -> Frontend
 """
 
 import logging
@@ -10,9 +10,10 @@ from fastapi import APIRouter, Request, HTTPException
 
 from config import settings
 from database.sensor_repository import upsert_daily_record
+from schemas.ml_schema import MLCurrentReading
 from schemas.rag_schema import ProcessRequest, ProcessResponse
 from services.data_integration import build_ml_request, merge_sensor_and_weather
-from services.history_service import prepare_ml_history
+from services.history_service import prepare_ml_history, to_rag_history
 from services.ml_service import call_ml_engine, generate_mock_ml_response
 from services.rag_service import build_rag_request, call_rag_pipeline, generate_mock_rag_response
 from utils.validation import validate_date_format
@@ -29,11 +30,10 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     1. Read latest ESP32 sensor telemetry from PySerial receiver.
     2. Fetch environmental weather parameters from Open-Meteo.
     3. Persist daily combined record in SQLite.
-    4. Compile exactly 8 consecutive daily records (with deterministic duplication if needed).
-    5. Construct ML request and call independent ML Engine API.
-    6. Combine hardware data, weather context, and full ML prediction.
-    7. Forward combined context to the separate RAG Pipeline API.
-    8. Deliver the unified result to the frontend.
+    4. Compile consecutive daily history records.
+    5. Construct ML request and call ML Engine API (POST /predict).
+    6. Forward combined context + prediction to RAG Advisory API (POST /advisory).
+    7. Deliver the unified result to the frontend.
     """
     device_id = payload.device_id or settings.device_id
     target_date = payload.target_date or date.today().strftime("%Y-%m-%d")
@@ -46,6 +46,7 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
         "initiated_at": datetime.now(timezone.utc).isoformat(),
         "device_id": device_id,
         "target_date": target_date,
+        "crop": payload.crop,
         "warnings": []
     }
 
@@ -58,7 +59,7 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
         sensor_data = await receiver.get_latest_reading()
 
     if not sensor_data:
-        warning_msg = f"ESP32 hardware telemetry unavailable on {settings.serial_port}. Proceeding with historical/weather data."
+        warning_msg = f"ESP32 hardware telemetry unavailable on {settings.serial_port}. Proceeding with fallback/weather data."
         logger.warning(warning_msg)
         metadata["warnings"].append(warning_msg)
 
@@ -92,9 +93,9 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     await upsert_daily_record(
         device_id=device_id,
         date=target_date,
-        temperature=sensor_data.get("temperature") if sensor_data else None,
-        humidity=sensor_data.get("humidity") if sensor_data else None,
-        soil_moisture=sensor_data.get("soil_moisture") if sensor_data else None,
+        temperature=sensor_data.get("temperature") if sensor_data else 28.0,
+        humidity=sensor_data.get("humidity") if sensor_data else 60.0,
+        soil_moisture=sensor_data.get("soil_moisture") if sensor_data else 45.0,
         rainfall_mm=rainfall_val,
         sunlight_wm2=sunlight_val,
         leaf_wet_days=leaf_wet,
@@ -102,7 +103,7 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     )
 
     # --------------------------------------------------------------------------
-    # Step 4: Prepare Exactly 8 ML History Records
+    # Step 4: Prepare History Records
     # --------------------------------------------------------------------------
     try:
         ml_history = await prepare_ml_history(device_id=device_id, target_date=target_date)
@@ -112,16 +113,28 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
 
     metadata["ml_records_count"] = len(ml_history)
 
+    # Current sensed reading for ML engine (optional)
+    curr_reading = None
+    if sensor_data:
+        curr_reading = MLCurrentReading(
+            date=target_date,
+            soil_moisture_pct=float(sensor_data.get("soil_moisture", 45.0)),
+            air_temperature_c=float(sensor_data.get("temperature", 28.0)),
+            humidity_pct=float(sensor_data.get("humidity", 60.0)),
+            sunlight_wm2=sunlight_val,
+            rainfall_mm=rainfall_val
+        )
+
     # --------------------------------------------------------------------------
-    # Step 5: Construct and Send ML Request to Independent ML Engine
+    # Step 5: Construct and Send ML Request
     # --------------------------------------------------------------------------
     ml_request_obj = build_ml_request(
         device_id=device_id,
-        location_name=settings.location_name,
         lat=settings.latitude,
         lon=settings.longitude,
         target_date=target_date,
-        history_records=ml_history
+        history_records=ml_history,
+        current_reading=curr_reading
     )
 
     ml_response_data = None
@@ -140,8 +153,9 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
             metadata["warnings"].append(f"ML Engine API unavailable: {str(ml_err)}")
 
     # --------------------------------------------------------------------------
-    # Step 6 & 7: Construct Combined Payload & Call Separate RAG Pipeline
+    # Step 6 & 7: Construct Combined Payload & Call RAG Advisory API
     # --------------------------------------------------------------------------
+    rag_history = to_rag_history(ml_history)
     rag_request_obj = build_rag_request(
         device_id=device_id,
         lat=settings.latitude,
@@ -149,7 +163,10 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
         target_date=target_date,
         sensor_data=sensor_data,
         weather_data=weather_data,
-        ml_response=ml_response_data
+        ml_response=ml_response_data,
+        history_records=rag_history,
+        crop=payload.crop,
+        question=payload.question
     )
 
     rag_response_data = None

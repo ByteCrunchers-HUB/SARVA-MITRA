@@ -12,18 +12,18 @@ class Settings(BaseSettings):
     serial_baudrate: int = 115200
 
     # Geographic Location
-    latitude: float = 16.5062
-    longitude: float = 80.6480
+    latitude: float = 16.51
+    longitude: float = 80.52
     location_name: str = "Vijayawada"
 
     # External APIs
     weather_api_base_url: str = "https://archive-api.open-meteo.com/v1/archive"
     weather_forecast_url: str = "https://api.open-meteo.com/v1/forecast"
-    ml_api_url: str = "http://localhost:8001/predict"
-    rag_api_url: str = "http://localhost:8002/rag/query"
+    ml_api_url: str = "https://sarva-mitra-ml.onrender.com/predict"
+    rag_api_url: str = "https://sarva-mitra-rag.onrender.com/advisory"
 
-    # Network Request Timeout (Seconds)
-    request_timeout: int = 30
+    # Network Request Timeout (Seconds) - 60s for Render free tier spin-up
+    request_timeout: int = 60
 
     # History Duplication Strategy for ML Input
     allow_duplicate_history: bool = True

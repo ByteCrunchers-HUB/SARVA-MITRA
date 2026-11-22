@@ -1,40 +1,64 @@
 """
 Pydantic schemas for communicating with the independent ML Engine API.
-Strictly conforms to the 8-record history requirement and full prediction response preservation.
+Conforms to the actual deployed API contract at https://sarva-mitra-ml.onrender.com/
 """
 
+from datetime import date as DateType
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
 
-class MLHistoryRecord(BaseModel):
+class MLDayRecord(BaseModel):
     """
-    Individual daily record required by the ML model.
-    Note: Air temperature and humidity are deliberately excluded from ML input history
-    per the exact ML engine contract specification.
+    One prior day's record. Maps to DayRecord in the ML Engine.
+    Static soil fields are optional; if omitted the ML engine fills them from its static table.
     """
     date: str = Field(..., description="Date formatted as YYYY-MM-DD")
-    soil_moisture_pct: float = Field(..., description="Soil moisture percentage")
-    sunlight_wm2: float = Field(..., description="Solar radiation in W/m²")
-    rainfall_mm: float = Field(..., description="Daily precipitation in mm")
-    leaf_wet_days: int = Field(default=0, description="Leaf wetness indicator/days")
+    soil_moisture_pct: float = Field(..., ge=0, le=100, description="Soil moisture percentage")
+    air_temperature_c: float = Field(..., ge=-20, le=60, description="Air temperature in Celsius")
+    humidity_pct: float = Field(..., ge=0, le=100, description="Relative humidity percentage")
+    sunlight_wm2: Optional[float] = Field(default=None, ge=0, le=500, description="Solar radiation in W/m²")
+    rainfall_mm: float = Field(default=0.0, ge=0, le=1000, description="Daily precipitation in mm")
+    # Static soil fields (optional - ML engine fills from its trained static table)
+    soil_ph: Optional[float] = Field(default=None, ge=3.5, le=9.5)
+    organic_carbon: Optional[float] = Field(default=None, ge=0, le=100)
+    clay_pct: Optional[float] = Field(default=None, ge=0, le=100)
+    sand_pct: Optional[float] = Field(default=None, ge=0, le=100)
+    silt_pct: Optional[float] = Field(default=None, ge=0, le=100)
+    elevation_m: Optional[float] = Field(default=None, ge=0, le=6000)
+
+
+class MLCurrentReading(BaseModel):
+    """
+    Today's live sensor reading. Maps to CurrentReading in the ML Engine.
+    The ML engine merges this as the last day of history.
+    """
+    date: Optional[str] = Field(default=None, description="Defaults to today in ML engine")
+    soil_moisture_pct: float = Field(..., ge=0, le=100)
+    air_temperature_c: float = Field(..., ge=-20, le=60)
+    humidity_pct: float = Field(..., ge=0, le=100)
+    sunlight_wm2: Optional[float] = Field(default=None, ge=0, le=500)
+    rainfall_mm: float = Field(default=0.0, ge=0, le=1000, description="Rain so far today, mm")
 
 
 class MLRequest(BaseModel):
     """
-    Payload constructed and sent to the independent ML Engine API.
-    Must contain exactly 8 daily history records.
+    Payload sent to the ML Engine POST /predict endpoint.
+    Must contain at least 7 consecutive daily history records.
+    Optionally includes today's live sensor reading in `current`.
     """
-    device_id: str = Field(..., description="Identifier of the field device")
-    location: str = Field(..., description="Geographic location name")
-    lat: float = Field(..., description="Latitude")
-    lon: float = Field(..., description="Longitude")
-    target_date: str = Field(..., description="Target prediction date (YYYY-MM-DD)")
-    history: List[MLHistoryRecord] = Field(
+    device_id: str = Field(..., min_length=1, max_length=64, description="Identifier of the field device")
+    lat: float = Field(..., ge=6, le=38, description="Latitude (Indian subcontinent range)")
+    lon: float = Field(..., ge=68, le=98, description="Longitude (Indian subcontinent range)")
+    target_date: Optional[str] = Field(default=None, description="Target prediction date (YYYY-MM-DD)")
+    history: List[MLDayRecord] = Field(
         ...,
-        min_length=8,
-        max_length=8,
-        description="Exactly 8 consecutive daily records required by ML engine"
+        min_length=7,
+        description="At least 7 consecutive prior daily records"
+    )
+    current: Optional[MLCurrentReading] = Field(
+        default=None,
+        description="Today's live sensor reading (merged as last day by ML engine)"
     )
 
 
@@ -54,17 +78,6 @@ class MLPrediction(BaseModel):
 class MLModelInfo(BaseModel):
     name: str = Field(..., description="Name of the machine learning model")
     trained_through: Optional[Any] = None
-
-
-class MLInputRecord(BaseModel):
-    date: Optional[str] = None
-    source: Optional[str] = None
-    soil_moisture_pct: Optional[float] = None
-    air_temperature_c: Optional[float] = None
-    humidity_pct: Optional[float] = None
-    sunlight_wm2: Optional[float] = None
-    rainfall_mm: Optional[float] = None
-    leaf_wet_days: Optional[int] = None
 
 
 class MLResponse(BaseModel):
