@@ -125,6 +125,86 @@ class SimplifiedRAGTests(unittest.TestCase):
             1,
         )
 
+    def test_risk_label_alias_maps_to_abnormality(self) -> None:
+        self.assertEqual(
+            rag_app.ml_output({"prediction": {"risk_label": "high", "risk_pct": 72}}, None),
+            1,
+        )
+
+    def test_backend_ml_envelope_is_accepted(self) -> None:
+        payload = {
+            "device_id": "ESP32_01",
+            "location": {"name": "Vijayawada", "lat": 16.51, "lon": 80.65},
+            "target_date": "2026-11-23",
+            "current_sensor_data": {
+                "temperature": 29.5,
+                "humidity": 68.0,
+                "soil_moisture": 86.0,
+            },
+            "weather_data": {
+                "rainfall_mm": 26.0,
+                "sunlight_wm2": 132.0,
+            },
+            "ml_response": {
+                "schema_version": "1.0",
+                "prediction": {
+                    "risk_pct": 72,
+                    "risk_label": "high",
+                    "risk_bands": {"low_max": 20, "moderate_max": 60},
+                    "index_type": "weather_based_proxy",
+                    "validated": False,
+                },
+            },
+        }
+        request = rag_app.AdvisoryRequest.model_validate(payload)
+
+        self.assertEqual(request.location.name, "Vijayawada")
+        self.assertEqual(request.current_sensor_data.soil_moisture, 86.0)
+        self.assertEqual(request.weather_data.rainfall_mm, 26.0)
+        self.assertEqual(
+            rag_app.ml_output(request.ml_response, request.ml_output),
+            1,
+        )
+
+    def test_backend_ml_envelope_reaches_rag_pipeline(self) -> None:
+        payload = {
+            "device_id": "ESP32_01",
+            "location": {"name": "Vijayawada", "lat": 16.51, "lon": 80.65},
+            "target_date": "2026-11-23",
+            "current_sensor_data": {
+                "temperature": 29.5,
+                "humidity": 68.0,
+                "soil_moisture": 86.0,
+            },
+            "weather_data": {
+                "rainfall_mm": 26.0,
+                "sunlight_wm2": 132.0,
+            },
+            "ml_response": {
+                "prediction": {
+                    "risk_pct": 72,
+                    "risk_label": "high",
+                },
+            },
+        }
+        with patch("backend.rag_pipeline.rag.RAGPipeline") as rag_pipeline:
+            rag_pipeline.return_value.answer.return_value = ("Advice", {})
+            rag_pipeline.return_value.last_retrieval = {
+                "query": "",
+                "matches": [],
+                "documents_sent": [],
+            }
+            result = rag_app.advisory(rag_app.AdvisoryRequest.model_validate(payload))
+
+        answer_args = rag_pipeline.return_value.answer.call_args.kwargs
+        self.assertEqual(result["ml_output"], 1)
+        self.assertEqual(answer_args["location"], "Vijayawada")
+        self.assertEqual(answer_args["readings"]["temperature_c"], 29.5)
+        self.assertEqual(answer_args["readings"]["humidity_pct"], 68.0)
+        self.assertEqual(answer_args["readings"]["soil_moisture_pct"], 86.0)
+        self.assertEqual(answer_args["readings"]["rainfall_mm"], 26.0)
+        self.assertEqual(answer_args["readings"]["sunlight_wm2"], 132.0)
+
     def test_chat_history_is_stateless_and_bounded(self) -> None:
         request = rag_app.AdvisoryRequest(
             chat_history=[

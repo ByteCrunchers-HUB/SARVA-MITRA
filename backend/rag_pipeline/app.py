@@ -52,9 +52,26 @@ class HistoryRecord(BaseModel):
     leaf_wet_days: int = Field(default=0, ge=0, le=1)
 
 
+class Location(BaseModel):
+    name: str | None = None
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+
+
+class CurrentSensorData(BaseModel):
+    temperature: float | None = None
+    humidity: float | None = None
+    soil_moisture: float | None = Field(default=None, ge=0, le=100)
+
+
+class WeatherData(BaseModel):
+    rainfall_mm: float | None = Field(default=None, ge=0)
+    sunlight_wm2: float | None = Field(default=None, ge=0)
+
+
 class AdvisoryRequest(BaseModel):
     device_id: str = "unknown-device"
-    location: str = "Karnataka"
+    location: str | Location = "Karnataka"
     lat: float | None = Field(default=None, ge=-90, le=90)
     lon: float | None = Field(default=None, ge=-180, le=180)
     target_date: date | None = None
@@ -63,6 +80,9 @@ class AdvisoryRequest(BaseModel):
     question: str = ""
     ml_output: int | None = Field(default=None, ge=0, le=1)
     ml_prediction: dict | None = None
+    ml_response: dict | None = None
+    current_sensor_data: CurrentSensorData | None = None
+    weather_data: WeatherData | None = None
     readings: dict = Field(default_factory=dict)
     chat_history: list[ChatMessage] = Field(default_factory=list)
     session_id: str | None = None
@@ -162,7 +182,9 @@ def ml_output(prediction: dict | None, explicit: int | None) -> int:
     if prediction.get("ml_output") in (0, 1):
         return prediction["ml_output"]
     nested = prediction.get("prediction", {})
-    level = str(nested.get("risk_level", "")).lower()
+    level = str(
+        nested.get("risk_level") or nested.get("risk_label") or ""
+    ).lower()
     if level in {"moderate", "high"}:
         return 1
     if level == "low":
@@ -173,19 +195,34 @@ def ml_output(prediction: dict | None, explicit: int | None) -> int:
     raise HTTPException(422, "ML prediction has no supported risk value")
 
 
+def location_name(location: str | Location) -> str:
+    if isinstance(location, Location):
+        return location.name or "unknown"
+    return location.strip() or "unknown"
+
+
+def location_coordinates(request: AdvisoryRequest) -> tuple[float | None, float | None]:
+    if isinstance(request.location, Location):
+        lat = request.lat if request.lat is not None else request.location.lat
+        lon = request.lon if request.lon is not None else request.location.lon
+        return lat, lon
+    return request.lat, request.lon
+
+
 def call_ml_engine(request: AdvisoryRequest) -> dict:
     if not request.history:
         raise HTTPException(422, "Provide ml_prediction or history")
-    if request.lat is None or request.lon is None:
+    lat, lon = location_coordinates(request)
+    if lat is None or lon is None:
         raise HTTPException(422, "lat and lon are required")
     target = request.target_date
     if target is None:
         target = max(row.date for row in request.history) + timedelta(days=1)
     payload = {
         "device_id": request.device_id,
-        "location": request.location,
-        "lat": request.lat,
-        "lon": request.lon,
+        "location": location_name(request.location),
+        "lat": lat,
+        "lon": lon,
         "target_date": target.isoformat(),
         "history": [
             row.model_dump(mode="json")
@@ -218,7 +255,9 @@ def call_ml_engine(request: AdvisoryRequest) -> dict:
 
 @app.post("/advisory")
 def advisory(request: AdvisoryRequest):
-    if request.ml_prediction is not None:
+    if request.ml_response is not None:
+        prediction = request.ml_response
+    elif request.ml_prediction is not None:
         prediction = request.ml_prediction
     elif request.ml_output in (0, 1):
         prediction = {
@@ -229,6 +268,20 @@ def advisory(request: AdvisoryRequest):
         prediction = call_ml_engine(request)
     output = ml_output(prediction, request.ml_output)
     readings = dict(request.readings)
+    if request.current_sensor_data is not None:
+        sensor = request.current_sensor_data
+        if sensor.temperature is not None:
+            readings["temperature_c"] = sensor.temperature
+        if sensor.humidity is not None:
+            readings["humidity_pct"] = sensor.humidity
+        if sensor.soil_moisture is not None:
+            readings["soil_moisture_pct"] = sensor.soil_moisture
+    if request.weather_data is not None:
+        weather = request.weather_data
+        if weather.rainfall_mm is not None:
+            readings["rainfall_mm"] = weather.rainfall_mm
+        if weather.sunlight_wm2 is not None:
+            readings["sunlight_wm2"] = weather.sunlight_wm2
     if request.history:
         latest = max(request.history, key=lambda row: row.date)
         readings.update({
@@ -241,7 +294,7 @@ def advisory(request: AdvisoryRequest):
     if isinstance(nested, dict):
         readings.update({
             "risk_pct": nested.get("risk_pct"),
-            "risk_level": nested.get("risk_level"),
+            "risk_level": nested.get("risk_level") or nested.get("risk_label"),
         })
 
     chat_history = [{"role": item.role, "content": item.content} for item in request.chat_history]
@@ -255,7 +308,7 @@ def advisory(request: AdvisoryRequest):
             readings=readings,
             ml_output=output,
             crop=request.crop.strip() or "unknown",
-            location=request.location.strip() or "unknown",
+            location=location_name(request.location),
             question=request.question.strip(),
             chat_history=chat_history,
             ml_prediction=prediction,
