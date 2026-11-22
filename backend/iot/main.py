@@ -4,8 +4,10 @@ API integration backend for dynamic farm-weather, ML, and RAG workflows.
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
@@ -88,6 +90,13 @@ app.include_router(process_router, prefix="/api")
 app.include_router(locations_router, prefix="/api")
 
 
+@app.get("/dashboard", include_in_schema=False)
+async def dashboard():
+    """Serve the same-origin UI for location-based farm analysis."""
+    page = Path(__file__).parent / "static" / "dashboard.html"
+    return FileResponse(page, media_type="text/html")
+
+
 @app.get("/", summary="Root Health Check & Welcome")
 async def root():
     """Root route returning service identity and health."""
@@ -95,6 +104,7 @@ async def root():
         "status": "online",
         "service": "Sarva Mitra Farm Intelligence API",
         "version": "1.0.0",
+        "dashboard": "/dashboard",
         "docs": "/docs",
         "health": "/api/health"
     }

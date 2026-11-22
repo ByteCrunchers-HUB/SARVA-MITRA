@@ -30,6 +30,9 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Open API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+Open the browser dashboard at [http://127.0.0.1:8000/dashboard](http://127.0.0.1:8000/dashboard).
+The dashboard is served by the backend and submits the selected location and crop
+to the same service's `POST /api/process` endpoint.
 
 ## Run an analysis
 
