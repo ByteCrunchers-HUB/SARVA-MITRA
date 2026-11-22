@@ -11,6 +11,7 @@
  *
  *  Communication Protocol:
  *   - JSON formatted telemetry emitted over USB Serial at 115200 baud
+ *   - Sensor readings also stored in ThingSpeak over secure HTTPS
  *   - Payload matches FastAPI backend schema (ESP32SensorReading)
  *   - Non-blocking loop using millis()
  *   - Multi-sample ADC averaging for stable soil moisture
@@ -19,6 +20,20 @@
  */
 
 #include <DHT.h>
+#include <string.h>
+#define TS_ENABLE_SSL
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+// Serial-only builds still work; add secrets.h to enable Wi-Fi cloud uploads.
+#define SECRET_SSID ""
+#define SECRET_PASS ""
+#define SECRET_CH_ID 0UL
+#define SECRET_WRITE_APIKEY ""
+#endif
+#include <ThingSpeak.h>
 
 // ========== PIN DEFINITIONS ==========
 #define DHT_PIN         27        // DHT11 Data Pin connected to GPIO 27
@@ -37,14 +52,15 @@
 // Number of analog samples to average for noise reduction
 #define ADC_SAMPLES     10
 
-// Telemetry interval in milliseconds (e.g., 5000ms = every 5 seconds)
-#define TELEMETRY_INTERVAL_MS 5000
+// ThingSpeak free channels accept updates no more frequently than every 15 seconds.
+#define TELEMETRY_INTERVAL_MS 20000
 
 // Device Identifier (must match DEVICE_ID in backend .env)
 const char* DEVICE_ID = "ESP32_01";
 
 // ========== HARDWARE INSTANCES ==========
 DHT dht(DHT_PIN, DHT_TYPE);
+WiFiClientSecure secureClient;
 
 // ========== STATE TRACKING ==========
 unsigned long lastTelemetryTime = 0;
@@ -80,6 +96,15 @@ void setup() {
 
   // Initialize DHT11 sensor
   dht.begin();
+
+  // Initialize Wi-Fi and the secure ThingSpeak client.
+  WiFi.mode(WIFI_STA);
+  ThingSpeak.begin(secureClient);
+  if (strlen(SECRET_SSID) > 0) {
+    WiFi.begin(SECRET_SSID, SECRET_PASS);
+  } else {
+    Serial.println("No secrets.h Wi-Fi credentials; running in USB Serial-only mode.");
+  }
 
   // Configure ESP32 12-bit ADC (values: 0 to 4095)
   analogReadResolution(12);
@@ -134,6 +159,25 @@ void loop() {
     Serial.print(",\"soil_moisture\":");
     Serial.print(soilMoisture);
     Serial.println("}");
+
+    // ThingSpeak field mapping: 1=temperature, 2=humidity, 3=soil moisture.
+    if (strlen(SECRET_SSID) > 0 && WiFi.status() != WL_CONNECTED) {
+      WiFi.begin(SECRET_SSID, SECRET_PASS);
+      Serial.println("Wi-Fi reconnect requested.");
+    } else if (WiFi.status() == WL_CONNECTED && SECRET_CH_ID != 0 && strlen(SECRET_WRITE_APIKEY) > 0) {
+      ThingSpeak.setField(1, temperature);
+      ThingSpeak.setField(2, humidity);
+      ThingSpeak.setField(3, soilMoisture);
+      int result = ThingSpeak.writeFields(SECRET_CH_ID, SECRET_WRITE_APIKEY);
+      if (result == 200) {
+        Serial.println("ThingSpeak telemetry stored successfully.");
+      } else {
+        Serial.print("ThingSpeak write failed, HTTP status: ");
+        Serial.println(result);
+      }
+    } else if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("Wi-Fi is not connected; telemetry remains available on USB Serial.");
+    }
 
     // Visual transmission heartbeat blink
     digitalWrite(STATUS_LED_PIN, HIGH);

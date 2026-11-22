@@ -1,7 +1,7 @@
 """
 Central orchestration endpoint (POST /api/process).
 Coordinates the full lifecycle:
-ESP32 -> Serial -> Weather -> Database -> History -> ML Engine -> RAG Advisory -> Frontend
+ESP32 -> Serial/ThingSpeak -> Weather -> Database -> History -> ML Engine -> RAG Advisory -> Frontend
 """
 
 import logging
@@ -16,6 +16,7 @@ from services.data_integration import build_ml_request, merge_sensor_and_weather
 from services.history_service import prepare_ml_history, to_rag_history
 from services.ml_service import call_ml_engine, generate_mock_ml_response
 from services.rag_service import build_rag_request, call_rag_pipeline, generate_mock_rag_response
+from services.thingspeak_service import fetch_latest_reading as fetch_thingspeak_reading
 from utils.validation import validate_date_format
 
 logger = logging.getLogger("smartfarm.process")
@@ -73,9 +74,14 @@ async def process_telemetry(payload: ProcessRequest, request: Request):
     sensor_data = None
     if receiver:
         sensor_data = await receiver.get_latest_reading()
+    if not sensor_data:
+        sensor_data = await fetch_thingspeak_reading()
 
     if not sensor_data:
-        warning_msg = f"ESP32 hardware telemetry unavailable on {settings.serial_port}. Proceeding with fallback/weather data."
+        warning_msg = (
+            "No ESP32 telemetry is available from Serial, HTTP ingestion, or ThingSpeak. "
+            "Proceeding with fallback/weather data."
+        )
         logger.warning(warning_msg)
         metadata["warnings"].append(warning_msg)
 

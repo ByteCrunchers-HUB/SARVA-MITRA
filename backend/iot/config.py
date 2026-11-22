@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     serial_port: str = "COM9"
     serial_baudrate: int = 115200
 
+    # Optional ThingSpeak cloud telemetry source.
+    thingspeak_channel_id: str = ""
+    thingspeak_read_api_key: str = ""
+    thingspeak_read_cache_seconds: int = 10
+
     # Geographic Location (Defaults to Vijayawada trained point)
     latitude: float = 16.51
     longitude: float = 80.52

@@ -118,10 +118,59 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
 ### Use the ESP32 with the Render deployment
 
-Render cannot read `COM9` on your Windows computer. The deployed API returns `503`
-from `GET /api/sensors/latest` until it receives a reading. Keep the backend
-deployed, connect the ESP32 to your computer, and run this forwarder from the
-`backend/iot` directory on that computer:
+For a direct cloud connection, use [ThingSpeak](https://thingspeak.com) as the
+telemetry store. The ESP32 sends sensor values to ThingSpeak over HTTPS, and the
+Render backend fetches the latest stored entry. Render cannot read `COM9` on your
+computer; keep the serial forwarder below as an alternative for USB-only use.
+
+#### 1. Create a ThingSpeak channel
+
+1. Create a ThingSpeak account and a channel named `SARVA-MITRA ESP32`.
+2. Add three numeric fields: **Temperature**, **Humidity**, and **Soil Moisture**.
+3. Keep the channel private. Copy the channel ID and its Write API Key for the
+   ESP32, and its Read API Key for Render.
+4. Free ThingSpeak channels accept an update every 15 seconds or slower; this
+   firmware sends one every 20 seconds.
+
+#### 2. Add Wi-Fi and ThingSpeak credentials to the ESP32 firmware
+
+1. Open `firmware/esp32_sensor_node` in Arduino IDE. Install the ESP32 board
+   support, the **DHT sensor library**, and the **ThingSpeak** library.
+2. Copy `secrets.example.h` to `secrets.h` in the same folder. Fill in your
+   2.4 GHz Wi-Fi name/password, channel ID, and Write API Key. Do not commit
+   `secrets.h`.
+3. Select your ESP32 board and COM port, then upload
+   `esp32_sensor_node.ino`. Open Serial Monitor at 115200 baud. It should print
+   `ThingSpeak telemetry stored successfully.` every 20 seconds.
+
+#### 3. Let Render read the channel
+
+In the Render service environment settings, set:
+
+```text
+ENABLE_SERIAL=false
+THINGSPEAK_CHANNEL_ID=<your channel ID>
+THINGSPEAK_READ_API_KEY=<your channel Read API Key>
+```
+
+Save the settings and redeploy. `GET /api/sensors/latest` and `POST /api/process`
+will use the latest ThingSpeak reading when no local Serial/HTTP reading is
+available. The backend caches cloud reads for 10 seconds to avoid fetching on
+every frontend poll. The ESP32 Write API Key stays on the device; the Read API
+Key stays in Render.
+
+#### 4. Verify the flow
+
+1. Confirm a new entry appears in the channel's **Private View** every 20 seconds.
+2. Open `https://sarva-mitra-0k9a.onrender.com/api/sensors/latest`.
+3. Confirm the response contains `"source":"thingspeak"` and the three field
+   values. The endpoint returns 503 until ThingSpeak has at least one complete
+   sensor entry.
+
+#### USB serial forwarding alternative
+
+If the ESP32 has no Wi-Fi access, connect it to your computer, close Arduino
+Serial Monitor, and run this from the `backend/iot` directory:
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -133,10 +182,6 @@ Monitor and any locally running backend first, since they can hold COM9 and stop
 the forwarder from opening it. The forwarder prints `[OK]` when Render accepts a
 reading. Then `/api/sensors/latest` returns the latest forwarded reading. If your
 Render service URL changes, replace it in the command.
-
-For the Render service environment, set `ENABLE_SERIAL=false`; the local
-forwarder owns COM9 and sends readings over HTTPS. This setting disables the
-cloud server's hardware polling; it does not disable `POST /api/sensors/data`.
 
 ---
 

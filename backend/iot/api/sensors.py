@@ -7,12 +7,13 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Request, HTTPException
 from config import settings
 from schemas.sensor_schema import ESP32SensorReading
+from services.thingspeak_service import fetch_latest_reading as fetch_thingspeak_reading
 from utils.validation import validate_sensor_ranges
 
 router = APIRouter(prefix="/sensors", tags=["Sensors"])
 
 
-@router.get("/latest", summary="Get latest ESP32 sensor telemetry")
+@router.get("/latest", summary="Get latest ESP32 sensor telemetry from local receiver or ThingSpeak")
 async def get_latest_sensors(request: Request):
     """
     Returns the most recent air temperature, air humidity, and soil moisture
@@ -23,6 +24,10 @@ async def get_latest_sensors(request: Request):
         raise HTTPException(status_code=500, detail="Serial receiver service is not initialized.")
 
     reading = await receiver.get_latest_reading()
+    source = "local_serial_or_http"
+    if not reading:
+        reading = await fetch_thingspeak_reading()
+        source = "thingspeak"
     if not reading:
         raise HTTPException(
             status_code=503,
@@ -35,7 +40,8 @@ async def get_latest_sensors(request: Request):
     return {
         "status": "success",
         "data": reading,
-        "is_serial_connected": receiver.is_connected()
+        "is_serial_connected": receiver.is_connected(),
+        "source": source
     }
 
 
@@ -77,13 +83,16 @@ async def get_serial_status(request: Request):
     receiver = getattr(request.app.state, "serial_receiver", None)
     is_connected = receiver.is_connected() if receiver else False
     latest = await receiver.get_latest_reading() if receiver else None
+    if not latest:
+        latest = await fetch_thingspeak_reading()
 
     return {
         "serial_enabled": settings.enable_serial,
         "serial_port": settings.serial_port,
         "baudrate": settings.serial_baudrate,
         "connected": is_connected,
-        "has_cached_reading": latest is not None
+        "has_cached_reading": latest is not None,
+        "thingspeak_configured": bool(settings.thingspeak_channel_id.strip())
     }
 
 

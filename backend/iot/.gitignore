@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 smartfarm.db
 .env
+firmware/esp32_sensor_node/secrets.h
