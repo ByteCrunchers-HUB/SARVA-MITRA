@@ -10,14 +10,18 @@ Usage:
 import argparse
 import json
 import time
-import requests
+import httpx
 import serial
 
 def main():
     parser = argparse.ArgumentParser(description="Forward ESP32 USB serial telemetry to Render cloud backend.")
     parser.add_argument("--port", default="COM9", help="Serial port (e.g., COM9 on Windows, /dev/ttyUSB0 on Linux)")
     parser.add_argument("--baud", type=int, default=115200, help="Baud rate (default: 115200)")
-    parser.add_argument("--url", default="https://sarva-mitra-0k9a.onrender.com/api/sensors/data", help="Cloud backend ingestion URL")
+    parser.add_argument(
+        "--url",
+        default="https://sarva-mitra-0k9a.onrender.com/api/sensors/data",
+        help="Cloud backend ingestion URL (override if your Render URL changes)",
+    )
     args = parser.parse_args()
 
     print(f"=== ESP32 Serial -> Cloud Forwarder ===")
@@ -25,38 +29,42 @@ def main():
     print(f"Target URL:   {args.url}")
     print("Press Ctrl+C to stop.\n")
 
-    while True:
-        try:
-            print(f"Connecting to {args.port}...")
-            with serial.Serial(args.port, args.baud, timeout=2.0) as ser:
-                print(f"Connected! Forwarding telemetry packets...\n")
-                while True:
-                    raw_line = ser.readline()
-                    if not raw_line:
-                        continue
+    try:
+        with httpx.Client(timeout=10.0) as client:
+            while True:
+                try:
+                    print(f"Connecting to {args.port}...")
+                    with serial.Serial(args.port, args.baud, timeout=2.0) as ser:
+                        print("Connected! Forwarding telemetry packets...\n")
+                        while True:
+                            raw_line = ser.readline()
+                            if not raw_line:
+                                continue
 
-                    line = raw_line.decode("utf-8", errors="ignore").strip()
-                    if not (line.startswith("{") and line.endswith("}")):
-                        continue
+                            line = raw_line.decode("utf-8", errors="ignore").strip()
+                            if not (line.startswith("{") and line.endswith("}")):
+                                continue
 
-                    try:
-                        payload = json.loads(line)
-                        res = requests.post(args.url, json=payload, timeout=10)
-                        if res.status_code == 200:
-                            print(f"[OK] Forwarded: {payload}")
-                        else:
-                            print(f"[HTTP {res.status_code}] Failed: {res.text}")
-                    except json.JSONDecodeError:
-                        pass
-                    except requests.RequestException as re:
-                        print(f"[HTTP Error] {re}")
+                            try:
+                                payload = json.loads(line)
+                            except json.JSONDecodeError as exc:
+                                print(f"[Invalid JSON] Ignoring serial frame: {exc}")
+                                continue
 
-        except serial.SerialException as se:
-            print(f"[Serial Error] {se}. Retrying in 5 seconds...")
-            time.sleep(5)
-        except KeyboardInterrupt:
-            print("\nStopped by user.")
-            break
+                            try:
+                                response = client.post(args.url, json=payload)
+                                response.raise_for_status()
+                                print(f"[OK] Forwarded: {payload}")
+                            except httpx.HTTPStatusError as exc:
+                                print(f"[HTTP {exc.response.status_code}] Failed: {exc.response.text}")
+                            except httpx.RequestError as exc:
+                                print(f"[HTTP Error] {exc}. Retrying with the next sensor reading.")
+
+                except serial.SerialException as exc:
+                    print(f"[Serial Error] {exc}. Retrying in 5 seconds...")
+                    time.sleep(5)
+    except KeyboardInterrupt:
+        print("\nStopped by user.")
 
 if __name__ == "__main__":
     main()

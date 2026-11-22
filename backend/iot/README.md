@@ -116,6 +116,28 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 - Health Check: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
 - Live Telemetry: [http://127.0.0.1:8000/api/sensors/latest](http://127.0.0.1:8000/api/sensors/latest)
 
+### Use the ESP32 with the Render deployment
+
+Render cannot read `COM9` on your Windows computer. The deployed API returns `503`
+from `GET /api/sensors/latest` until it receives a reading. Keep the backend
+deployed, connect the ESP32 to your computer, and run this forwarder from the
+`backend/iot` directory on that computer:
+
+```powershell
+python -m pip install -r requirements.txt
+python tools/serial_forwarder.py --port COM9 --baud 115200 --url https://sarva-mitra-0k9a.onrender.com/api/sensors/data
+```
+
+Keep the command window open while you want live readings. Close Arduino Serial
+Monitor and any locally running backend first, since they can hold COM9 and stop
+the forwarder from opening it. The forwarder prints `[OK]` when Render accepts a
+reading. Then `/api/sensors/latest` returns the latest forwarded reading. If your
+Render service URL changes, replace it in the command.
+
+For the Render service environment, set `ENABLE_SERIAL=false`; the local
+forwarder owns COM9 and sends readings over HTTPS. This setting disables the
+cloud server's hardware polling; it does not disable `POST /api/sensors/data`.
+
 ---
 
 ## Key API Endpoints
