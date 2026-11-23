@@ -1,0 +1,42 @@
+DOC_ID: 15_ragi_blast
+TITLE: Ragi (finger millet) blast (Pyricularia / Magnaporthe grisea) - identification and conditions that favour it
+CROPS: ragi (finger millet)
+SENSOR_SIGNALS: humidity_pct; temperature_c; sunlight_wm2 (cloudy days); rainfall_mm (frequent rain or drizzle); nitrogen use (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, IN) Blast is the most important and destructive fungal disease of finger millet [S1][S2]. It causes leaf blast, neck blast and finger (ear) blast [S3].
+- (OBS, IN) The disease occurs almost every year in finger millet [S5].
+
+WEATHER FACTS
+- (FAV, SEC) A course document from a TNAU-affiliated college lists favourable conditions as cloudy skies, frequent rain and drizzle, high nitrogen, humidity above 90%, and 25-28°C for spore germination [S2]. This is secondary material (course slides).
+- (FAV, KA) UAS Bengaluru crop-weather tables for Kharif ragi support a pattern of morning humidity of 90-94% and more than 3 cloudy days; see 16_ragi_weather_uas_bengaluru_tables. The week-level alignment of those tables is not verified [S7].
+- (WEAK, SEC) The only temperature value for blast in this document (25-28°C) comes from course material and is not confirmed by a primary Karnataka source in this corpus [S2].
+
+SYMPTOMS
+- (INSP, IN) Grey spots on leaves that join and dry the leaf. Neck blast blocks nutrients to the grain. Finger blast starts at the tip of the finger and spreads to the base before turning brown. Empty fingers form at seed set [S3].
+- (INSP, IN) Another ICAR / ISGPB paper adds that neck blast shows browning, then blackening, near the ear with olive-grey growth, and that fingers become brown and chaffy [S4].
+
+FIELD INSPECTION
+- (INSP, IN) Check leaves for grey spots, the neck below the ear for browning or blackening, and the finger tips for browning [S3][S4].
+
+MANAGEMENT
+- (OBS, IN) Resistant varieties are always preferred. The ICAR table lists released blast-tolerant varieties for Karnataka, including the UAS Bangalore GPU series [S3].
+- (OBS, SEC) Early sowing (July) reduced blast severity. Suggested crop rotations are ragi-groundnut-maize, ragi-chickpea-wheat and ragi-cowpea/pigeonpea-sorghum [S2].
+- (WEAK, IN) Because ragi is mostly rainfed and grown by small farmers, chemical control is hard to apply widely, and preventive measures are mostly followed [S5][S4]. One AICRP small-millets result (Uttarakhand centre) reported a chemical spray as effective against neck and finger blast; product name, dose and timing are not included here. Ask the KVK [S6].
+- (WEAK, IN) Pseudomonas fluorescens strains were maintained for use against blast and foot rot [S6]. This is not evidence of field effectiveness.
+
+EVIDENCE QUALITY AND LIMITS
+- CORPUS RULE: Matching humidity, cloud or temperature readings show conditions that favour blast. They do not confirm it. Field inspection of leaves, neck and fingers is required.
+
+SOURCE GEOGRAPHY
+[S1] ICAR, India; [S2] TNAU-affiliated college course material, Tamil Nadu, India; [S3] ICAR, India; [S4] Indian J. Genet. Plant Breed., India; [S5] ICAR-IIMR, India; [S6] AICRP Small Millets, Uttarakhand centre, India; [S7] UAS Bengaluru, Zone 6 Mysore district, Karnataka.
+
+REFERENCES
+[S1] ICAR Indian Farming, Blast disease: A threat to finger millet (Apr 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132291/50019/360140
+[S2] College of Agricultural Technology (TNAU-affiliated), Ragi blast course document, https://de.slideshare.net/rishi0/ragi-blast
+[S3] ICAR Indian Farming (Apr 2023), Blast disease: A threat to finger millet, https://epubs.icar.org.in/index.php/IndFarm/article/download/132291/50019/360140
+[S4] Indian Journal of Genetics and Plant Breeding 85(3), finger millet blast, https://www.isgpb.org/journal/index.php/IJGPB/article/download/3888/3183
+[S5] ICAR-IIMR, Disease management for improved millet production (Jan 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132580/49107/348434
+[S6] AICRP on Small Millets (Uttarakhand centre) report, https://www.uuhf.ac.in/wp-content/uploads/2019/06/AICRP-Small-Millets.pdf
+[S7] UAS Bengaluru, AICRP on Agrometeorology, Zone 6 (Mysore) ragi, sowing window 1, https://mail.uasbangalore.edu.in/images/crop_weather/zone-6-(mysore)-ragi- (sowing-window-1).pdf

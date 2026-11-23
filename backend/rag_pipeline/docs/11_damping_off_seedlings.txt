@@ -1,0 +1,46 @@
+DOC_ID: 11_damping_off_seedlings
+TITLE: Damping-off of seedlings and nursery plants - conditions that favour it
+CROPS: tomato; chilli; ragi (finger millet)
+SENSOR_SIGNALS: soil_moisture_pct (very high); temperature_c (cool or warm soil); sunlight_wm2 (low light, cloudy days); rainfall_mm; irrigation practice (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, INTL) Damping-off is caused by several soil organisms: Pythium, Phytophthora, Rhizoctonia and Fusarium [S1][S2].
+
+SOIL AND WEATHER FACTS
+- (FAV, INTL, USA) Pythium and Phytophthora favour cool, wet, poorly drained soil. Fusarium and Rhizoctonia are more common under warm, dry conditions. Cool wet soil slows seedling growth, which lengthens the susceptible period [S3]. Rhizoctonia can also cause disease in dry soil [S4].
+- (FAV, INTL, USA) Low light, overwatering, high salts from over-fertilising and cool soil are linked to more damping-off [S5].
+- (FAV, INTL, USA) If cloudy, cool weather keeps trays wet for days, Pythium is likely; Pythium also shows in low spots where plants sit in water [S2].
+- (FAV, INTL, Australia) Pythium and Rhizoctonia are common in both tropical and temperate soils and thrive in wet soil, especially when temperature suits the pathogen more than the host [S6].
+- (FAV, IN) For chilli, NIPHM lists heavy rainfall, excessive and frequent irrigation, poorly drained soil, close spacing and high soil moisture with about 25-30°C for Pythium, and about 30-35°C for Rhizoctonia [S7].
+
+SYMPTOMS
+- (INSP, INTL) Seeds rot or seedlings fail to emerge; stems at or below the soil line become water-soaked and collapse; seedlings fall over [S5][S8].
+
+FIELD INSPECTION
+- (INSP, INTL) Check the stem at the soil line of fallen seedlings for water-soaked tissue [S5][S8].
+
+MANAGEMENT AND PREVENTION
+- (OBS, INTL) Seedlings that are killed cannot be saved; prevention is the only way [S8]. Established plants resist better [S9].
+- (OBS, INTL) Do not overwater; water in late morning when soil is dry; use well-drained soil or raised beds; do not plant into cool soil; do not sow too densely or too deep [S3][S4][S8].
+- (OBS, INTL) Use clean, sterilised trays and clean potting mix. Treated seed can reduce incidence; seed-treatment products and doses are not included here, ask the KVK [S5][S10].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No ragi-specific damping-off conditions were extracted for this document. Crop applicability to ragi is listed in 17_ragi_other_diseases_and_varieties, which names damping-off as a ragi disease [S11].
+- CORPUS RULE: Wet, cool or cloudy readings show conditions that favour damping-off. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] Pennsylvania, USA; [S2] New Jersey, USA; [S3] Mississippi, USA; [S4] Massachusetts, USA; [S5] Minnesota, USA; [S6] Queensland, Australia; [S7] NIPHM (India); [S8] Wisconsin, USA; [S9] California, USA; [S10] Utah, USA; [S11] ICAR-IIMR (India).
+
+REFERENCES
+[S1] Penn State Extension, Safeguard Your Seedlings from Damping-Off, https://extension.psu.edu/safeguard-your-seedlings-from-damping-off
+[S2] Rutgers Plant and Pest Advisory, damping-off, https://plant-pest-advisory.rutgers.edu/damping-off-identifying-and-controlling-early-season-pathogens-2-2-2-2-3-2-2/
+[S3] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
+[S4] UMass Extension, Damping-off, https://www.umass.edu/agriculture-food-environment/pt/vegetable/fact-sheets/damping-off
+[S5] University of Minnesota Extension, How to prevent seedling damping off, https://www.extension.umn.edu/garden/yard-garden/diseases/damping-off/
+[S6] Queensland Government, Damping off, https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/diseases/horticultural/damping-off
+[S7] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en
+[S8] University of Wisconsin PDDC, Damping-off, https://pddc.wisc.edu/2015/07/19/damping-off/
+[S9] UC IPM, Damping-off diseases in the garden, https://ucanr.edu/media/289890
+[S10] Utah State University Extension, Damping-off, https://extension.usu.edu/planthealth/research/damping-off.pdf
+[S11] ICAR-IIMR, Disease management for improved millet production (Jan 2023), https://epubs.icar.org.in/index.php/IndFarm/article/download/132580/49107/348434

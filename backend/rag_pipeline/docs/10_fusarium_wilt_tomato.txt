@@ -1,0 +1,42 @@
+DOC_ID: 10_fusarium_wilt_tomato
+TITLE: Fusarium wilt of tomato (Fusarium oxysporum f. sp. lycopersici) - conditions that favour it
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; soil_moisture_pct (low or dry); humidity_pct; soil type and pH (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, INTL) Fusarium wilt is caused by Fusarium oxysporum f. sp. lycopersici. The fungus survives in soil or debris for up to ten years (TNAU and INRAE say more than ten) [S1][S3][S4].
+- (OBS, IN, INTL) It spreads by seed, seedlings raised in infested soil, wind-blown soil, surface water and implements [S1][S2].
+
+WEATHER AND SOIL FACTS
+- (FAV, IN) TNAU lists alternating low and high soil temperature with high humidity, optimum temperature 28°C, light sandy soil, low soil moisture and low pH [S1].
+- (FAV, INTL, Australia) The South Australian department names warm temperature around 28°C, dry weather and acidic soil. Fast-growing plants fertilised with ammonium nitrate are especially prone, and root-knot nematodes raise the chance of infection even in resistant plants [S2].
+- (FAV, INTL, France) INRAE gives about 28°C and sandy acidic soils, and says nematode attack or oxygen-poor soil can sensitise plants [S3].
+- (FAV, INTL, USA) Symptoms are most common at 27-32°C. The disease develops faster with high nitrogen and low potassium, and in sandy soils [S4].
+- CORPUS NOTE: Several sources do not say whether the temperature is air or soil. The corpus sensor temperature_c is air temperature (see 01_dataset_columns_reference), so a match is only a rough signal.
+- (OBS, IN, INTL) Sources link Fusarium wilt to low soil moisture and dry weather [S1][S2]. Bacterial wilt (see 09_bacterial_wilt_ralstonia) is instead linked to high soil moisture. Both cause wilting, so soil moisture alone cannot separate them.
+
+SYMPTOMS
+- (INSP, INTL, Australia, USA) Yellowing starting on lower leaves, often on one side of the plant or leaf, then leaf curling, browning and drying; brown streaking inside the stem base; stunting [S2][S4].
+
+FIELD INSPECTION
+- (INSP, INTL) Look for one-sided yellowing on lower leaves and brown streaking inside the stem base [S2][S4].
+
+MANAGEMENT
+- (OBS, IN) Remove and destroy infected plant debris [S1].
+- (OBS, INTL) Clean structures, crates, tools and stakes. Stop soil moving between fields on equipment and shoes. Avoid working in wet plantings [S2][S4].
+- (OBS, INTL) Avoid too much nitrogen with low potassium, and test the soil [S4].
+- (OBS, IN) TNAU mentions seed treatment with a chemical. Product names, doses and timing are not included here. Ask the KVK [S1].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-measured threshold is present in this corpus. TNAU is a Tamil Nadu source.
+- CORPUS RULE: Matching readings show conditions that favour Fusarium wilt. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] TNAU (Tamil Nadu), India; [S2] South Australia; [S3] France; [S4] Missouri, USA.
+
+REFERENCES
+[S1] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S2] Primary Industries and Regions SA, Fusarium wilt of tomato, https://pir.sa.gov.au/crops-and-plants/weeds-and-plant-pests/plant-pests/pests-and-diseases-of-significant-concern/fusarium_wilt_of_tomato
+[S3] INRAE Ephytia, Tomato biology and epidemiology, https://ephytia.inrae.fr/en/C/5217/Tomato-Biology-epidemiology
+[S4] Missouri Botanical Garden, Fusarium wilt of tomato, https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/cankers/fusarium-wilt-of-tomato.aspx

@@ -1,0 +1,115 @@
+{
+  "data_quality": {
+    "rows_in": 274876,
+    "duplicate (date, lat, lon)": 0,
+    "missing values": {},
+    "humidity outside 0-100": 0,
+    "soil moisture outside 0-100": 0,
+    "negative rainfall": 0,
+    "air temperature below 5 C (kept; winter in the Himalayan states)": 3468,
+    "risk outside 0-100": 0
+  },
+  "leakage_r2": {
+    "same-day weather + static (leaks the formula)": 0.9986,
+    "previous-day features (what the model uses)": 0.8821
+  },
+  "diagnosis": [
+    {
+      "model": "Ridge (linear)",
+      "train_R2": 0.2153,
+      "val_R2": 0.1774,
+      "gap_%": -1.4999,
+      "diagnosis": "underfitting"
+    },
+    {
+      "model": "Random Forest (bagging)",
+      "train_R2": 0.8933,
+      "val_R2": 0.8679,
+      "gap_%": 6.6167,
+      "diagnosis": "balanced"
+    },
+    {
+      "model": "Extra Trees (bagging)",
+      "train_R2": 0.8819,
+      "val_R2": 0.8631,
+      "gap_%": 3.4777,
+      "diagnosis": "balanced"
+    },
+    {
+      "model": "HistGB (boosting)",
+      "train_R2": 0.8997,
+      "val_R2": 0.8779,
+      "gap_%": 5.7751,
+      "diagnosis": "balanced"
+    },
+    {
+      "model": "LightGBM (boosting)",
+      "train_R2": 0.9043,
+      "val_R2": 0.8792,
+      "gap_%": 7.5188,
+      "diagnosis": "balanced"
+    },
+    {
+      "model": "XGBoost (boosting)",
+      "train_R2": 0.9086,
+      "val_R2": 0.8798,
+      "gap_%": 9.3653,
+      "diagnosis": "balanced"
+    }
+  ],
+  "tuning": {
+    "HistGB": {
+      "cv_rmse": 6.5987,
+      "params": {
+        "min_samples_leaf": "50",
+        "max_leaf_nodes": "31",
+        "max_iter": "800",
+        "learning_rate": "0.1",
+        "l2_regularization": "1.0"
+      }
+    },
+    "Random Forest": {
+      "cv_rmse": 7.0769,
+      "params": {
+        "min_samples_leaf": "30",
+        "max_samples": "0.5",
+        "max_features": "0.8",
+        "max_depth": "14"
+      }
+    }
+  },
+  "selected_model": "XGBoost (boosting)",
+  "test": {
+    "MAE": 3.4592,
+    "RMSE": 4.9292,
+    "R2": 0.8846
+  },
+  "climatology_test": {
+    "MAE": 7.9262,
+    "RMSE": 10.4657,
+    "R2": 0.4799
+  },
+  "risk_label_accuracy": 0.9178,
+  "risk_label_confusion": {
+    "pred low": {
+      "true low": 12884,
+      "true moderate": 1478,
+      "true high": 0
+    },
+    "pred moderate": {
+      "true low": 1432,
+      "true moderate": 23335,
+      "true high": 295
+    },
+    "pred high": {
+      "true low": 0,
+      "true moderate": 55,
+      "true high": 169
+    }
+  },
+  "unseen_points": {
+    "MAE": 4.898,
+    "RMSE": 6.3099,
+    "R2": 0.8151
+  }
+}

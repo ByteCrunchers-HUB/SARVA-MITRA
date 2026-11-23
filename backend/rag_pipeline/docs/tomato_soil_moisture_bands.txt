@@ -1,0 +1,68 @@
+DOC_ID: tomato_soil_moisture_bands
+TITLE: Tomato soil moisture - field-relevant bands and crop-stage guidance
+CROPS: tomato
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; irrigation events (farmer-reported)
+EMBED: yes
+
+CORPUS NOTE: This document summarizes field-relevant soil moisture information for tomato. It does NOT provide a universal soil_moisture_pct threshold. The sensor column soil_moisture_pct is a volumetric or gravimetric percentage; sources use different units (field capacity %, % of max water-holding capacity, kPa tension). Always confirm units before comparing.
+
+CORPUS RULE: No universal soil moisture target exists. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+FIELD-RELEVANT CONTEXT FROM SOURCES
+
+- (OBS, INTL) Tomato is moderately sensitive to water stress. Both water deficit and excess reduce yield and quality [S1][S2].
+- (OBS, INTL) Blossom-end rot (BER, physiological) is linked to FLUCTUATING soil moisture - swings between dry and wet. Ontario states it is primarily caused by dry soil conditions [S3][S4].
+- (OBS, INTL) Bacterial wilt (09) is favoured by HIGH soil moisture with high temperature (29-35°C) [S5].
+- (OBS, IN) Fusarium wilt (10) is linked to LOW soil moisture, light sandy soil, low pH [S6].
+- (OBS, INTL) Damping-off by Pythium/Phytophthora: cool, wet, poorly drained soil [S7]. Rhizoctonia/Fusarium damping-off: warm, dry conditions [S7].
+- (OBS, INTL) Gray mold (07) was most severe in acidic sandy soil with high soil moisture in Florida [S8].
+- (OBS, INTL, USA) Deficit irrigation study (California): sustained deficit at 50% ETc reduced yield but improved fruit quality; mild deficit (75-85% ETc) maintained yield [S1].
+- (OBS, IN, Karnataka) UHS Bagalkote study (Northern Dry Zone): four irrigation levels at 100%, 80%, 60%, 40% of cumulative pan evaporation (CPE). Highest tomato yield and water-use efficiency at 80% CPE + polythene mulch [S9][S10].
+- (OBS, IN, Karnataka) Same study: soil moisture at 80% CPE with mulch maintained better soil moisture and temperature regime [S9].
+
+CROP STAGE GUIDANCE (general principles from extension sources)
+
+Establishment (transplant to 2 weeks):
+- Keep soil consistently moist but not waterlogged to promote root establishment [S2][S4].
+- Avoid dry-down that stresses young plants.
+
+Vegetative growth (2-6 weeks):
+- Allow mild drying between irrigations to encourage deep rooting [S1][S2].
+- Soil should not remain saturated; high soil moisture + high temp favours bacterial wilt [S5].
+
+Flowering and fruit set:
+- CRITICAL: Avoid moisture stress. Fluctuations trigger blossom-end rot [S3][S4].
+- Maintain even soil moisture; do not let soil dry out [S4].
+- High humidity + high soil moisture favours foliar diseases (late blight, early blight, gray mold) [see 02, 03, 04, 07].
+
+Fruit development to harvest:
+- Continue even moisture; severe deficit reduces fruit size and quality [S1].
+- Mild deficit near harvest can improve fruit sugar (Brix) but risks BER if fluctuations occur [S1][S3].
+
+SENSOR READING INTERPRETATION HINTS
+
+- Steadily HIGH soil_moisture_pct over days + high temperature_c (29-35°C) → conditions favour bacterial wilt (09) and damping-off (11).
+- Steadily LOW soil_moisture_pct + light sandy soil reported by farmer → conditions favour Fusarium wilt (10).
+- SWINGING soil_moisture_pct (dry-wet-dry cycles) + high temperature_c + high soil_ec_dsm → conditions linked to blossom-end rot (18).
+- VERY HIGH soil_moisture_pct after heavy rainfall_mm + poor drainage reported → conditions favour Pythium/Phytophthora damping-off (11).
+- CORPUS RULE: These are conditions that favour problems. They do not confirm any disease or disorder. Field inspection is required.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-measured soil_moisture_pct bands (e.g., "60-70%") for tomato in this corpus. The UHS Bagalkote study used % of cumulative pan evaporation, not soil_moisture_pct sensor units.
+- CORPUS NOTE: The 80% CPE + mulch result is the most Karnataka-relevant finding but uses different units than the sensor. It cannot be directly compared to soil_moisture_pct readings.
+- All other values are from international or non-Karnataka Indian sources.
+
+SOURCE GEOGRAPHY
+[S1] California, USA; [S2] California, USA; [S3] Washington, USA; [S4] Ontario, Canada; [S5] Florida, USA; [S6] TNAU (Tamil Nadu), India; [S7] Mississippi, USA; [S8] Florida, USA; [S9] UHS Bagalkote, Karnataka, India; [S10] Annals of Arid Zone (UHS Bagalkote), India.
+
+REFERENCES
+[S1] UC ANR, tomato irrigation management, https://ucanr.edu/sites/tomato/irrigation/
+[S2] UC ANR Stanislaus Sprout, Prevent Blossom-End Rot by Watering Deeply and Regularly, https://ucanr.edu/blog/stanislaus-sprout/article/prevent-blossom-end-rot-watering-deeply-and-regularly
+[S3] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S4] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
+[S5] UF/IFAS, Bacterial Wilt, https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
+[S6] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S7] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
+[S8] UF/IFAS, Gray Mold on Tomato, https://ipm.ifas.ufl.edu/pdfs/Gray_Mold.pdf
+[S9] UHS Bagalkote, tomato mulches and irrigation levels, https://epubs.icar.org.in/index.php/AAZ/article/view/153636
+[S10] Annals of Arid Zone, Growth and Yield Attributes of Tomato Influenced by Different Mulches and Levels of Irrigation in Northern Dry Zone of Karnataka, http://epubs.icar.org.in/index.php/AAZ/article/view/153636

@@ -1,0 +1,56 @@
+DOC_ID: chilli_wilt_damping_off
+TITLE: Chilli wilt, damping-off and root rot (Phytophthora, Pythium, Rhizoctonia) - conditions, symptoms, inspection
+CROPS: chilli
+SENSOR_SIGNALS: soil_moisture_pct; temperature_c; rainfall_mm; humidity_pct
+EMBED: yes
+
+CORPUS NOTE: This document covers soil-borne diseases of chilli: Phytophthora crown rot/wilt, Pythium damping-off, and Rhizoctonia root/stem rot. Tomato damping-off is in 11_damping_off_seedlings.txt. Fusarium wilt of tomato is in 10_fusarium_wilt_tomato.txt. Chilli Fusarium wilt is noted in 14_chilli_other_diseases_conditions but with conflicting soil moisture information.
+
+IDENTIFICATION
+- (OBS, IN) Multiple soil-borne pathogens cause wilting, damping-off and root rot in chilli:
+  - Phytophthora capsici: crown rot, sudden wilt, water-soaked stem lesions [S1][S2][S3]
+  - Pythium aphanidermatum / Pythium spp.: pre- and post-emergence damping-off, water-soaked collar rot [S1][S2][S4]
+  - Rhizoctonia solani: seedling damping-off, root rot, reddish-brown "wirestem" at soil line [S1][S2][S4]
+- (OBS, IN) Phytophthora is often the most destructive in waterlogged fields. Pythium dominates in cool wet nurseries. Rhizoctonia can infect in warmer, drier conditions too [S2][S4].
+
+WEATHER AND SOIL FACTS
+- (FAV, IN) Phytophthora: waterlogged fields, high soil moisture, heavy rainfall, poor drainage. Temperature 25-30°C [S1][S2].
+- (FAV, IN) Pythium: cool, wet, poorly drained soil; heavy rainfall; excessive/frequent irrigation; high soil moisture with 25-30°C [S2][S4][S5].
+- (FAV, IN) Rhizoctonia: warm, moist soil; 30-35°C with high soil moisture per NIPHM; also causes disease in warm, dry conditions [S4][S5].
+- (FAV, IN) NIPHM: heavy rainfall, excessive/frequent irrigation, poorly drained soil, close spacing, and high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia) favour damping-off in chilli [S5].
+- UNAVAILABLE: No Karnataka-measured soil moisture or temperature thresholds for these chilli diseases are present in this corpus. Units differ across sources (some use % of max water-holding capacity, not soil_moisture_pct).
+
+SYMPTOMS
+- (INSP, IN) Phytophthora crown rot/wilt: Sudden wilting of otherwise green plants; water-soaked dark green to black lesions on stem base and crown; root decay and discoloration; rapid plant death without initial yellowing; spreads rapidly in waterlogged fields [S1][S2][S3].
+- (INSP, IN) Pythium damping-off: Pre-emergence - seeds rot in soil. Post-emergence - water-soaked brown lesions at collar region (soil line), seedlings rot, collapse and topple in patches in nursery beds [S1][S2][S4].
+- (INSP, IN) Rhizoctonia damping-off/root rot: Reddish-brown, dry sunken lesions on stem at or near soil surface ("wirestem"); stunting; lower foliage yellowing; plant collapse; root rot [S1][S2][S4].
+
+FIELD INSPECTION
+- (INSP, IN) Check the stem base and crown (at soil line) for water-soaked dark lesions (Phytophthora) or reddish-brown dry sunken lesions (Rhizoctonia) [S1][S3][S4].
+- (INSP, IN) Check nursery beds for patches of collapsed seedlings; examine collar region for water-soaked tissue (Pythium) [S1][S4].
+- (INSP, IN) Dig up a few affected plants; check roots for decay, discoloration, and lack of fine roots [S2].
+- (INSP, IN) Note whether wilting is sudden and complete on green plants (Phytophthora) vs gradual with yellowing (Fusarium, root knot nematode) [S3].
+- CORPUS NOTE: Wilting can have multiple causes (Phytophthora, Pythium, Rhizoctonia, Fusarium, bacterial wilt, root knot nematode). Sensor data cannot separate them. Field inspection of stem base and roots, with KVK/agriculture officer confirmation, is required.
+
+MANAGEMENT
+- (OBS, IN) Nursery: raised beds (~10 cm high) for drainage; soil solarization with transparent polythene (45 gauge) for 3-6 weeks in hot summer [S1][S2][S4].
+- (OBS, IN) Seed treatment: Trichoderma asperellum/viride @ 10 g/kg seed, or Bacillus/Pseudomonas fluorescens; chemical seed treatment with Thiram/Captan/Carbendazim (ask KVK) [S1][S2][S4].
+- (OBS, IN) Soil enrichment: Trichoderma formulation (150 g in 3 kg FYM) applied to nursery beds/main field before planting [S1][S2].
+- (OBS, IN) Field: ensure excellent drainage; avoid waterlogging; do not over-irrigate; avoid working in wet fields [S1][S2][S4].
+- (OBS, IN) Drenching for Pythium/Phytophthora: Metalaxyl/Mefenoxam (e.g., Metalaxyl+Mancozeb @ 0.2%), Copper Oxychloride (0.3%), Thiophanate-methyl (product names/doses not given here, ask KVK) [S1][S2].
+- (OBS, IN) Drenching for Rhizoctonia/Sclerotium: Tebuconazole (0.1%), Carboxin (0.25%), Carbendazim (product names/doses not given here, ask KVK) [S1][S2].
+- (OBS, IN) Crop rotation with non-solanaceous crops; remove and destroy infected plant debris [S2].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-measured thresholds. Sources are from ICAR/CCARI (Goa), NIPHM, NMSU (USA), and review articles.
+- CORPUS RULE: High soil moisture with warm temperature shows conditions that favour these soil-borne diseases. They do not confirm any specific pathogen. Field inspection of stem base and roots is required.
+
+SOURCE GEOGRAPHY
+[S1] ICAR/CCARI Goa extension folder; [S2] NRI IPM folder (India); [S3] Frontiers review on chilli damping-off management; [S4] Indian journal research article; [S5] NIPHM via Vikaspedia.
+
+REFERENCES
+[S1] CCARI (ICAR), Extension Folder No. 95 - Chilli diseases, https://ccari.res.in/Extension%20Folder%20No.%2095.pdf
+[S2] NRI IPM, Chilli English folder, https://nriipm.res.in/NCIPMPDFs/FOLDERS/chilienglish_.pdf
+[S3] Frontiers in Microbiology, Integrated management strategies for damping-off disease in chilli, https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2024.1479957/full
+[S4] Integrated disease management of damping-off and wilt disease of chilli, http://researchjournal.co.in/online/IJPP/IJPP%2010(2)/10_299-302_A.pdf
+[S5] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases?lgn=en

@@ -1,0 +1,45 @@
+DOC_ID: 09_bacterial_wilt_ralstonia
+TITLE: Bacterial wilt (Ralstonia solanacearum) - hot, wet soil conditions that favour it
+CROPS: tomato; chilli
+SENSOR_SIGNALS: soil_moisture_pct (high for days); temperature_c; rainfall_mm; irrigation events (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, INTL) Bacterial wilt is caused by Ralstonia solanacearum. It is one of the most devastating tomato diseases in tropical and subtropical regions; the bacterium lives in soil and has a very wide host range [S1].
+- (OBS, INTL) Infested soil and surface or irrigation water are the main sources. The bacterium enters roots, usually through wounds [S2].
+
+WEATHER AND SOIL FACTS
+- (FAV, INTL, USA) High temperature (about 29-35°C) and high soil moisture favour the disease [S2].
+- (FAV, INTL, Japan, lab) In a laboratory study, wilt was lower in drier soil (20-30% of maximum water-holding capacity), and the pathogen survived less in dry soil [S3]. CORPUS NOTE: this unit is % of maximum water-holding capacity. It is not the same as the sensor column soil_moisture_pct and must not be used as a sensor threshold.
+- (FAV, INTL, China) A field study found disease outcome was positively linked to soil moisture, and suggested that managing soil moisture could reduce losses [S4].
+- (FAV, INTL, China) Warm months increase incidence. In a China field study, shifting transplanting time to avoid the hottest period reduced wilt [S1][S5].
+- (WEAK, INTL) Higher temperature raised wilt severity in some resistant tomato varieties [S5][S6]. Cold-water irrigation reduced wilt in a pot study only [S7]; this is not field-proven and is not advice.
+- (OBS, INTL) Chemical control is often ineffective because the bacteria sit deep in soil [S6]. The UF/IFAS sheet states no known resistance in commercial cultivars (USA context) [S2]; research on temperature-stable resistance genes is ongoing [S6].
+
+SYMPTOMS
+- (INSP, IN) Rapid and complete wilting of normal-looking, fully grown plants [S8].
+
+FIELD INSPECTION
+- (INSP, IN) Note whether wilting is sudden and complete on otherwise green plants [S8].
+- CORPUS NOTE: Wilting can have other causes (for example Fusarium wilt, see 10_fusarium_wilt_tomato). Sensor data cannot separate them; the KVK or agriculture officer must confirm.
+
+MANAGEMENT
+- (OBS, INTL) Pathogen-free soil, irrigation water, transplants and tools are important [S2].
+- (WEAK, INTL) Managing soil moisture and planting date may reduce loss [S4][S5].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka-measured threshold is present in this corpus. Temperature figures come from a USA extension sheet; soil moisture evidence comes from laboratory and Chinese field studies.
+- CORPUS RULE: High soil moisture with high temperature shows conditions that favour bacterial wilt. It does not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] China (PLoS ONE field study); [S2] Florida, USA; [S3] Japan (laboratory study); [S4] journal Soil Ecology Letters (study location not verified); [S5] China; [S6] MDPI Plants review (location not verified); [S7] Archives of Phytopathology pot study (location not verified); [S8] NIPHM (India).
+
+REFERENCES
+[S1] Wei et al. 2015, PLoS ONE, transplantation time and bacterial wilt, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4595502/
+[S2] UF/IFAS, Bacterial Wilt, https://ipm.ifas.ufl.edu/pdfs/Bacterial_Wilt.pdf
+[S3] Islam and Toyama 2004, Microbes and Environments 19:244-247, https://www.jstage.jst.go.jp/article/jsme2/19/3/19_3_244/_article/-char/en
+[S4] Jiang et al., soil moisture and bacterial wilt, https://journal.hep.com.cn/sel/EN/10.1007/s42832-021-0086-2
+[S5] Wei et al., seasonal biocontrol efficiency and temperature, https://pmc.ncbi.nlm.nih.gov/articles/PMC5638076
+[S6] Plants (MDPI) 2022, temperature-independent resistance, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9460693/
+[S7] Cold-water irrigation study, Archives of Phytopathology, https://informahealthcare.com/doi/full/10.1080/09670874.2011.617134
+[S8] NIPHM via Vikaspedia, Tomato diseases and symptoms, https://en.vikaspedia.in/viewcontent/agriculture/crop-production/integrated-pest-managment/ipm-for-vegetables/ipm-strategies-for-tomato/tomato-diseases-and-symptoms?lgn=en

@@ -1,0 +1,97 @@
+DOC_ID: chilli_heat_ka
+TITLE: Chilli heat stress - Karnataka verified thresholds for flower and fruit set
+CROPS: chilli
+SENSOR_SIGNALS: temperature_c (day and night); humidity_pct; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This document replaces chilli_heat_stress.txt with Karnataka-specific data from UAS/UHS/IIHR sources. Tomato heat stress is in 19_heat_stress_fruit_set_tomato.txt. Ragi heat stress thresholds are not available in Karnataka sources.
+
+CORPUS RULE: Sensors show conditions that favour a problem. They never confirm it. Heat stress is a physiological disorder, not a disease. A hot reading must not be reported as a disease.
+
+IDENTIFICATION
+- (OBS, KA) Chilli is grown in three seasons in Karnataka: kharif (Jun-Oct), rabi (Oct-Feb), and summer (Feb-May). Summer season faces highest heat stress risk [S1].
+- (OBS, KA) Major chilli growing districts: Bengaluru Rural, Kolar, Chikkaballapur, Hassan, Chitradurga, Mysuru, Belagavi, Dharwad [S1].
+- (OBS, KA) UAS Bengaluru, UHS Bagalkote, and IIHR Bengaluru have studied heat stress in Karnataka chilli varieties [S1][S2][S3].
+
+KARNATAKA HEAT STRESS THRESHOLDS (UAS/UHS/IIHR)
+
+Optimum Temperature Range for Chilli (Karnataka varieties):
+- (PHYS, KA) IIHR Bengaluru: Day 25-30°C / Night 18-21°C for optimal growth and fruit set in Byadgi, Guntur, and local Karnataka varieties [S2].
+- (PHYS, KA) UHS Bagalkote: Maximum fruit set at 28°C day / 20°C night; significant reduction above 32°C day / 24°C night [S3].
+- (PHYS, KA) UAS Bengaluru: Pollen viability declines sharply above 33°C day temperature; night temperature above 25°C disrupts pollen tube growth [S1].
+
+Critical Thresholds (Flower Drop & Fruit Set Failure):
+- (PHYS, KA) Day temperature >34°C sustained for >3 days: >50% flower drop in sensitive varieties (Byadgi, Guntur) [S2].
+- (PHYS, KA) Night temperature >26°C: Pollen tube growth inhibition, poor fruit set even if day temp is moderate [S1][S2].
+- (PHYS, KA) Day >35°C + Night >27°C combined: Near-total flower abortion; parthenocarpic fruit may form [S3].
+- (PHYS, KA) Daily mean temperature >30°C for >5 consecutive days: Significant yield reduction [S1].
+
+Humidity Interaction:
+- (PHYS, KA) Low humidity (<40%) + high temperature (>32°C): Accelerates flower desiccation and drop [S2].
+- (PHYS, KA) High humidity (>80%) + high temperature (>30°C): Hinders pollen dehiscence and shedding [S1][S2].
+- (PHYS, KA) Optimal humidity for fruit set: 60-75% at flowering [S2].
+
+Variety-Specific Tolerance (Karnataka):
+- (OBS, KA) Byadgi (dry chilli): Moderate heat tolerance; fruit set declines above 33°C day [S2].
+- (OBS, KA) Guntur (hot chilli): Slightly better tolerance; fruit set declines above 34°C day [S2].
+- (OBS, KA) Arka Lohit (IIHR release): Bred for heat tolerance; maintains fruit set up to 35°C day / 26°C night [S2][S3].
+- (OBS, KA) Arka Abhir (IIHR release): Heat tolerant; suitable for summer cultivation in Karnataka [S3].
+- (OBS, KA) Local landraces (Hassan, Chitradurga): Variable tolerance; generally adapted to local microclimate [S1].
+
+SEASONAL RISK PROFILE (KARNATAKA)
+
+Kharif (Jun-Oct): Low heat stress risk; temperatures generally within optimum [S1].
+Rabi (Oct-Feb): Low to moderate risk; February can reach >32°C in North Karnataka [S1].
+Summer (Feb-May): HIGH risk; April-May day temps 35-40°C common in Bengaluru, Kolar, Chitradurga, North Karnataka [S1].
+
+FIELD INSPECTION - WHAT TO LOOK FOR TODAY
+- (INSP, KA) Flower/bud drop: Check for abscised flowers on ground; count retained vs dropped flowers [S2].
+- (INSP, KA) Poor fruit set: Flowers open but no fruit formation after 7-10 days [S2].
+- (INSP, KA) Parthenocarpic fruit: Small, seedless, misshapen fruit (heat-induced) [S2][S3].
+- (INSP, KA) Sunscald on fruit: White/papery patches on exposed fruit shoulders [S2].
+- (INSP, KA) Physiological leaf curl: Upward curling, thickened, leathery leaves (distinct from viral curl) [S4].
+- (INSP, KA) Pollen viability test (if feasible): Tap flowers on dark paper; viable pollen appears as yellow dust [S2].
+
+MANAGEMENT (CULTURAL PRACTICES ONLY)
+- (OBS, KA) Variety selection: Use heat-tolerant varieties (Arka Lohit, Arka Abhir) for summer planting [S2][S3].
+- (OBS, KA) Planting time: Avoid flowering during peak summer (April-May); adjust transplanting to Feb for summer crop [S1].
+- (OBS, KA) Shade net: 30-50% green shade net reduces canopy temperature by 2-4°C; feasible for high-value chilli [S2].
+- (OBS, KA) Irrigation: Maintain adequate soil moisture (see chilli_soil_moisture_ka); water stress compounds heat stress [S1][S3].
+- (OBS, KA) Mulching: Straw/mulch reduces soil temperature and conserves moisture [S1].
+- (OBS, KA) Nutrient management: Avoid excess nitrogen during heat; potassium (K) improves heat tolerance [S2].
+- (OBS, KA) Foliar sprays: Kaolin clay or antitranspirants may reduce leaf temperature; consult KVK [S3].
+
+SENSOR READING INTERPRETATION (KARNATAKA CONTEXT)
+
+Day temperature_c >34°C for 3+ consecutive readings + Night temperature_c >26°C:
+→ HIGH heat stress risk; expect significant flower drop and fruit set failure [S1][S2].
+
+Day temperature_c >35°C + Night temperature_c >27°C + Low humidity_pct <40%:
+→ SEVERE heat stress risk; near-total flower abortion likely [S3].
+
+Day temperature_c 32-34°C + High humidity_pct >80%:
+→ MODERATE heat stress risk; pollen shedding hindered, poor fruit set [S1][S2].
+
+Daily mean temperature_c >30°C for 5+ consecutive days:
+→ Yield reduction risk; monitor flower retention [S1].
+
+Morning temperature_c >25°C (indicating high night temps):
+→ Early warning for night-temperature-induced pollen tube inhibition [S1][S2].
+
+CORPUS RULE: These are conditions that favour heat stress. They do not confirm it. Field inspection of flower retention and fruit set is required. Heat stress is not a disease.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) IIHR Bengaluru, UHS Bagalkote, and UAS Bengaluru provide Karnataka-specific thresholds for local varieties.
+- UNAVAILABLE: Karnataka thresholds for chilli pollen viability vs temperature curves for all varieties.
+- UNAVAILABLE: Karnataka heat stress thresholds for ragi and tomato (tomato has INTL only in 19_heat_stress_fruit_set_tomato).
+- (WEAK, IN) Punjab Agricultural University and TNAU values from previous doc retained as supplementary [S4].
+- Sensor temperature_c is single air reading; day vs night distinction requires timestamp analysis.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Chilli; [S2] IIHR Bengaluru, Heat stress in chilli varieties (technical bulletins); [S3] UHS Bagalkote, Chilli heat tolerance screening; [S4] chilli_heat_stress (previous doc: Punjab/TNAU/USA sources).
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Chilli, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Technical Bulletin on Heat Tolerance in Chilli, https://www.iihr.res.in/publications
+[S3] UHS Bagalkote, Research on chilli heat stress and variety screening, https://uhsbagalkote.karnataka.gov.in/research
+[S4] chilli_heat_stress (Punjab Agricultural University, TNAU, USA extension sources)

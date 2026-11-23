@@ -1,0 +1,47 @@
+DOC_ID: 07_gray_mold_botrytis_tomato
+TITLE: Gray mold / Botrytis blight (Botrytis cinerea) - conditions that favour it
+CROPS: tomato; chilli
+SENSOR_SIGNALS: humidity_pct; temperature_c; leaf_wet (night); soil_moisture_pct; canopy density (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, INTL) Gray mold is caused by Botrytis cinerea. On tomato it enters through wounds, dead tissue and fading flowers [S2].
+
+WEATHER FACTS
+- (FAV, INTL, USA) Disease occurs at 15.5-24°C, with an optimum of 15.5-21°C, and humidity above 80%. Temperature above about 28°C suppresses it [S1].
+- (FAV, INTL, USA) It thrives at humidity above 90% and 18-24°C [S2].
+- (FAV, INTL, USA) It is favoured at 18-24°C and needs only high humidity, not leaf wetness [S3].
+- (FAV, INTL, USA) Infection does not need a long humid spell; humid canopy air at night is often enough. Dense planting raises risk [S4].
+- (FAV, INTL, USA) Spores germinate when free water is present from rain, dew, fog or irrigation [S5].
+- (FAV, INTL, USA) In Florida it was most severe on plants in acidic, sandy soil with high soil moisture [S6].
+- (FAV, IN) For chilli, TNAU notes that a dense canopy creates long leaf wetness at night and raises severity, and velvety growth appears under cool humid conditions [S7].
+- (WEAK, INTL) Sources differ on whether leaf wetness is needed ([S3] says not; [S5] says free water helps germination). This corpus does not resolve it.
+
+SYMPTOMS
+- (INSP, INTL) Light tan or grey spots on leaves that become covered with grey-brown fuzzy growth; stem lesions that can girdle the stem; soft rot and "ghost spots" on fruit [S4][S8].
+
+FIELD INSPECTION
+- (INSP, INTL) Check wounds, dead tissue and fading flowers, and dense parts of the canopy, for grey-brown fuzzy growth [S2][S4].
+
+MANAGEMENT
+- (OBS, INTL) Keep humidity and leaf wetness low: ventilation, avoid overhead irrigation, roll up tunnel sides where tunnels are used [S1]. In greenhouses keep humidity below 90% [S8].
+- (OBS, IN) For chilli, remove and burn decaying infected plant parts [S7].
+- (OBS, INTL) The source states no tomato varieties are resistant (USA context) [S1]. Fungicides are used only after cultural steps; product names, doses and timing are not included here. Ask the KVK.
+- (WEAK, INTL) One source links a calcium-to-phosphorus ratio below 2:1 with higher susceptibility [S3]. Evidence is from greenhouse and tunnel advice only.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka threshold for gray mold is present in this corpus. Most sources describe greenhouse, tunnel or cool-climate tomato.
+- CORPUS RULE: Matching sensor readings show that conditions favour gray mold. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] Minnesota, USA; [S2] Connecticut, USA; [S3] New Jersey, USA; [S4] Connecticut, USA; [S5] California, USA; [S6] Florida, USA; [S7] TNAU (Tamil Nadu), India; [S8] Connecticut, USA.
+
+REFERENCES
+[S1] University of Minnesota Extension, Gray mold on tomatoes, https://extension.umn.edu/disease-management/gray-mold-tomatoes ; https://extension.umn.edu/diseases/gray-mold-tomatoes
+[S2] UConn IPM, Tomato Gray Mold, https://ipm.cahnr.uconn.edu/tomato-gray-mold/
+[S3] Rutgers Plant and Pest Advisory, Identifying and controlling Botrytis in high tunnel and greenhouse tomato production, https://plant-pest-advisory.rutgers.edu/identifying-and-controlling-botrytis-in-high-tunnel-and-greenhouse-tomato-production-2-2-2/
+[S4] Connecticut Agricultural Experiment Station, Gray Mold of Tomato, https://portal.ct.gov/-/media/caes/documents/publications/fact_sheets/plant_pathology_and_ecology/2020/gray-mold-of-tomato-(1).pdf
+[S5] UC IPM, Gray mold (tomato), https://ipm.ucanr.edu/agriculture/tomato/gray-mold/
+[S6] UF/IFAS, Gray Mold on Tomato, https://ipm.ifas.ufl.edu/pdfs/Gray_Mold.pdf
+[S7] TNAU Agritech, chilli grey mould, https://agritech.tnau.ac.in/crop_protection/chilli_phdiseases_3.html
+[S8] UConn IPM, Foliar Diseases on Greenhouse Tomatoes, https://ipm.cahnr.uconn.edu/foliar-diseases-on-greenhouse-tomatoes/

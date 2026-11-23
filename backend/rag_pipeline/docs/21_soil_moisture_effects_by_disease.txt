@@ -1,0 +1,45 @@
+DOC_ID: 21_soil_moisture_effects_by_disease
+TITLE: How soil moisture links to different problems (sourced statements side by side)
+CROPS: tomato; chilli
+SENSOR_SIGNALS: soil_moisture_pct (high for days, low, or swinging)
+EMBED: yes
+
+HIGH OR WET SOIL
+- (FAV, INTL, China) Bacterial wilt of tomato: disease outcome was positively linked to soil moisture in a field study [S1]. In a laboratory study, wilt was lower at 20-30% of maximum water-holding capacity [S2]. CORPUS NOTE: this is not the same unit as soil_moisture_pct. See 09_bacterial_wilt_ralstonia.
+- (FAV, INTL, USA) Damping-off by Pythium and Phytophthora: cool, wet, poorly drained soil [S3]. Overwatering is linked to more damping-off [S4].
+- (FAV, IN) Chilli damping-off: high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia) [S5]. Chilli Fusarium wilt: relatively high soil moisture and soil temperature [S5].
+- (FAV, INTL, USA) Gray mold on tomato was most severe in acidic sandy soil with high soil moisture in Florida [S6].
+- (PHYS, INTL) Blossom-end rot (physiological): waterlogged soil, overwatering and root damage are listed as contributing factors [S7].
+
+LOW OR DRY SOIL
+- (FAV, IN) Fusarium wilt of tomato: TNAU lists low soil moisture, light sandy soil and low pH [S8].
+- (PHYS, INTL) Blossom-end rot (physiological): Ontario states it is primarily caused by dry soil conditions, and swings between dry and wet are a trigger [S7][S9].
+- (FAV, INTL, USA) Damping-off by Rhizoctonia and Fusarium can occur in warm, dry conditions [S3][S10].
+- (OBS, INTL) Early blight is mainly a disease of stressed or ageing plants [S11].
+
+LEAF-LEVEL WETNESS (not soil)
+- (FAV, INTL) Late blight needs long leaf wetness [S12]; powdery mildew does not need it and is harmed by free water [S13]. These concern the leaf surface, not soil_moisture_pct.
+
+TARGET MOISTURE LEVELS
+- UNAVAILABLE: The retrieved sources give no universal soil_moisture_pct target. Do not invent one. Ask the team for crop and soil-type targets, or a local KVK recommendation.
+
+EVIDENCE QUALITY AND LIMITS
+- CORPUS RULE: Wet-soil and dry-soil patterns overlap across diseases and disorders. Sensor soil_moisture_pct cannot confirm or separate them. Field inspection is required.
+
+SOURCE GEOGRAPHY
+[S1] journal Soil Ecology Letters (study location not verified; reported as a field study); [S2] Japan (laboratory); [S3] Mississippi, USA; [S4] Minnesota, USA; [S5] NIPHM (India); [S6] Florida, USA; [S7] Washington, USA; [S8] TNAU (Tamil Nadu), India; [S9] Ontario, Canada; [S10] Massachusetts, USA; [S11] California, USA; [S12] Florida, USA; [S13] California, USA.
+
+REFERENCES
+[S1] Jiang et al., soil moisture and bacterial wilt, https://journal.hep.com.cn/sel/EN/10.1007/s42832-021-0086-2
+[S2] Islam and Toyama 2004, Microbes and Environments 19:244-247, https://www.jstage.jst.go.jp/article/jsme2/19/3/19_3_244/_article/-char/en
+[S3] Mississippi State University Extension, damping-off, https://extension.msstate.edu/node/6440
+[S4] University of Minnesota Extension, How to prevent seedling damping off, https://www.extension.umn.edu/garden/yard-garden/diseases/damping-off/
+[S5] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases
+[S6] UF/IFAS, Gray Mold on Tomato, https://ipm.ifas.ufl.edu/pdfs/Gray_Mold.pdf
+[S7] WSU HortSense, Tomato blossom-end rot, https://hortsense.cahnrs.wsu.edu/fact-sheet/tomato-blossom-end-rot/
+[S8] TNAU Agritech, Fusarium rot of tomato, https://agritech.tnau.ac.in/crop_protection/tomato_phdiseases_8.html
+[S9] Ontario OMAFRA, Blossom-end Rot, https://www.omafra.gov.on.ca/IPM/english/tomatoes/diseases-and-disorders/blossom-end-rot.html
+[S10] UMass Extension, Damping-off, https://www.umass.edu/agriculture-food-environment/pt/vegetable/fact-sheets/damping-off
+[S11] UC IPM, Early Blight (potato), https://ipm.ucanr.edu/agriculture/potato/early-blight/
+[S12] UF/IFAS, Late Blight on Potato and Tomato, https://edis.ifas.ufl.edu/publication/PP301/pdf
+[S13] UC IPM, Powdery mildew on tomato, https://ipm.ucanr.edu/PMG/GARDEN/VEGES/DISEASES/tompowmildew.html

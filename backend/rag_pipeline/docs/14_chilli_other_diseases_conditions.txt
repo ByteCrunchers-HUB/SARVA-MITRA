@@ -1,0 +1,32 @@
+DOC_ID: 14_chilli_other_diseases_conditions
+TITLE: Other chilli diseases and the conditions that favour them (NIPHM list)
+CROPS: chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; soil_moisture_pct; leaf_wet
+EMBED: yes
+
+WEATHER AND SOIL FACTS
+- (FAV, IN) Damping-off (Pythium, Rhizoctonia): heavy rain, frequent irrigation, poor drainage and close spacing; high soil moisture with 25-30°C (Pythium) or 30-35°C (Rhizoctonia). See 11_damping_off_seedlings [S1].
+- (FAV, IN) Powdery mildew (Leveillula taurica): cool dry weather favours spore germination, and high humidity favours disease development. See 06_powdery_mildew_tomato_chilli [S1][S2].
+- (FAV, IN) Cercospora leaf spot and Alternaria leaf spot: warm, rainy and wet weather [S1].
+- (FAV, IN) Fusarium wilt: relatively high soil moisture and soil temperature; spread by soil and implements [S1]. CORPUS NOTE: this differs from the tomato Fusarium wilt sources in 10_fusarium_wilt_tomato, which link it to low soil moisture. The difference is not resolved here.
+- (FAV, IN) Bacterial leaf spot: moderate temperature, high humidity and intermittent rain; seed-borne. See 08_tomato_bacterial_leaf_spot [S1].
+- (OBS, IN) Chilli mosaic (cucumber mosaic virus): spread by seed to some extent and by aphid vectors from collateral hosts [S1].
+- CORPUS NOTE: Anthracnose and dieback are covered in 13_chilli_anthracnose_dieback_fruit_rot.
+
+SYMPTOMS
+- (INSP, IN) Powdery mildew on chilli shows white growth on the lower leaf surface [S2].
+- UNAVAILABLE: Symptom descriptions for the other diseases listed here were not reliably extracted.
+
+MANAGEMENT
+- (WEAK, IN) TNAU mentions chemical sprays for chilli powdery mildew [S2]. Product names, doses and timing are not included here. Ask the KVK or agriculture officer.
+
+EVIDENCE QUALITY AND LIMITS
+- (WEAK, IN) The NIPHM/Vikaspedia page text was partly scrambled when retrieved. Only lines clearly tied to a named disease are repeated here [S1].
+- CORPUS RULE: Matching readings show conditions that favour a disease. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] NIPHM/DPPQS (India); [S2] TNAU (Tamil Nadu), India.
+
+REFERENCES
+[S1] NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases
+[S2] TNAU Agritech, Chilli powdery mildew, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_3.html

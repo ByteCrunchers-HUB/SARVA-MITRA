@@ -1,0 +1,43 @@
+DOC_ID: 19_heat_stress_fruit_set_tomato
+TITLE: Heat stress, flower drop and poor fruit set in tomato
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c (day and night, hours to days); humidity_pct (above 80% for long periods)
+EMBED: yes
+
+IDENTIFICATION
+- (PHYS, INTL) Heat stress is a physiological problem. High temperature reduces pollen viability and fruit set, and causes flower or bud drop [S1][S2]. It is not an infection.
+
+TEMPERATURE FACTS
+- (PHYS, INTL, review) Optimum for growth is 25-30°C by day and about 20°C at night. Above about 35°C day and/or 30°C night, fruit set falls through reduced pollen viability and fewer flowers [S1].
+- (PHYS, INTL, review) Day/night temperature above 26/20°C can significantly affect fruit set and yield. Day temperature above 25°C reduces fruit number, weight and seeds per fruit. Pollen germination and tube growth fall above 30°C [S2].
+- (PHYS, INTL) The ideal daily mean temperature for fruit set under field conditions is 21-24°C [S3].
+- (PHYS, INTL, USA) Night temperature may matter more than day temperature. Ideal fruit set occurs at about 15.5-21°C at night. Above about 24°C, pollen-tube growth is disturbed and blossom drop results. Prolonged humidity above 80% hinders pollen shedding [S4].
+- (PHYS, INTL, USA) Sustained heat of more than about 29°C by day and 21°C at night stresses plants. During about 50-hour hot spells a round of flowers may drop unpollinated [S5]. Day temperature above 32°C with night temperature above 21°C makes buds fall rather than set fruit; cooler nights reduce the damage [S6].
+- (PHYS, INTL, USA) Red pigment does not form above about 29°C; optimum ripening is 20-25°C [S7].
+- (PHYS, INTL, controlled study) Moving from 28/22°C to 32/26°C day/night reduced fruit set [S8].
+
+CORPUS NOTE (not a source statement): The sensor temperature_c is a single air reading. Day versus night values need the timestamp of each reading.
+
+FIELD INSPECTION
+- (INSP, INTL) Look for flower or bud drop and for fruit that does not set [S4][S6].
+
+MANAGEMENT
+- (OBS, INTL) Heat-tolerant varieties set fruit under hot nights above 21°C [S2][S5]. Keep notes on variety performance [S5].
+- (WEAK, INTL) Fruit-set hormone sprays can give puffy or malformed fruit, and no growth regulator makes normal fruit under high heat [S4][S6]. No product advice is given here.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka or Indian heat-stress thresholds for tomato, and no heat thresholds for chilli or ragi, are present in this corpus. All values above are international. The sources differ by several degrees, so treat them as a band.
+- CORPUS RULE: A hot reading shows heat-stress risk. Flower drop and fruit set problems must be checked in the field. Heat stress is not a disease and a hot reading must not be reported as one.
+
+SOURCE GEOGRAPHY
+[S1] BMC Plant Biology 2021 (review; location not verified); [S2] review article (location not verified); [S3] Euphytica 2017 (location not verified); [S4] Delaware/Maryland, USA; [S5] Minnesota, USA; [S6] South Dakota, USA; [S7] Minnesota, USA; [S8] Sato et al. 2004 (location not verified).
+
+REFERENCES
+[S1] BMC Plant Biology 2021, heat tolerance in tomato, https://pmc.ncbi.nlm.nih.gov/articles/PMC8296629
+[S2] Review on tomato heat stress response, https://pmc.ncbi.nlm.nih.gov/articles/PMC7938145
+[S3] Euphytica 2017, tomato fruit set under heat, https://link.springer.com/content/pdf/10.1007/s10681-017-1949-6.pdf
+[S4] University of Delaware Weekly Crop Update (J. Brust, University of Maryland), https://sites.udel.edu/weeklycropupdate/?p=4489
+[S5] University of Minnesota Extension, How excessive heat affects the vegetable garden, https://extension.umn.edu/planting-and-growing-guides/how-excessive-heat-affects-vegetable-garden
+[S6] South Dakota State University Extension, Heat Causes Problems With Garden Produce, https://extension.sdstate.edu/heat-causes-problems-garden-produce
+[S7] University of Minnesota Extension, Heatwave makes vegetables misbehave, https://extension.umn.edu/yard-and-garden-news/heatwave-makes-vegetables-misbehave
+[S8] Sato et al. 2004, moderately elevated temperature and fruit set, https://pmc.ncbi.nlm.nih.gov/articles/PMC2803419

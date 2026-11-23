@@ -1,0 +1,128 @@
+DOC_ID: crop_stage_chilli
+TITLE: Chilli crop-stage sensor expectations and management focus - Karnataka
+CROPS: chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; rainfall_mm; soil_moisture_pct; sunlight_wm2; leaf_wet; soil_ec_dsm
+EMBED: yes
+
+CORPUS NOTE: This document defines expected sensor ranges and management priorities for each chilli crop stage in Karnataka. Ranges are approximate (Karnataka UAS/IIHR/UHS guidance); actual values vary by season, variety, soil, and microclimate. Sensors show conditions, not diagnoses.
+
+CORPUS RULE: No universal sensor thresholds. Use as general guidance. KVK consultation for farm-specific targets.
+
+IDENTIFICATION
+- (OBS, KA) Chilli grown in three seasons in Karnataka: kharif (Jun-Oct), rabi (Oct-Feb), summer (Feb-May) [S1].
+- (OBS, KA) Typical duration: 120-150 days (transplant to last harvest) [S1].
+- (OBS, KA) UAS Bengaluru Package of Practices, IIHR Bengaluru, UHS Bagalkote define crop stages [S1][S2][S3].
+
+STAGE 1: SEEDLING / NURSERY (0-30 DAYS BEFORE TRANSPLANT)
+- Duration: 25-30 days in nursery trays/raised beds
+- Temperature_c: Optimum 25-30°C day / 18-22°C night [S2].
+- Humidity_pct: 70-85%; high humidity + poor drainage = damping-off risk (11, chilli_wilt_damping_off) [S3].
+- Soil_moisture_pct: Consistently moist (not wet); raised beds essential [S3].
+- Sunlight_wm2: Partial shade (30-50%) recommended [S2].
+- Leaf_wet: Minimize; morning watering only [S3].
+- Key risks: Damping-off (11, chilli_wilt_damping_off), viral vectors (aphids, thrips, whitefly) [S3][pest_aphids_thrips][pest_whitefly].
+- Management focus: Raised beds, protected nursery, seed treatment, vector-proof netting.
+
+STAGE 2: TRANSPLANT TO ESTABLISHMENT (0-20 DAT)
+- Duration: 15-20 days after transplanting
+- Temperature_c: 25-32°C day / 18-22°C night [S1].
+- Humidity_pct: 65-80% [S1].
+- Soil_moisture_pct: 75-80% FC (~60-70% volumetric sandy loam) [S4][irrigation_chilli].
+- Rainfall_mm: Avoid heavy rain; raised beds critical [S3].
+- Leaf_wet: Minimize; drip irrigation [S1].
+- Key risks: Transplant shock, Phytophthora/Pythium (chilli_wilt_damping_off) if waterlogged [S4][chilli_wilt_damping_off].
+- Management focus: Light frequent drip irrigation, mulch, gap filling, early vector monitoring.
+
+STAGE 3: VEGETATIVE GROWTH (20-55 DAT)
+- Duration: 35 days; branching and canopy development
+- Temperature_c: 25-30°C day / 18-22°C night optimum [S1].
+- Humidity_pct: 60-75% [S1].
+- Soil_moisture_pct: 55-65% FC (~45-55% volumetric sandy loam); allow mild depletion [S4][irrigation_chilli].
+- Sunlight_wm2: Full sun [S1].
+- Leaf_wet: 0 preferred; drip irrigation [S1].
+- Soil_ec_dsm: Monitor; rising = salt buildup [S2].
+- Key risks: Thrips (pest_aphids_thrips), whitefly (pest_whitefly), bacterial leaf spot (chilli_bacterial_leaf_spot) if wet, powdery mildew (06) [S1][pest_aphids_thrips][pest_whitefly].
+- Management focus: Staking, pinching (if needed), N top-dress, vector monitoring (sticky traps), disease scouting.
+
+STAGE 4: FLOWERING & FRUIT SET (55-85 DAT) - MOST CRITICAL
+- Duration: 30 days; first flower to fruit set
+- Temperature_c: 25-30°C day / 18-21°C night optimum [S2][chilli_heat_ka].
+- Humidity_pct: 60-75% (not >80% prolonged) [S2][chilli_heat_ka].
+- Soil_moisture_pct: 70-75% FC (~55-65% volumetric sandy loam); NO FLUCTUATIONS [S4][irrigation_chilli].
+- Rainfall_mm: Light OK; heavy rain disrupts pollination, spreads anthracnose (13) [S1][S3].
+- Leaf_wet: 0 preferred; drip irrigation CRITICAL [S1][S3].
+- Sunlight_wm2: Full sun; cloudy >3 days reduces fruit set [S2].
+- Key risks: Heat stress (chilli_heat_ka) if >32/24°C, anthracnose (13) if humid+rain, bacterial leaf spot (chilli_bacterial_leaf_spot) if wet, thrips (TSWV vector) [S2][S3][pest_aphids_thrips].
+- Management focus: Even drip irrigation, mulch, pollination support, vector control, disease prevention, fruit set monitoring.
+
+STAGE 5: FRUIT DEVELOPMENT & MATURITY (85-120 DAT)
+- Duration: 35 days; fruit growth to mature red
+- Temperature_c: 25-30°C day / 18-22°C night [S1].
+- Humidity_pct: 55-70% [S1].
+- Soil_moisture_pct: 60-65% FC (~45-55% volumetric sandy loam); mild deficit improves pungency [S4][irrigation_chilli].
+- Rainfall_mm: Avoid heavy rain (anthracnose spread, fruit rot) [S1][S3].
+- Leaf_wet: 0 preferred [S1].
+- Soil_ec_dsm: Monitor [S2].
+- Key risks: Fruit/pod borer (pest_fruit_borer), anthracnose (13) on ripening fruit, mites (pest_armyworm_mite) in dry heat [S1][S3][pest_armyworm_mite].
+- Management focus: Pest scouting (pheromone traps), irrigation management, timely harvest.
+
+STAGE 6: HARVEST (120+ DAT)
+- Duration: Multiple pickings until last harvest
+- Temperature_c: 20-28°C day / 14-20°C night [S1].
+- Humidity_pct: 50-65% [S1].
+- Soil_moisture_pct: Reduce to 55-60% FC; stop 10-15 days before final harvest [S4][irrigation_chilli].
+- Rainfall_mm: Dry weather preferred [S1].
+- Key risks: Over-ripening, fruit rot, anthracnose [S1][S3].
+- Management focus: Timely harvest every 5-7 days, reduced irrigation, post-harvest drying.
+
+SEASONAL ADJUSTMENTS (KARNATAKA)
+
+Kharif (Jun-Oct transplant):
+- High disease pressure: anthracnose (13), bacterial leaf spot (chilli_bacterial_leaf_spot), Phytophthora (chilli_wilt_damping_off) [S3][chilli_wilt_damping_off].
+- Humidity_pct often >80%; frequent rainfall_mm [S1].
+- Focus: Drainage, raised beds, drip irrigation, disease prevention [S1][S3].
+
+Rabi (Oct-Feb transplant) - MAIN SEASON:
+- Optimal conditions; lower foliar disease pressure [S1].
+- Whitefly (pest_whitefly) PEAK in Dec-Feb; virus transmission risk HIGH [S1][pest_whitefly].
+- Aphids (pest_aphids_thrips) PEAK in Jan-Feb [S1][pest_aphids_thrips].
+- Focus: Vector management (sticky traps, barrier crops, rogueing), even irrigation [S1][pest_whitefly][pest_aphids_thrips].
+
+Summer (Feb-May transplant):
+- Heat stress (chilli_heat_ka) risk HIGH; day >35°C common [S2][chilli_heat_ka].
+- Thrips (pest_aphids_thrips) PEAK Mar-May; TSWV/GBNV risk [S1][pest_aphids_thrips].
+- Low humidity; high sunlight_wm2 [S1].
+- Focus: Shade net, frequent irrigation, heat-tolerant varieties (Arka Lohit, Arka Abhir) [S2][chilli_heat_ka].
+
+SENSOR MONITORING PRIORITIES BY STAGE
+
+| Stage | Primary Sensors | Watch Thresholds (approx.) |
+|-------|----------------|---------------------------|
+| Nursery | temperature_c, humidity_pct, soil_moisture_pct | temp >35°C, humidity >90%, soil wet |
+| Establishment | soil_moisture_pct, temperature_c | soil <50% FC, temp >35°C |
+| Vegetative | soil_moisture_pct, humidity_pct, leaf_wet, temperature_c | soil <45% FC, humidity >85%, temp >30°C |
+| Flowering | soil_moisture_pct, temperature_c (day/night), humidity_pct | soil <60% FC, temp >32/24°C, humidity >80% |
+| Fruit Dev. | temperature_c, humidity_pct, soil_ec_dsm | temp >32°C, humidity >80%, EC rising |
+| Harvest | soil_moisture_pct, rainfall_mm | soil >60% FC, heavy rain |
+
+CORPUS RULE: These are approximate Karnataka ranges. Actual values vary. Sensors show conditions, not diagnoses. Field inspection and KVK consultation required.
+
+EVIDENCE QUALITY AND LIMITS
+- (OBS, KA) UAS Package of Practices, IIHR/UHS crop calendars provide stage definitions.
+- (FAV, KA) UHS Bagalkote irrigation studies give soil moisture targets for sandy loam.
+- UNAVAILABLE: Continuous sensor data validation for all stages across Karnataka zones.
+- (WEAK, IN) International phenology data included as supplementary.
+
+SOURCE GEOGRAPHY
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops - Chilli; [S2] IIHR Bengaluru, Chilli Production Technology; [S3] UHS Bagalkote, Chilli irrigation research; [S4] irrigation_chilli; [S5] chilli_heat_ka; [S6] pest_aphids_thrips; [S7] pest_whitefly; [S8] pest_fruit_borer; [S9] pest_armyworm_mite.
+
+REFERENCES
+[S1] UAS Bengaluru, Package of Practices for Horticultural Crops, https://www.uasbangalore.edu.in/extension/package-of-practices
+[S2] IIHR Bengaluru, Chilli Production Technology, https://www.iihr.res.in/publications
+[S3] UHS Bagalkote, Chilli irrigation research, https://uhsbagalkote.karnataka.gov.in/research
+[S4] irrigation_chilli
+[S5] chilli_heat_ka
+[S6] pest_aphids_thrips
+[S7] pest_whitefly
+[S8] pest_fruit_borer
+[S9] pest_armyworm_mite

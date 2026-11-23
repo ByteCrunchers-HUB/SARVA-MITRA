@@ -1,0 +1,127 @@
+DOC_ID: chilli_field_checklist
+TITLE: Chilli - what to look for today (field inspection checklist by sensor condition)
+CROPS: chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet; rainfall_mm; soil_moisture_pct; soil_ec_dsm; sunlight_wm2
+EMBED: yes
+
+CORPUS NOTE: This checklist helps the farmer know what to inspect in the field based on current sensor readings. It does not diagnose. Matching sensor conditions only favour a problem; they do not confirm it. Use with the relevant disease documents (06, 08, 13, 14, chilli_bacterial_leaf_spot, chilli_wilt_damping_off, chilli_heat_stress, chilli_viral_diseases, chilli_nutrient_deficiencies).
+
+HOW TO USE
+1. Look at your current sensor readings (especially consecutive readings over hours/days).
+2. Find the matching condition row below.
+3. Do the field checks listed for that condition.
+4. Contact KVK or agriculture officer to confirm any findings.
+
+CONDITION: High humidity (>95%) + Temperature ~28°C + Frequent rain (especially as fruit ripens)
+→ PRIORITY CHECKS FOR ANTHRACNOSE (13_chilli_anthracnose_dieback_fruit_rot)
+- Check RIPENING FRUIT for BLACK CIRCULAR SPOTS (bird's eye spots) [13, S1]
+- Check badly affected fruit for STRAW-COLOURED/WHITE discoloration, loss of pungency [13, S1]
+- Check branch tips for DIEBACK [13, S1]
+- Check leaves for brownish-black spots [13, S1]
+
+CONDITION: Moderate temperature + High humidity + Intermittent rain
+→ CHECK FOR BACTERIAL LEAF SPOT (chilli_bacterial_leaf_spot)
+- Check leaves for SMALL GREASY DARK SPOTS with DARK BAND around lighter centres [chilli_bacterial_leaf_spot, S4]
+- Check FRUIT for ROUND RAISED WATER-SOAKED SPOTS with PALE YELLOW BORDER (key diagnostic) [chilli_bacterial_leaf_spot, S4]
+- Check for SHINY BACTERIAL OOZE in centre of older fruit spots [chilli_bacterial_leaf_spot, S4]
+
+CONDITION: Cool dry weather for spore germination + High humidity for development
+→ CHECK FOR POWDERY MILDEW (06_powdery_mildew_tomato_chilli)
+- Turn leaves over; check LOWER SURFACE for WHITE POWDERY GROWTH [06, S7]
+- Check UPPER surface for PALE YELLOW BLOTCHES [06, S7]
+
+CONDITION: Warm, rainy, wet weather
+→ CHECK FOR CERCOSPORA / ALTERNARIA LEAF SPOT (14_chilli_other_diseases_conditions)
+- Check leaves for circular brown spots (Cercospora) or target-like spots (Alternaria) [14, S1]
+- UNAVAILABLE: Detailed symptom descriptions not in corpus
+
+CONDITION: High soil moisture (days) + Temperature 25-30°C + Heavy rain / poor drainage
+→ CHECK FOR PHYTOPHTHORA / PYTHIUM WILT & DAMPING-OFF (chilli_wilt_damping_off)
+- Check stem base/crown for WATER-SOAKED DARK GREEN/BLACK LESIONS (Phytophthora) [chilli_wilt_damping_off, S1]
+- Check for SUDDEN WILTING of green plants, rapid death [chilli_wilt_damping_off, S1]
+- Check NURSERY beds: collapsed seedlings, water-soaked collar (Pythium) [chilli_wilt_damping_off, S2]
+
+CONDITION: High soil moisture + Temperature 30-35°C
+→ CHECK FOR RHIZOCTONIA ROOT/STEM ROT (chilli_wilt_damping_off)
+- Check stem at soil line for REDDISH-BROWN DRY SUNKEN LESIONS ("wirestem") [chilli_wilt_damping_off, S3]
+- Check for stunting, lower leaf yellowing, plant collapse [chilli_wilt_damping_off, S3]
+
+CONDITION: High soil moisture + Warm soil temperature (NIPHM)
+→ CHECK FOR CHILLI FUSARIUM WILT (14_chilli_other_diseases_conditions)
+- CORPUS NOTE: This differs from tomato Fusarium (low soil moisture). Difference not resolved.
+- Check for wilting, yellowing, stem base discoloration [14, S1]
+
+CONDITION: High temperature (>32°C day / >24°C night) + Low humidity (<50%) + Flower drop
+→ CHECK FOR HEAT STRESS (chilli_heat_stress)
+- Check for FLOWER/BUD DROP and poor fruit set [chilli_heat_stress, S2]
+- Check for SMALL MISSHAPEN/PARTHENOCARPIC FRUIT [chilli_heat_stress, S2]
+- Check leaves for UPWARD CURLING (physiological leaf curl), thick, leathery [chilli_heat_stress, S4]
+
+CONDITION: High humidity (>80%) prolonged + High temperature
+→ CHECK FOR HUMIDITY-HINDERED POLLEN SHEDDING (chilli_heat_stress)
+- Check for poor fruit set despite flowers [chilli_heat_stress, S3]
+
+CONDITION: Mosaic pattern on leaves + Aphids present
+→ CHECK FOR CHILLI MOSAIC / CMV (chilli_viral_diseases)
+- Check for LIGHT/DARK GREEN MOSAIC, leaf distortion, stunting [chilli_viral_diseases, S1]
+- Check for APHIDS on growing tips [chilli_viral_diseases, S1]
+
+CONDITION: Severe stunting + Downward leaf rolling/crinkling + Leathery leaves + Whiteflies
+→ CHECK FOR CHILLI LEAF CURL VIRUS (chilli_viral_diseases)
+- Check for BUSHY LOOK with more side branches [chilli_viral_diseases, S2]
+- Check for WHITEFLIES on undersides [chilli_viral_diseases, S2]
+- CORPUS NOTE: Whitefly feeding alone can curl leaves without virus [chilli_viral_diseases, S5]
+
+CONDITION: Vein clearing, mottling, distortion + Aphids
+→ CHECK FOR CHILLI VEINAL MOTTLE VIRUS (chilli_viral_diseases)
+
+CONDITION: Bud necrosis + Ringspots on leaves/fruit + Thrips in flowers
+→ CHECK FOR GBNV / TSWV (chilli_viral_diseases)
+- Check for NECROSIS OF GROWING BUDS [chilli_viral_diseases, S3]
+- Check for CONCENTRIC RINGSPOTS [chilli_viral_diseases, S3]
+- Check for THRIPS in flowers [chilli_viral_diseases, S3]
+
+CONDITION: Swinging soil moisture + Heat + High soil EC
+→ CHECK FOR BLOSSOM-END ROT (physiological, like tomato 18)
+- Check FRUIT blossom end for SUNKEN LEATHERY SPOT [tomato 18, S3; chilli_nutrient_deficiencies, S4]
+
+CONDITION: Young leaves: distorted/hooked, tip burn, dead growing point
+→ CHECK FOR CALCIUM or BORON DEFICIENCY (chilli_nutrient_deficiencies)
+- Check fruit for BLOSSOM-END ROT [chilli_nutrient_deficiencies, S2]
+
+CONDITION: Older leaves: interveinal yellowing (veins green)
+→ CHECK FOR MAGNESIUM DEFICIENCY (chilli_nutrient_deficiencies)
+
+CONDITION: Older leaves: edge burning, curling
+→ CHECK FOR POTASSIUM DEFICIENCY (chilli_nutrient_deficiencies)
+- Check fruit for POOR SIZE, UNEVEN COLOR, LOW PUNGENCY [chilli_nutrient_deficiencies, S3]
+
+CONDITION: Older leaves: uniform yellowing from tips
+→ CHECK FOR NITROGEN DEFICIENCY (chilli_nutrient_deficiencies)
+
+CONDITION: Older leaves: purplish undersides
+→ CHECK FOR PHOSPHORUS DEFICIENCY (chilli_nutrient_deficiencies)
+
+CONDITION: Leaves: upward curl, thick leathery, green (no stunting, no vectors)
+→ CHECK FOR PHYSIOLOGICAL LEAF CURL (chilli_nutrient_deficiencies)
+- Distinct from viral: no mosaic, no stunting, no bushy look, no vectors [chilli_nutrient_deficiencies, S6]
+
+EVIDENCE QUALITY AND LIMITS
+- Most thresholds come from IN (TNAU, NIPHM) sources; no Karnataka-measured thresholds for chilli foliar diseases.
+- Heat stress values from INTL/IN (Punjab, TNAU), not Karnataka-specific.
+- Soil moisture values from NIPHM use undefined units.
+- CORPUS RULE: This checklist only prioritizes field inspection. Sensor readings show conditions that favour a problem. They do not confirm it. Field inspection and KVK/agriculture officer confirmation are required.
+
+SOURCE GEOGRAPHY
+See individual documents cited in checklist.
+
+REFERENCES
+[S1] 06_powdery_mildew_tomato_chilli
+[S2] 13_chilli_anthracnose_dieback_fruit_rot
+[S3] 14_chilli_other_diseases_conditions
+[S4] chilli_bacterial_leaf_spot
+[S5] chilli_wilt_damping_off
+[S6] chilli_heat_stress
+[S7] chilli_viral_diseases
+[S8] chilli_nutrient_deficiencies
+[S9] 18_blossom_end_rot_tomato (physiological principles)

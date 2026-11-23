@@ -1,0 +1,43 @@
+DOC_ID: 05_septoria_leaf_spot_tomato
+TITLE: Septoria leaf spot (Septoria lycopersici) - conditions that favour it
+CROPS: tomato
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet; rainfall_mm (splash); canopy airflow (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, INTL) Septoria leaf spot is caused by Septoria lycopersici and affects tomato and other nightshade-family plants [S1][S3].
+- (OBS, INTL) It spreads by splashing rain, equipment, workers or insects, survives on tomato debris and solanaceous weeds, and can be seed-borne [S3].
+
+WEATHER FACTS
+- (FAV, INTL, USA) High humidity, moderate temperature of 20-25°C, high dew point or wet conditions, and poor airflow favour the disease [S1].
+- (FAV, INTL, USA) Long high humidity with 15-27°C and leaf wetness are described as ideal [S2].
+- (FAV, INTL, USA) Heat waves with long stretches of high temperature and humidity, or repeated periods of wet foliage such as long morning dew, favour it [S3].
+- (WEAK, INTL) A growth-chamber study found most lesions at 20-25°C, though lesions still formed at 10°C. With humidity of 50-60% and no dew, lesion numbers were similar to 16 hours of dew on inoculated leaves, so some disease can occur even under unfavourable weather [S4].
+
+SYMPTOMS
+- (INSP, INTL) Many small circular spots on the lowest, oldest leaves, with dark margins and tan to grey centres with tiny black dots. It spreads upward; leaves yellow, brown and wither [S2].
+- (INSP, INTL) Fruit infection is rare [S2]; the source says it does not directly affect fruit [S5].
+
+FIELD INSPECTION
+- (INSP, INTL) Check the lowest, oldest leaves first for small spots with dark margins [S2].
+
+MANAGEMENT
+- (OBS, INTL) Remove lower growth, keep plant spacing, control host weeds, destroy debris and avoid over-irrigating [S1].
+- (OBS, INTL) Water at the base. Prune the lowest 3-4 leaf branches once plants are established [S6].
+- (OBS, INTL) If caught early, remove infected lower leaves. Removing leaves above fruit weakens the plant and exposes fruit to sunscald [S2].
+- (OBS, INTL) The disease can be harder to control than early blight [S3]. The source names preventive fungicide use; product names, doses and timing are not included here. Ask the KVK.
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No Karnataka or ICAR Septoria threshold is present in this corpus.
+- CORPUS RULE: Matching sensor readings show that conditions favour Septoria leaf spot. They do not confirm it.
+
+SOURCE GEOGRAPHY
+[S1] Wisconsin, USA; [S2] Missouri, USA; [S3] Connecticut, USA; [S4] USA (growth-chamber study; location not verified); [S5] Ohio State University fact sheet, hosted by Maine DACF, USA; [S6] Maryland, USA.
+
+REFERENCES
+[S1] University of Wisconsin Vegetable Pathology, Tomato Septoria Leaf Spot, https://vegpath.plantpath.wisc.edu/diseases/tomato-septoria-leaf-spot
+[S2] Missouri Botanical Garden, Septoria leaf spot of tomato, https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/pests-and-problems/diseases/fungal-spots/septoria-leaf-spot-of-tomato.aspx
+[S3] UConn Extension (J. Boucher), Septoria Leaf Spot on Tomatoes in 2015, https://ipm.cahnr.uconn.edu/problems-with-septoria-leaf-spot-on-tomatoes-in-2015
+[S4] Elmer and Ferrandino, Plant Disease 79:287-290 (1995), https://apsnet.org/publications/plantdisease/backissues/Documents/1995Abstracts/PD_79_287.htm
+[S5] Ohio State University Extension, HYG-3112 (copy hosted by Maine DACF), https://www.maine.gov/DACF/php/gotpests/diseases/factsheets/septoria-ohio.pdf
+[S6] University of Maryland Extension, Septoria Leaf Spot on Tomatoes, https://extension.umd.edu/resource/septoria-leaf-spot-tomatoes

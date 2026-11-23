@@ -1,0 +1,47 @@
+DOC_ID: 06_powdery_mildew_tomato_chilli
+TITLE: Powdery mildew of tomato and chilli (Leveillula taurica and Oidium species) - conditions that favour it
+CROPS: tomato; chilli
+SENSOR_SIGNALS: temperature_c; humidity_pct; leaf_wet (not required, free water harms spores); rainfall_mm; sunlight_wm2 (shade or low light); canopy density (farmer-reported)
+EMBED: yes
+
+IDENTIFICATION
+- (OBS, IN) For chilli, TNAU and NIPHM name Leveillula taurica as the powdery mildew fungus [S7].
+- (OBS, INTL) For tomato, sources describe powdery mildew from Leveillula and Oidium species [S2][S5].
+
+WEATHER FACTS
+- (FAV, INTL, USA) It does not need standing water on leaves. High humidity with moderate temperature of about 16-25°C favours it, and hot temperature with low humidity limits it [S1].
+- (FAV, INTL, USA) It thrives in warm, dry weather with moderate to high humidity and can be suppressed by rain. Optimum is 15-27°C, and infection occurs below 30°C [S2].
+- (FAV, INTL, USA) Free moisture kills spores and inhibits germination. Moderate temperature and shade favour it. Spores are sensitive to extreme heat (above about 32°C) and direct sunlight [S3][S4].
+- (FAV, INTL, Pacific region) Germination and infection occur at temperature under 30°C and at medium to high humidity, commonly in warm, dry weather [S5].
+- (FAV, INTL, USA greenhouse) In greenhouses the optimum is 20-30°C, humidity above 95% and fairly low light [S6].
+- (FAV, IN) For chilli, TNAU/NIPHM state that cool dry weather favours spore germination and high relative humidity favours disease development [S7]. A TNAU weather advisory (Thoothukudi, Tamil Nadu) notes high humidity leading to powdery mildew in chilli [S8].
+- (WEAK, INTL, IN) Sources differ: the international sources describe moderate-to-warm temperature, while the Indian chilli source describes cool dry weather for spore germination. No Karnataka threshold is available [S1][S7].
+
+SYMPTOMS
+- (INSP, INTL, IN) Pale yellow blotches on the upper leaf surface, with white powdery growth mostly on the lower surface (chilli and tomato Leveillula) [S5][S7].
+- (INSP, INTL) Leaves may yellow, die and drop; fruit can get sunscald [S4][S5]. It seldom kills plants but can sharply cut yield [S1].
+
+FIELD INSPECTION
+- (INSP, INTL, IN) Turn leaves over and check the lower surface for white powdery growth, and the upper surface for pale yellow blotches [S5][S7].
+
+MANAGEMENT
+- (OBS, INTL) Avoid too much nitrogen because lush growth favours the disease. Remove volunteer plants. Use resistant varieties where available [S5].
+- (OBS, INTL) Space plants about 24 inches (about 61 cm) or more apart for air flow, and avoid shady low fields [S2].
+- (OBS, INTL, IN) Sources name chemical and biological options. Product names, doses and timing are not included here. Ask the KVK for approved products [S1][S7].
+
+EVIDENCE QUALITY AND LIMITS
+- UNAVAILABLE: No numeric Karnataka threshold for powdery mildew is present in this corpus.
+- CORPUS RULE: Matching sensor readings show that conditions favour powdery mildew. They do not confirm it. A dry-leaf, humid reading (leaf_wet = 0) is consistent with this disease only as a risk signal.
+
+SOURCE GEOGRAPHY
+[S1] Missouri, USA; [S2] Connecticut, USA; [S3] California, USA; [S4] California, USA; [S5] Pacific region guide (Lucid-hosted; location not verified); [S6] Connecticut, USA; [S7] TNAU (Tamil Nadu) and NIPHM (India); [S8] Thoothukudi, Tamil Nadu, India.
+
+REFERENCES
+[S1] University of Missouri IPM, Powdery Mildew articles, https://ipm.missouri.edu/MPG/2018/7/powderyMildew
+[S2] UConn IPM, Tomato Powdery Mildew, https://ipm.cahnr.uconn.edu/tomato-powdery-mildew/
+[S3] UC IPM, Powdery mildew on tomato, https://ipm.ucanr.edu/PMG/GARDEN/VEGES/DISEASES/tompowmildew.html
+[S4] UC IPM, Powdery mildew on vegetables, https://ipm.ucanr.edu/m/pn7406-1.html
+[S5] Pacific Pests, Pathogens and Weeds, Tomato powdery mildew (314), https://apps.lucidcentral.org/pppw_v10/pdf/web_full/tomato_powdery_mildew_314.pdf
+[S6] Connecticut Agricultural Experiment Station, Powdery mildew in the greenhouse, https://portal.ct.gov/-/media/caes/documents/publications/fact_sheets/plant_pathology_and_ecology/powderymildewinthegreenhouse080312rpdf.pdf
+[S7] TNAU Agritech, chilli powdery mildew, https://agritech.tnau.ac.in/crop_protection/chilli_diseases_3.html ; NIPHM via Vikaspedia, Chilli description of plant diseases, https://en.vikaspedia.in/agriculture/crop-production/integrated-pest-managment/ipm-for-spice-crops/ipm-strategies-for-chilli/chilli-description-of-plant-diseases
+[S8] TNAU agromet advisory bulletin (2 Jan 2024, Thoothukudi), https://agritech.tnau.ac.in/agrometeorologicaladvisory/pdf/tnau_acrc/2024/jan/English%20Bulletin%20on%2002.01.24%20Thoothukudi.pdf
