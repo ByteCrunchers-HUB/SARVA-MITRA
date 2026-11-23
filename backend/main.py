@@ -377,42 +377,125 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
         sm_val = curr.get("soil_moisture_pct", 22.0)
         rain_val = curr.get("rainfall_mm", 0.0)
         risk_pct_val = risk_info.get("risk_pct", 35.0)
+        q_lower = req.question.lower()
 
-        if sm_val < 18.0:
-            irrigation_note = f"Root-zone soil moisture is low ({sm_val:.1f}%). Initiate scheduled drip irrigation (2–3 L/m²) early morning to protect against blossom drop and moisture stress."
-        elif sm_val > 35.0:
-            irrigation_note = f"Soil moisture is elevated ({sm_val:.1f}%). Pause irrigation and ensure surface furrows drain rapidly to prevent root rot."
+        # 1. Topic: Fertilizer / Calcium / Nutrition / Flower drop
+        if any(w in q_lower for w in ("fertiliz", "calcium", "nutrient", "npk", "spray", "flower drop")):
+            answer = (
+                f"**Nutrient & Spray Guidance for {crop_title} ({loc_title})**:\n\n"
+                f"• **Flowering Stage Nutrition**: High nitrogen promotes excessive vegetative foliage at the expense of reproductive bloom. At flowering, shift toward balanced potassium (K), calcium (Ca), and boron (B) to stabilize flower retention.\n"
+                f"• **Foliar Calcium & Boron Application**: Apply foliar **Calcium Nitrate @ 0.5% (5g/L)** combined with **Boron (Solubor @ 1g/L)** during cool morning hours. Repeat after 10–12 days during active fruit set.\n"
+                f"• **Basal / Drip Schedule**: Maintain root-zone moisture above 18% so root hairs can absorb soluble calcium. Avoid applying urea right before peak heat.\n"
+                f"• **Live Sensors**: Temperature: {temp_val:.1f}°C | Humidity: {hum_val:.0f}% | Soil Moisture: {sm_val:.1f}%\n"
+                f"• **Safety Note**: Spray early morning (07:00–09:00) before temperatures exceed 30°C to protect delicate flower petals.\n\n"
+                f"### 💡 Suggested Follow‑Up Questions\n"
+                f"- What are the visual deficiency symptoms of calcium vs boron on leaves?\n"
+                f"- What organic preventive spray helps against flower drop?"
+            )
+            structured = {
+                "response_mode": "chat",
+                "overview": f"Nutrient and spray recommendations for {crop_title}.",
+                "model_interpretation": "Flowering stage demands balanced calcium and potassium management.",
+                "recommendations": [
+                    {"step": 1, "action": "Foliar spray Calcium Nitrate 0.5% + Boron 1g/L in morning hours."},
+                    {"step": 2, "action": "Maintain soil moisture above 18% to support calcium uptake through roots."}
+                ]
+            }
+
+        # 2. Topic: Irrigation / Soil Moisture Bands / Watering
+        elif any(w in q_lower for w in ("irrigat", "water", "moist", "band")):
+            is_dry = sm_val < 18.0
+            is_wet = sm_val > 35.0
+            status_text = "below optimal threshold (water stress)" if is_dry else ("elevated moisture (hypoxia risk)" if is_wet else "in the ideal vegetative-flowering moisture window")
+            irr_action = (
+                f"Schedule light, frequent pulse irrigation (2–3 L/m² daily) via drip lines in the morning (06:00–08:30) to bring root zone to 24%."
+                if is_dry else
+                ("Pause watering and inspect furrow drainage to prevent collar rot." if is_wet else "Maintain standard 2-day irrigation cycles.")
+            )
+
+            answer = (
+                f"**Irrigation & Soil Moisture Management for {crop_title} ({loc_title})**:\n\n"
+                f"• **Target Soil Moisture Band**: For {crop_title} during flowering, the recommended root-zone soil moisture is **22% – 32% VWC** (60–80% available water capacity).\n"
+                f"• **Current Soil Moisture**: Sensor reports **{sm_val:.1f}%**, which is {status_text}.\n"
+                f"• **Irrigation Action**: {irr_action}\n"
+                f"• **Evapotranspiration Correlates**: Ambient temperature ({temp_val:.1f}°C) and relative humidity ({hum_val:.0f}%) drive steady surface drying.\n\n"
+                f"### 💡 Suggested Follow‑Up Questions\n"
+                f"- Should I irrigate early in the morning or evening?\n"
+                f"- What are the signs of over-watering vs drought stress in {crop_title}?"
+            )
+            structured = {
+                "response_mode": "chat",
+                "overview": f"Soil moisture and irrigation guidance for {crop_title}.",
+                "model_interpretation": f"Current soil moisture is {sm_val:.1f}%.",
+                "recommendations": [
+                    {"step": 1, "action": f"Target 22–30% soil moisture band for {crop_title} flowering stage."},
+                    {"step": 2, "action": irr_action}
+                ]
+            }
+
+        # 3. Topic: Diseases / Pests / Blight / Yellowing / Leaf curl / Insects
+        elif any(w in q_lower for w in ("disease", "pest", "blight", "spot", "curl", "yellow", "wilt", "rot", "whitefly", "thrip", "insect")):
+            answer = (
+                f"**Pest & Disease Management for {crop_title} ({loc_title})**:\n\n"
+                f"• **AI Pathogen Risk Index**: **{risk_pct_val:.1f}% ({risk_level.upper()})** based on temperature {temp_val:.1f}°C and humidity {hum_val:.0f}%.\n"
+                f"• **Primary Risks to Inspect Today**:\n"
+                f"  - **Sucking Pests (Thrips / Whiteflies)**: Inspect leaf undersides; thrips cause upward leaf curling and silvery sheen, while whiteflies transmit Leaf Curl Virus.\n"
+                f"  - **Foliar Blight & Leaf Spots**: Check lower canopy leaves for concentric brown rings or water-soaked lesions.\n"
+                f"• **Preventive Protection Steps**:\n"
+                f"  1. Install yellow and blue sticky traps (5–8 per acre) to monitor insect activity.\n"
+                f"  2. Apply preventive Neem Oil spray (3–5 ml/L with soap emulsifier) during cool evening hours.\n"
+                f"  3. If fungal spots are spotted, consult local KVK for certified copper hydroxide (2g/L) or biological Trichoderma application.\n\n"
+                f"### 💡 Suggested Follow‑Up Questions\n"
+                f"- What organic spray is effective against thrips and aphids?\n"
+                f"- How do I distinguish viral leaf curl from moisture stress?"
+            )
+            structured = {
+                "response_mode": "chat",
+                "overview": f"Pest and disease diagnosis for {crop_title}.",
+                "model_interpretation": f"Pathogen risk index is {risk_pct_val:.1f}% ({risk_level}).",
+                "recommendations": [
+                    {"step": 1, "action": "Inspect lower canopy and leaf undersides for thrips or lesions."},
+                    {"step": 2, "action": "Apply preventive neem formulation (3ml/L) and install sticky traps."}
+                ]
+            }
+
+        # 4. Default / General Agronomic Overview
         else:
-            irrigation_note = f"Soil moisture ({sm_val:.1f}%) is within optimal crop tolerance. Maintain regular morning hydration intervals."
+            if sm_val < 18.0:
+                irrigation_note = f"Root-zone soil moisture is low ({sm_val:.1f}%). Initiate scheduled drip irrigation (2–3 L/m²) early morning to protect against blossom drop and moisture stress."
+            elif sm_val > 35.0:
+                irrigation_note = f"Soil moisture is elevated ({sm_val:.1f}%). Pause irrigation and ensure surface furrows drain rapidly to prevent root rot."
+            else:
+                irrigation_note = f"Soil moisture ({sm_val:.1f}%) is within optimal crop tolerance. Maintain regular morning hydration intervals."
 
-        if risk_level == "high":
-            protection_note = f"Under ambient {temp_val:.1f}°C and {hum_val:.0f}% RH, pathogen stress index is elevated ({risk_pct_val:.1f}%). Prune senescent lower leaves, inspect undersides for fungal spots, and apply certified biocontrol spray (Trichoderma or copper hydroxide)."
-        elif risk_level == "moderate":
-            protection_note = f"Ambient conditions ({temp_val:.1f}°C, {hum_val:.0f}% RH) represent moderate disease favorability ({risk_pct_val:.1f}%). Inspect lower canopy twice weekly and spray preventive neem formulation (3ml/L) if humidity exceeds 70%."
-        else:
-            protection_note = f"Environmental pathogen favorability is low ({risk_pct_val:.1f}%). Focus on balanced NPK fertilizer application and standard field sanitation."
+            if risk_level == "high":
+                protection_note = f"Under ambient {temp_val:.1f}°C and {hum_val:.0f}% RH, pathogen stress index is elevated ({risk_pct_val:.1f}%). Prune senescent lower leaves, inspect undersides for fungal spots, and apply certified biocontrol spray (Trichoderma or copper hydroxide)."
+            elif risk_level == "moderate":
+                protection_note = f"Ambient conditions ({temp_val:.1f}°C, {hum_val:.0f}% RH) represent moderate disease favorability ({risk_pct_val:.1f}%). Inspect lower canopy twice weekly and spray preventive neem formulation (3ml/L) if humidity exceeds 70%."
+            else:
+                protection_note = f"Environmental pathogen favorability is low ({risk_pct_val:.1f}%). Focus on balanced NPK fertilizer application and standard field sanitation."
 
-        answer = (
-            f"**Agronomic Assessment for {crop_title} ({loc_title})**:\n\n"
-            f"• **Live Sensors**: Temperature: {temp_val:.1f}°C | Humidity: {hum_val:.0f}% | Soil Moisture: {sm_val:.1f}% | Rain: {rain_val:.1f}mm\n"
-            f"• **AI Pathogen Risk Index**: {risk_pct_val:.1f}% ({risk_level.upper()})\n\n"
-            f"**Action Steps**:\n"
-            f"1. **Irrigation**: {irrigation_note}\n"
-            f"2. **Canopy & Protection**: {protection_note}\n"
-            f"3. **Field Confirmation**: Inspect flowers and leaf nodes during morning hours before spraying.\n\n"
-            f"### 💡 Suggested Follow‑Up Questions\n"
-            f"- What fertilizer or calcium spray should I apply during flowering?\n"
-            f"- How do I identify early signs of fungal leaf spots or blight?"
-        )
-        structured = {
-            "response_mode": "chat",
-            "overview": f"Agronomic telemetry status for {crop_title}.",
-            "model_interpretation": f"ML risk index: {risk_pct_val:.1f}% ({risk_level}).",
-            "recommendations": [
-                {"step": 1, "action": irrigation_note},
-                {"step": 2, "action": protection_note}
-            ]
-        }
+            answer = (
+                f"**Agronomic Assessment for {crop_title} ({loc_title})**:\n\n"
+                f"• **Live Sensors**: Temperature: {temp_val:.1f}°C | Humidity: {hum_val:.0f}% | Soil Moisture: {sm_val:.1f}% | Rain: {rain_val:.1f}mm\n"
+                f"• **AI Pathogen Risk Index**: {risk_pct_val:.1f}% ({risk_level.upper()})\n\n"
+                f"**Action Steps**:\n"
+                f"1. **Irrigation**: {irrigation_note}\n"
+                f"2. **Canopy & Protection**: {protection_note}\n"
+                f"3. **Field Confirmation**: Inspect flowers and leaf nodes during morning hours before spraying.\n\n"
+                f"### 💡 Suggested Follow‑Up Questions\n"
+                f"- What fertilizer or calcium spray should I apply during flowering?\n"
+                f"- What are the recommended fertilizer practices and soil moisture bands for my crop?"
+            )
+            structured = {
+                "response_mode": "chat",
+                "overview": f"Agronomic telemetry status for {crop_title}.",
+                "model_interpretation": f"ML risk index: {risk_pct_val:.1f}% ({risk_level}).",
+                "recommendations": [
+                    {"step": 1, "action": irrigation_note},
+                    {"step": 2, "action": protection_note}
+                ]
+            }
 
     # Updated conversation history
     updated_history = list(chat_history_dicts)

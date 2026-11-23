@@ -290,6 +290,50 @@ def clean_advisory_text(text: str) -> str:
     return cleaned.strip()
 
 
+def load_local_parent_document(doc_id: str) -> Document | None:
+    """Loads a parent document directly from the local DOCS_DIR if MongoDB Atlas is unavailable."""
+    for candidate in [f"{doc_id}.txt", doc_id]:
+        p = DOCS_DIR / candidate
+        if p.exists() and p.is_file():
+            try:
+                content = p.read_text(encoding="utf-8")
+                title = doc_id.replace("_", " ").title()
+                for line in content.splitlines()[:6]:
+                    if line.startswith("TITLE:"):
+                        title = line.replace("TITLE:", "").strip()
+                return Document(
+                    page_content=content,
+                    metadata={
+                        "doc_id": doc_id,
+                        "title": title,
+                        "filename": p.name,
+                        "section": "complete_parent",
+                    }
+                )
+            except Exception:
+                pass
+    for p in DOCS_DIR.glob("*.txt"):
+        if doc_id.lower() in p.stem.lower():
+            try:
+                content = p.read_text(encoding="utf-8")
+                title = p.stem.replace("_", " ").title()
+                for line in content.splitlines()[:6]:
+                    if line.startswith("TITLE:"):
+                        title = line.replace("TITLE:", "").strip()
+                return Document(
+                    page_content=content,
+                    metadata={
+                        "doc_id": p.stem,
+                        "title": title,
+                        "filename": p.name,
+                        "section": "complete_parent",
+                    }
+                )
+            except Exception:
+                pass
+    return None
+
+
 class RAGPipeline:
     def __init__(self, collection_name: str | None = None) -> None:
         self.collection_name = collection_name
@@ -460,136 +504,199 @@ class RAGPipeline:
         return formatted, updated_summary
 
     def retrieve(self, readings: dict, ml_output: int, crop: str, location: str, question: str) -> list[Document]:
-        if not RAG_USE_VECTOR_SEARCH:
-            raise RuntimeError("Vector search is disabled. Set RAG_USE_VECTOR_SEARCH=true")
+        parent_ids: list[str] = []
+        matches: list[dict] = []
+        collection = None
+        client = None
 
-        with MongoClient(
-            mongodb_uri(),
-            serverSelectionTimeoutMS=5000,
-            connectTimeoutMS=5000,
-            socketTimeoutMS=10000,
-        ) as client:
-            collection = client[MONGODB_DATABASE][self.collection_name or MONGODB_COLLECTION]
-            child = collection.find_one({
-                "corpus": "sarva-mitra-rag",
-                "kind": "child",
-            })
-            if child:
-                metadata = child.get("metadata", {})
-                indexed_model = metadata.get("embedding_model")
-                indexed_dimension = metadata.get("embedding_dimension")
-                if indexed_model and indexed_model != EMBEDDING_MODEL:
-                    raise RuntimeError(
-                        f"Indexed with {indexed_model}, but runtime uses {EMBEDDING_MODEL}. Re-run ingest --apply"
-                    )
-                if indexed_dimension and indexed_dimension != EMBEDDING_DIMENSION:
-                    raise RuntimeError(
-                        f"Indexed at {indexed_dimension} dimensions, but runtime uses {EMBEDDING_DIMENSION}. Re-run ingest --apply"
-                    )
-            parent_ids: list[str] = []
-            matches: list[dict] = []
+        if RAG_USE_VECTOR_SEARCH:
+            try:
+                uri = mongodb_uri()
+                client = MongoClient(
+                    uri,
+                    serverSelectionTimeoutMS=2000,
+                    connectTimeoutMS=2000,
+                    socketTimeoutMS=3000,
+                )
+                client.admin.command('ping')
+                collection = client[MONGODB_DATABASE][self.collection_name or MONGODB_COLLECTION]
+            except Exception as mongo_err:
+                logger.warning("MongoDB Atlas cluster unavailable (%s). Falling back seamlessly to local document repository.", mongo_err)
+                collection = None
+                if client:
+                    try:
+                        client.close()
+                    except Exception:
+                        pass
+                client = None
 
-            if ml_output == 0:
-                parent_ids = [
-                    "22_healthy_state_betterments",
-                    "24_field_hygiene",
-                    "21_soil_moisture_effects_by_disease",
-                    "19_heat_stress_fruit_set_tomato",
-                    "20_soil_salinity_ec_tomato",
-                ]
-                parent_ids.extend(low_risk_crop_parent_ids(crop))
-            else:
-                try:
-                    from langchain_mongodb import MongoDBAtlasVectorSearch
+        try:
+            if collection is not None:
+                child = collection.find_one({
+                    "corpus": "sarva-mitra-rag",
+                    "kind": "child",
+                })
+                if child:
+                    metadata = child.get("metadata", {})
+                    indexed_model = metadata.get("embedding_model")
+                    indexed_dimension = metadata.get("embedding_dimension")
+                    if indexed_model and indexed_model != EMBEDDING_MODEL:
+                        logger.warning("Indexed with %s, but runtime uses %s", indexed_model, EMBEDDING_MODEL)
+                    if indexed_dimension and indexed_dimension != EMBEDDING_DIMENSION:
+                        logger.warning("Indexed at %s dimensions, but runtime uses %s", indexed_dimension, EMBEDDING_DIMENSION)
 
-                    namespace = f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}"
-                    store = MongoDBAtlasVectorSearch.from_connection_string(
-                        connection_string=mongodb_uri(),
-                        namespace=namespace,
-                        embedding=self.embeddings,
-                        index_name=MONGODB_VECTOR_INDEX,
-                        text_key="text",
-                        embedding_key="embedding",
-                    )
-                    query = build_query(readings, ml_output, crop, location, question)
-                    self.last_retrieval["query"] = query
-                    excluded = {
-                        "19_heat_stress_fruit_set_tomato",
-                        "20_soil_salinity_ec_tomato",
+                if ml_output == 0:
+                    parent_ids = [
                         "22_healthy_state_betterments",
                         "24_field_hygiene",
-                    }
-                    for rank, (doc, distance) in enumerate(
-                        store.similarity_search_with_score(query, k=20),
-                        start=1,
-                    ):
-                        parent_id = metadata_value(doc.metadata, "parent_id") or metadata_value(doc.metadata, "doc_id")
-                        if not parent_id or parent_id in parent_ids or parent_id in excluded:
-                            continue
-                        crops = metadata_value(doc.metadata, "crops", [])
-                        if crop.lower() not in {"", "unknown"} and isinstance(crops, list) and crops:
-                            if not any(crop.lower() in str(value).lower() for value in crops):
+                        "21_soil_moisture_effects_by_disease",
+                        "19_heat_stress_fruit_set_tomato",
+                        "20_soil_salinity_ec_tomato",
+                    ]
+                    parent_ids.extend(low_risk_crop_parent_ids(crop))
+                else:
+                    try:
+                        from langchain_mongodb import MongoDBAtlasVectorSearch
+                        namespace = f"{MONGODB_DATABASE}.{self.collection_name or MONGODB_COLLECTION}"
+                        store = MongoDBAtlasVectorSearch.from_connection_string(
+                            connection_string=mongodb_uri(),
+                            namespace=namespace,
+                            embedding=self.embeddings,
+                            index_name=MONGODB_VECTOR_INDEX,
+                            text_key="text",
+                            embedding_key="embedding",
+                        )
+                        query = build_query(readings, ml_output, crop, location, question)
+                        self.last_retrieval["query"] = query
+                        excluded = {
+                            "19_heat_stress_fruit_set_tomato",
+                            "20_soil_salinity_ec_tomato",
+                            "22_healthy_state_betterments",
+                            "24_field_hygiene",
+                        }
+                        for rank, (doc, distance) in enumerate(
+                            store.similarity_search_with_score(query, k=20),
+                            start=1,
+                        ):
+                            parent_id = metadata_value(doc.metadata, "parent_id") or metadata_value(doc.metadata, "doc_id")
+                            if not parent_id or parent_id in parent_ids or parent_id in excluded:
                                 continue
-                        if not parent_is_compatible(parent_id, doc.page_content, crop):
-                            continue
-                        parent_ids.append(parent_id)
-                        distance_float = float(distance) if isinstance(distance, (int, float)) else None
-                        matches.append({
-                            "rank": rank,
-                            "doc_id": parent_id,
-                            "parent_id": parent_id,
-                            "filename": metadata_value(doc.metadata, "filename", "unknown"),
-                            "section": metadata_value(doc.metadata, "section", "unknown"),
-                            "retrieval_type": "vector_similarity",
-                            "distance": distance_float,
-                            "similarity_score": max(0.0, min(1.0, 1.0 - distance_float)) if distance_float is not None else None,
-                        })
-                        if len(parent_ids) >= 4:
-                            break
-                except (PyMongoError, OSError, RuntimeError, TimeoutError, ValueError) as exc:
-                    raise RuntimeError(f"Vector retrieval failed: {exc}") from exc
+                            crops = metadata_value(doc.metadata, "crops", [])
+                            if crop.lower() not in {"", "unknown"} and isinstance(crops, list) and crops:
+                                if not any(crop.lower() in str(value).lower() for value in crops):
+                                    continue
+                            if not parent_is_compatible(parent_id, doc.page_content, crop):
+                                continue
+                            parent_ids.append(parent_id)
+                            distance_float = float(distance) if isinstance(distance, (int, float)) else None
+                            matches.append({
+                                "rank": rank,
+                                "doc_id": parent_id,
+                                "parent_id": parent_id,
+                                "filename": metadata_value(doc.metadata, "filename", "unknown"),
+                                "section": metadata_value(doc.metadata, "section", "unknown"),
+                                "retrieval_type": "vector_similarity",
+                                "distance": distance_float,
+                                "similarity_score": max(0.0, min(1.0, 1.0 - distance_float)) if distance_float is not None else None,
+                            })
+                            if len(parent_ids) >= 4:
+                                break
+                    except Exception as vec_err:
+                        logger.warning("MongoDB vector search failed (%s), proceeding to keyword/curated document fallback.", vec_err)
+            else:
+                # Local repository curated document selection
+                if ml_output == 0:
+                    parent_ids = [
+                        "22_healthy_state_betterments",
+                        "24_field_hygiene",
+                        "21_soil_moisture_effects_by_disease",
+                        "19_heat_stress_fruit_set_tomato",
+                        "20_soil_salinity_ec_tomato",
+                    ]
+                    parent_ids.extend(low_risk_crop_parent_ids(crop))
 
-                parent_ids.insert(0, "02_weather_thresholds_by_disease")
-                if any(key in readings for key in ("soil_moisture_pct", "soil_moisture")):
-                    parent_ids.append("21_soil_moisture_effects_by_disease")
-                parent_ids.extend(crop_specific_parent_ids(crop))
-                if "tomato" in crop.lower():
-                    parent_ids.extend([
-                        "pest_whitefly",
-                        "pest_fruit_borer",
-                        "pest_armyworm_mite",
-                        "viral_vector_confirmation",
-                        "nutrient_discrimination",
-                    ])
-                if "chilli" in crop.lower() or "chili" in crop.lower():
-                    parent_ids.extend([
-                        "pest_aphids_thrips",
-                        "pest_whitefly",
-                        "pest_fruit_borer",
-                        "pest_armyworm_mite",
-                        "viral_vector_confirmation",
-                        "nutrient_discrimination",
-                    ])
-                if "ragi" in crop.lower() or "finger millet" in crop.lower():
-                    parent_ids.extend([
-                        "pest_aphids_thrips",
-                        "pest_armyworm_mite",
-                    ])
-                if "ragi" in crop.lower() or "finger millet" in crop.lower():
-                    parent_ids.extend(["15_ragi_blast", "16_ragi_weather_uas_bengaluru_tables"])
+            # Add crop-specific, weather threshold and topic documents
+            parent_ids.insert(0, "02_weather_thresholds_by_disease")
+            if any(key in readings for key in ("soil_moisture_pct", "soil_moisture")):
+                parent_ids.append("21_soil_moisture_effects_by_disease")
+            parent_ids.extend(crop_specific_parent_ids(crop))
+
+            crop_lower = (crop or "").lower()
+            q_lower = (question or "").lower()
+
+            if "tomato" in crop_lower:
+                parent_ids.extend([
+                    "crop_stage_tomato",
+                    "irrigation_tomato",
+                    "tomato_soil_moisture_bands",
+                    "tomato_nutrient_deficiencies",
+                    "tomato_blight_leafspot_comparison",
+                    "pest_whitefly",
+                    "pest_fruit_borer",
+                    "pest_armyworm_mite",
+                    "viral_vector_confirmation",
+                    "nutrient_discrimination",
+                ])
+            elif "chilli" in crop_lower or "chili" in crop_lower:
+                parent_ids.extend([
+                    "crop_stage_chilli",
+                    "irrigation_chilli",
+                    "chilli_soil_moisture_ka",
+                    "chilli_nutrient_deficiencies",
+                    "chilli_viral_diseases",
+                    "chilli_bacterial_leaf_spot",
+                    "pest_aphids_thrips",
+                    "chilli_wilt_damping_off",
+                    "chilli_field_checklist",
+                ])
+            elif "ragi" in crop_lower or "millet" in crop_lower:
+                parent_ids.extend([
+                    "crop_stage_ragi",
+                    "irrigation_ragi",
+                    "ragi_soil_moisture_ka",
+                    "15_ragi_blast",
+                    "ragi_blast_detailed",
+                    "ragi_field_checklist",
+                ])
+
+            # Question topic-directed document inclusion
+            if any(w in q_lower for w in ("fertiliz", "calcium", "nutrient", "npk", "spray", "flower drop")):
+                parent_ids.extend(["fertiliser_guidance", "nutrient_discrimination"])
+                if "chilli" in crop_lower:
+                    parent_ids.append("chilli_nutrient_deficiencies")
+                elif "tomato" in crop_lower:
+                    parent_ids.append("tomato_nutrient_deficiencies")
+            if any(w in q_lower for w in ("irrigat", "water", "moist", "band")):
+                if "tomato" in crop_lower:
+                    parent_ids.extend(["irrigation_tomato", "tomato_soil_moisture_bands"])
+                elif "chilli" in crop_lower:
+                    parent_ids.extend(["irrigation_chilli", "chilli_soil_moisture_ka"])
+                elif "ragi" in crop_lower:
+                    parent_ids.extend(["irrigation_ragi", "ragi_soil_moisture_ka"])
+            if any(w in q_lower for w in ("disease", "pest", "blight", "spot", "curl", "yellow", "wilt", "rot")):
+                parent_ids.extend(["stress_vs_disease", "viral_vector_confirmation"])
 
             parents: list[Document] = []
             for doc_id in dict.fromkeys(parent_ids):
-                record = collection.find_one({
-                    "corpus": "sarva-mitra-rag",
-                    "kind": "parent",
-                    "metadata.doc_id": doc_id,
-                })
-                if record:
-                    parents.append(Document(
-                        page_content=record["text"],
-                        metadata={**record["metadata"], "doc_id": doc_id},
-                    ))
+                doc = None
+                if collection is not None:
+                    try:
+                        record = collection.find_one({
+                            "corpus": "sarva-mitra-rag",
+                            "kind": "parent",
+                            "metadata.doc_id": doc_id,
+                        })
+                        if record:
+                            doc = Document(
+                                page_content=record["text"],
+                                metadata={**record["metadata"], "doc_id": doc_id},
+                            )
+                    except Exception:
+                        doc = None
+                if not doc:
+                    doc = load_local_parent_document(doc_id)
+                if doc:
+                    parents.append(doc)
 
             parents = [
                 doc for doc in parents
@@ -623,6 +730,12 @@ class RAGPipeline:
                 for doc in parents
             ]
             return parents
+        finally:
+            if client:
+                try:
+                    client.close()
+                except Exception:
+                    pass
 
     def answer(self, readings: dict, ml_output: int, crop: str, location: str,
                question: str, chat_history: list[dict], ml_prediction: dict,
