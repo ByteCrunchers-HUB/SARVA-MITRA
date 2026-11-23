@@ -257,7 +257,11 @@
       renderInitialGreeting(chatData.answer);
     } catch (chatErr) {
       console.error('Initial advisory fetch error:', chatErr);
-      const errBanner = `⚠️ **Backend Connection Notice:** Could not retrieve live AI advisory report.\n\n*Error details:* \`${chatErr.message}\`\n\n*Recommended Action:* Open **http://localhost:8000/ui/** in your browser while Uvicorn is running.`;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const actionHelp = isLocal
+        ? 'Ensure backend Uvicorn is running on port 8000.'
+        : 'Verify service status in Render dashboard and ensure GROQ_API_KEY is added under Environment Variables.';
+      const errBanner = `⚠️ **Backend Connection Notice:** Could not retrieve live AI advisory report.\n\n*Error details:* \`${chatErr.message}\`\n\n*Recommended Action:* ${actionHelp}`;
       state.initialAdvisoryText = errBanner;
       renderInitialGreeting(errBanner);
     }
@@ -682,7 +686,11 @@
     } catch (err) {
       removeTypingIndicator();
       console.error('Live LLM Chat request failed:', err);
-      const errorMsg = `⚠️ **Advisory Generation Notice:** Could not connect to live AI model.\n\n*Error details:* \`${err.message || 'Connection failed'}\`\n\n*Action:* Ensure Uvicorn is running on port 8000 and access the app via **http://localhost:8000/ui/**.`;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const actionHelp = isLocal
+        ? 'Ensure backend Uvicorn is running on port 8000.'
+        : 'Ensure GROQ_API_KEY is configured in your Render dashboard under Environment Variables.';
+      const errorMsg = `⚠️ **Advisory Generation Notice:** Could not connect to live AI model.\n\n*Error details:* \`${err.message || 'Connection failed'}\`\n\n*Action:* ${actionHelp}`;
       appendChatMessage('assistant', errorMsg);
     }
   }
