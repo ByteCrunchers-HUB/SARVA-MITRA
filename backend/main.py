@@ -84,11 +84,12 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Enable CORS for frontend developers (React, Flutter, Vue, mobile apps, etc.)
+# Enable CORS for frontend developers and local environments (including file:// null origin)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_origin_regex=".*",
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -322,7 +323,11 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
     if not rag:
         rag = RAGPipeline()
 
-    chat_history_dicts = [{"role": msg.role, "content": msg.content} for msg in req.chat_history]
+    chat_history_dicts = [
+        {"role": msg.role, "content": msg.content}
+        for msg in req.chat_history
+        if msg.content.strip() != req.question.strip()
+    ]
 
     readings = {
         "temperature_c": curr["temperature_c"],

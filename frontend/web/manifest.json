@@ -1,7 +1,7 @@
 {
   "name": "Sarva Mitra — Universal Farm Companion",
   "short_name": "Sarva Mitra",
-  "description": "Smart IoT agriculture telemetry, AI pathogen weather-risk forecasting, and agronomic advisory.",
+  "description": "Smart agriculture telemetry, AI pathogen weather-risk forecasting, and agronomic advisory.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

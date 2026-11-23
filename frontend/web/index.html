@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2.4" />
 </head>
 <body>
   <div class="app-layout">
@@ -25,7 +25,9 @@
     <aside class="sidebar" id="app-sidebar">
       <div class="sidebar-header">
         <div class="brand-row">
-          <img src="assets/logo.svg" alt="Sarva Mitra Logo" class="brand-logo" />
+          <div class="brand-logo-card">
+            <img src="assets/logo.svg" alt="Sarva Mitra Logo" class="brand-logo" />
+          </div>
           <button class="drawer-close-btn" id="btn-drawer-close" aria-label="Close menu">✕</button>
         </div>
         <p class="brand-subtitle">Smart Farming. Better Tomorrow.</p>
@@ -83,7 +85,7 @@
       <div class="sidebar-footer">
         <div class="empower-badge">
           <div class="empower-dot"></div>
-          <span>Empowering Indian Farmers with AI & IoT</span>
+          <span>Empowering Indian Farmers with Smart Agricultural AI</span>
         </div>
       </div>
     </aside>
@@ -118,7 +120,7 @@
         </div>
 
         <div class="topbar-right">
-          <button class="btn-sync" id="btn-sync-telemetry" title="Sync live IoT telemetry from weather stations">
+          <button class="btn-sync" id="btn-sync-telemetry" title="Sync live weather & soil telemetry">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
@@ -207,7 +209,7 @@
             <div class="feature-icon bg-emerald-light">🌱</div>
             <div class="feature-info">
               <h3>Smart Soil Monitoring</h3>
-              <p>Real-time telemetry from IoT sensors & soil grids</p>
+              <p>Real-time weather, microclimate & soil monitoring</p>
             </div>
           </div>
 
@@ -295,7 +297,7 @@
                 <span class="card-title-icon">🌱</span>
                 <h3>Soil & Weather Parameters</h3>
               </div>
-              <span class="badge-source" id="param-source">Live Virtual IoT</span>
+              <span class="badge-source" id="param-source">Live Telemetry</span>
             </div>
 
             <div class="param-table">
@@ -852,6 +854,6 @@
   </div>
 
   <script src="assets/marked.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2.4"></script>
 </body>
 </html>

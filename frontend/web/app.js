@@ -9,9 +9,31 @@
   // --------------------------------------------------------------------------
   // Configuration & State
   // --------------------------------------------------------------------------
-  const API_BASE = (window.location.protocol.startsWith('http'))
-    ? window.location.origin
-    : 'http://localhost:8000';
+  // --------------------------------------------------------------------------
+  // Intelligent Multi-Origin API Fetcher
+  // --------------------------------------------------------------------------
+  async function apiFetch(endpoint, options = {}) {
+    const urlsToTry = [];
+    if (window.location.protocol.startsWith('http')) {
+      urlsToTry.push(endpoint);
+    }
+    urlsToTry.push(`http://localhost:8000${endpoint}`);
+    urlsToTry.push(`http://127.0.0.1:8000${endpoint}`);
+
+    let lastError = null;
+    for (const url of urlsToTry) {
+      try {
+        const res = await fetch(url, options);
+        if (res.status === 404 && url !== urlsToTry[urlsToTry.length - 1]) {
+          continue;
+        }
+        return res;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    throw lastError || new Error(`Could not connect to backend on ${urlsToTry.join(', ')}`);
+  }
 
   const LOCATIONS = {
     'Vijayawada (Andhra Pradesh)': { lat: 16.51, lon: 80.52, name: 'Vijayawada', state: 'AP' },
@@ -185,8 +207,8 @@
 
     try {
       // 1. Fetch live telemetry, 8-day history & ML risk score
-      const url = `${API_BASE}/api/dashboard?lat=${state.lat}&lon=${state.lon}&location=${encodeURIComponent(state.locationName)}&crop=${encodeURIComponent(state.crop)}`;
-      const res = await fetch(url);
+      const endpoint = `/api/dashboard?lat=${state.lat}&lon=${state.lon}&location=${encodeURIComponent(state.locationName)}&crop=${encodeURIComponent(state.crop)}`;
+      const res = await apiFetch(endpoint);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       const data = await res.json();
 
@@ -221,7 +243,7 @@
         mode: 'report'
       };
 
-      const res = await fetch(`${API_BASE}/api/chat`, {
+      const res = await apiFetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -234,14 +256,10 @@
       // Reset chat and render formatted greeting with live report
       renderInitialGreeting(chatData.answer);
     } catch (chatErr) {
-      console.warn('Initial advisory fetch warning:', chatErr);
-      const fallbackReport = `**Agronomic Status Assessment for ${state.cropLabel} (${state.locationName}):**\n\n`
-        + `1. **What the sensors show:** Ambient temp ${(state.telemetry?.temperature_c || 24.5).toFixed(1)}°C, humidity ${(state.telemetry?.humidity_pct || 82).toFixed(1)}%, soil moisture ${(state.telemetry?.soil_moisture_pct || 21).toFixed(1)}%.\n`
-        + `2. **What the model signal means:** ML weather risk index is ${(state.risk?.risk_pct || 72)}% (${(state.risk?.risk_level || 'high').toUpperCase()}). This is an environmental favorability warning for foliar stress.\n`
-        + `3. **What you can do now:** Keep foliage dry by pruning lower canopy leaves. Adjust morning irrigation to maintain optimal soil moisture.\n`
-        + `4. **Next steps:** Inspect lower leaves early morning for concentric spots; consult nearest KVK officer.`;
-      state.initialAdvisoryText = fallbackReport;
-      renderInitialGreeting(fallbackReport);
+      console.error('Initial advisory fetch error:', chatErr);
+      const errBanner = `⚠️ **Backend Connection Notice:** Could not retrieve live AI advisory report.\n\n*Error details:* \`${chatErr.message}\`\n\n*Recommended Action:* Open **http://localhost:8000/ui/** in your browser while Uvicorn is running.`;
+      state.initialAdvisoryText = errBanner;
+      renderInitialGreeting(errBanner);
     }
   }
 
@@ -356,14 +374,20 @@
     if (!dateStr || dateStr === 'Today') return 'Today';
     try {
       const parts = String(dateStr).split('-');
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       if (parts.length === 3) {
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const m = parseInt(parts[1], 10) - 1;
         const d = parseInt(parts[2], 10);
-        return `${months[m] || parts[1]} ${d}`;
+        return `${months[m] || parts[1]}\u00A0${d}`;
+      } else if (parts.length === 2) {
+        const m = parseInt(parts[0], 10) - 1;
+        const d = parseInt(parts[1], 10);
+        if (!isNaN(m) && m >= 0 && m < 12 && !isNaN(d)) {
+          return `${months[m]}\u00A0${d}`;
+        }
       }
     } catch (e) {}
-    return dateStr;
+    return String(dateStr).replace(/-/g, '\u2011');
   }
 
   function renderHistoryTable(historyList) {
@@ -383,13 +407,13 @@
       const lvlLabel = pct > 60 ? 'High Risk' : (pct > 30 ? 'Moderate' : 'Safe');
 
       tr.innerHTML = `
-        <td><strong>${d}</strong></td>
-        <td>${sm}</td>
-        <td>${temp}</td>
-        <td>${hum}</td>
-        <td>${rain}</td>
-        <td><strong>${Math.round(pct)}%</strong></td>
-        <td><span class="status-pill status-${lvl}">${lvlLabel}</span></td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;"><strong>${d}</strong></td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;">${sm}</td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;">${temp}</td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;">${hum}</td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;">${rain}</td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;"><strong>${Math.round(pct)}%</strong></td>
+        <td style="white-space:nowrap!important;word-break:keep-all!important;"><span class="status-pill status-${lvl}">${lvlLabel}</span></td>
       `;
       historyTableBody.appendChild(tr);
     });
@@ -449,7 +473,7 @@
       svgHtml += `
         <circle cx="${c.x}" cy="${c.y}" r="5.5" fill="#FFFFFF" stroke="#047857" stroke-width="3" />
         <text x="${c.x}" y="${c.y - 10}" text-anchor="middle" font-size="11" font-weight="700" fill="#065F46">${c.val}%</text>
-        <text x="${c.x}" y="${height - 12}" text-anchor="middle" font-size="10" fill="#6B7280">${typeof c.date === 'string' && c.date.length > 5 ? c.date.substring(5) : c.date}</text>
+        <text x="${c.x}" y="${height - 12}" text-anchor="middle" font-size="10" fill="#6B7280">${formatDisplayDate(c.date)}</text>
       `;
     });
 
@@ -616,6 +640,12 @@
     if (!q) return;
 
     if (chatInput) chatInput.value = '';
+
+    // Take clean previous conversation turns BEFORE pushing current question
+    const historyPayload = state.chatHistory
+      .filter(m => m.content && m.content.trim() && m.content.trim() !== q)
+      .slice(-4);
+
     appendChatMessage('user', q);
     appendTypingIndicator();
 
@@ -626,11 +656,11 @@
         lat: state.lat,
         lon: state.lon,
         location: state.locationName,
-        chat_history: state.chatHistory.slice(-4),
+        chat_history: historyPayload,
         mode: 'chat'
       };
 
-      const res = await fetch(`${API_BASE}/api/chat`, {
+      const res = await apiFetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -639,22 +669,21 @@
       removeTypingIndicator();
 
       if (!res.ok) {
-        throw new Error(`Chat API error (${res.status})`);
+        const errDetail = await res.text();
+        throw new Error(`Chat API error ${res.status}: ${errDetail || res.statusText}`);
       }
 
       const data = await res.json();
-      appendChatMessage('assistant', data.answer || 'Guidance generated successfully.');
+      if (!data.answer) {
+        throw new Error('Empty response from LLM advisory model');
+      }
+
+      appendChatMessage('assistant', data.answer);
     } catch (err) {
       removeTypingIndicator();
-      console.warn('Chat request failed, providing smart offline fallback:', err);
-      const fallbackAns = `**Agronomic Guidance for ${state.cropLabel} (${state.locationName}):**\n\n`
-        + `- Maintain ridge aeration and monitor root zone soil moisture (${state.telemetry ? state.telemetry.soil_moisture_pct : 21}%).\n`
-        + `- Under warm humid conditions, prune dense lower foliage to promote airflow and suppress spore germination.\n`
-        + `- Inspect lower leaves early morning for concentric lesions.\n\n`
-        + `### 💡 Suggested Follow-Up Questions:\n`
-        + `- Should I irrigate early in the morning or evening?\n`
-        + `- What organic preventive spray helps against blight?`;
-      appendChatMessage('assistant', fallbackAns);
+      console.error('Live LLM Chat request failed:', err);
+      const errorMsg = `⚠️ **Advisory Generation Notice:** Could not connect to live AI model.\n\n*Error details:* \`${err.message || 'Connection failed'}\`\n\n*Action:* Ensure Uvicorn is running on port 8000 and access the app via **http://localhost:8000/ui/**.`;
+      appendChatMessage('assistant', errorMsg);
     }
   }
 
@@ -747,7 +776,7 @@
       const formData = new FormData();
       formData.append('file', blob, 'query.webm');
 
-      const res = await fetch(`${API_BASE}/api/transcribe`, {
+      const res = await apiFetch('/api/transcribe', {
         method: 'POST',
         body: formData,
       });
@@ -832,7 +861,7 @@
         advisory_text: state.initialAdvisoryText || 'Sarva Mitra Agronomic Field Advisory Report',
       };
 
-      const res = await fetch(`${API_BASE}/api/report/pdf`, {
+      const res = await apiFetch('/api/report/pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
