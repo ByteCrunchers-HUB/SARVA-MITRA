@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sarva Mitra — Smart Farming. Better Tomorrow.</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <!-- ================================================================= -->
+    <!-- LEFT SIDEBAR                                                      -->
+    <!-- ================================================================= -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-row">
+          <img src="assets/logo.svg" alt="Sarva Mitra Logo" class="brand-logo" />
+        </div>
+        <p class="brand-subtitle">Smart Farming. Better Tomorrow.</p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-view="soil" id="nav-soil">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span>Soil Prediction</span>
+        </button>
+
+        <button class="nav-item" data-view="assistant" id="nav-assistant">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>AI Assistant</span>
+        </button>
+
+        <button class="nav-item" data-view="history" id="nav-history">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>History</span>
+        </button>
+
+        <button class="nav-item" data-view="schemes" id="nav-schemes">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2l9 5H3l9-5z"></path>
+          </svg>
+          <span>Govt Schemes</span>
+        </button>
+
+        <button class="nav-item" data-view="settings" id="nav-settings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="empower-badge">
+          <div class="empower-dot"></div>
+          <span>Empowering Indian Farmers with AI & IoT</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================================================================= -->
+    <!-- MAIN CONTENT WRAPPER                                              -->
+    <!-- ================================================================= -->
+    <main class="main-content">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="weather-pill" id="weather-pill">
+            <span class="weather-icon">☀️</span>
+            <span id="top-temp">24.5°C</span>
+            <span class="weather-sep">•</span>
+            <span id="top-location">Vijayawada, AP</span>
+          </div>
+          <div class="crop-pill" id="crop-pill">
+            <span id="top-crop">🍅 Tomato</span>
+            <span class="crop-stage" id="top-stage">(Flowering)</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn-sync" id="btn-sync-telemetry" title="Sync live IoT telemetry from weather stations">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span>Sync Live Telemetry</span>
+          </button>
+
+          <div class="lang-selector">
+            <select id="lang-select">
+              <option value="en" selected>English ▾</option>
+              <option value="te">తెలుగు (Telugu) ▾</option>
+              <option value="kn">ಕನ್ನಡ (Kannada) ▾</option>
+              <option value="hi">हिन्दी (Hindi) ▾</option>
+            </select>
+          </div>
+
+          <div class="profile-pill">
+            <span class="profile-avatar">👨‍🌾</span>
+            <span class="profile-name">Farmer</span>
+            <span class="status-indicator"></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 1: DASHBOARD                                               -->
+      <!-- =============================================================== -->
+      <section class="view-panel active" id="view-dashboard">
+        <!-- HERO BANNER -->
+        <div class="hero-card">
+          <div class="hero-content">
+            <span class="hero-tag">SMART FARMING ASSISTANT</span>
+            <h1 class="hero-title">Welcome to <span class="text-emerald">Sarva Mitra</span></h1>
+            <p class="hero-desc">Your AI-powered agricultural companion for healthier soil, real-time microclimate forecasting, and higher crop yield.</p>
+            <button class="btn-primary" id="btn-hero-get-started">
+              <span>Get Started</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="hero-art">
+            <svg viewBox="0 0 380 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
+              <defs>
+                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FEF3C7" />
+                  <stop offset="60%" stop-color="#FDE68A" />
+                  <stop offset="100%" stop-color="#D1FAE5" />
+                </linearGradient>
+                <linearGradient id="hillGrad1" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#10B981" />
+                  <stop offset="100%" stop-color="#059669" />
+                </linearGradient>
+                <linearGradient id="hillGrad2" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#047857" />
+                  <stop offset="100%" stop-color="#065F46" />
+                </linearGradient>
+              </defs>
+              <rect width="380" height="240" rx="16" fill="url(#skyGrad)" />
+              <circle cx="280" cy="70" r="36" fill="#F59E0B" opacity="0.4" />
+              <circle cx="280" cy="70" r="26" fill="#FBBF24" />
+              <path d="M0 160 Q 90 120, 200 150 T 380 130 L 380 240 L 0 240 Z" fill="url(#hillGrad1)" opacity="0.85" />
+              <path d="M0 180 Q 140 140, 260 175 T 380 160 L 380 240 L 0 240 Z" fill="url(#hillGrad2)" />
+              <path d="M0 220 Q 180 190 380 210" stroke="#064E3B" stroke-width="3" stroke-dasharray="6 6" />
+              <path d="M0 232 Q 180 205 380 225" stroke="#064E3B" stroke-width="3" stroke-dasharray="8 6" />
+              <g transform="translate(190, 75)">
+                <path d="M40 22 C 34 16, 52 14, 56 20 C 60 16, 68 20, 64 26 C 58 30, 42 30, 40 22 Z" fill="#F97316" />
+                <circle cx="50" cy="28" r="8" fill="#D97706" />
+                <line x1="20" y1="12" x2="80" y2="55" stroke="#78350F" stroke-width="4" stroke-linecap="round" />
+                <path d="M16 8 L 26 12 L 20 22 Z" fill="#4B5563" />
+                <path d="M38 36 L 62 36 L 68 76 L 32 76 Z" fill="#F8FAFC" />
+                <path d="M38 38 L 26 50 L 32 54" stroke="#D97706" stroke-width="5" stroke-linecap="round" />
+                <path d="M62 38 L 74 52" stroke="#D97706" stroke-width="5" stroke-linecap="round" />
+                <path d="M36 76 L 46 110 L 40 112" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round" />
+                <path d="M58 76 L 66 110 L 72 112" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round" />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 4 FEATURE CARDS -->
+        <div class="features-grid">
+          <div class="feature-card" data-action="soil">
+            <div class="feature-icon bg-emerald-light">🌱</div>
+            <div class="feature-info">
+              <h3>Smart Soil Monitoring</h3>
+              <p>Real-time telemetry from IoT sensors & soil grids</p>
+            </div>
+          </div>
+
+          <div class="feature-card" data-action="soil">
+            <div class="feature-icon bg-blue-light">🧠</div>
+            <div class="feature-info">
+              <h3>AI Risk Prediction</h3>
+              <p>Know your crop health & pathogen weather risk</p>
+            </div>
+          </div>
+
+          <div class="feature-card" data-action="assistant">
+            <div class="feature-icon bg-purple-light">💬</div>
+            <div class="feature-info">
+              <h3>Expert Guidance</h3>
+              <p>Get instant verified solutions with RAG AI</p>
+            </div>
+          </div>
+
+          <div class="feature-card" data-action="schemes">
+            <div class="feature-icon bg-amber-light">🏛️</div>
+            <div class="feature-info">
+              <h3>Govt Schemes</h3>
+              <p>Access PM-KISAN, Soil Health Card & KVK</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MISSION BANNER -->
+        <div class="mission-banner">
+          <div class="mission-icon">🎯</div>
+          <div class="mission-text">
+            <h4>Our Mission</h4>
+            <p>To bridge the gap between technology and agriculture, empowering Indian farmers with intelligent insights for a prosperous and sustainable future.</p>
+          </div>
+          <div class="mission-art">
+            <svg viewBox="0 0 70 45" width="70" height="45" fill="none">
+              <path d="M10 25 L 25 15 L 45 15 L 48 25 Z" fill="#DC2626" />
+              <rect x="25" y="10" width="18" height="12" rx="2" fill="#93C5FD" opacity="0.8" />
+              <circle cx="16" cy="32" r="8" fill="#1F2937" stroke="#9CA3AF" stroke-width="2" />
+              <circle cx="48" cy="30" r="11" fill="#1F2937" stroke="#9CA3AF" stroke-width="3" />
+              <circle cx="48" cy="30" r="4" fill="#F97316" />
+              <line x1="45" y1="6" x2="45" y2="15" stroke="#374151" stroke-width="2.5" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 2: SOIL PREDICTION                                         -->
+      <!-- =============================================================== -->
+      <section class="view-panel" id="view-soil">
+        <div class="panel-header-nav">
+          <button class="btn-back" data-back="dashboard">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Soil Prediction</span>
+          </button>
+        </div>
+
+        <!-- ALERT BANNER -->
+        <div class="prediction-alert-banner alert-moderate" id="prediction-alert">
+          <div class="alert-left">
+            <div class="alert-check-icon">✓</div>
+            <div>
+              <h3 id="alert-title">Prediction Complete!</h3>
+              <p id="alert-subtitle">Your soil health & microclimate have been analyzed. Take action for better yield.</p>
+            </div>
+          </div>
+          <div class="risk-badge badge-high" id="risk-pill-badge">
+            <span class="risk-badge-label">Risk Level</span>
+            <span class="risk-badge-value" id="risk-pill-val">72%</span>
+            <span class="risk-badge-desc" id="risk-pill-label">High Risk</span>
+          </div>
+        </div>
+
+        <!-- 2-COLUMN PARAMETERS & RISK GAUGE -->
+        <div class="prediction-grid">
+          <!-- LEFT CARD: PARAMETERS -->
+          <div class="card parameters-card">
+            <div class="card-header">
+              <div class="card-title-row">
+                <span class="card-title-icon">🌱</span>
+                <h3>Soil & Weather Parameters</h3>
+              </div>
+              <span class="badge-source" id="param-source">Live Virtual IoT</span>
+            </div>
+
+            <div class="param-table">
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">💧</span>
+                  <span>Soil Moisture</span>
+                </div>
+                <div class="param-val" id="val-soil-moisture">28.4 %</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">🌡️</span>
+                  <span>Temperature</span>
+                </div>
+                <div class="param-val" id="val-temp">32.1 °C</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">💨</span>
+                  <span>Relative Humidity</span>
+                </div>
+                <div class="param-val" id="val-humidity">75.0 %</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">☀️</span>
+                  <span>Sunlight</span>
+                </div>
+                <div class="param-val" id="val-sunlight">720 W/m²</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">🌧️</span>
+                  <span>Daily Rainfall</span>
+                </div>
+                <div class="param-val" id="val-rainfall">0.0 mm</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">🧪</span>
+                  <span>Organic Carbon (ISRIC)</span>
+                </div>
+                <div class="param-val" id="val-nitrogen">15.2 g/kg</div>
+              </div>
+
+              <div class="param-row">
+                <div class="param-name">
+                  <span class="p-icon">🌍</span>
+                  <span>Soil pH & Texture</span>
+                </div>
+                <div class="param-val" id="val-soil-ph">6.8 pH (Clay)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD: RISK ANALYSIS DONUT GAUGE -->
+          <div class="card risk-card">
+            <div class="card-header">
+              <div class="card-title-row">
+                <span class="card-title-icon">📊</span>
+                <h3>Pathogen Risk Analysis</h3>
+              </div>
+              <span class="model-badge" id="model-name-badge">ML Ensemble</span>
+            </div>
+
+            <div class="gauge-container">
+              <div class="donut-chart-box">
+                <svg viewBox="0 0 160 160" class="donut-svg">
+                  <circle cx="80" cy="80" r="62" class="donut-bg" />
+                  <circle cx="80" cy="80" r="62" class="donut-fg" id="donut-fg-circle" stroke-dasharray="390" stroke-dashoffset="110" />
+                </svg>
+                <div class="donut-center-label">
+                  <span class="donut-pct" id="donut-pct-text">72%</span>
+                  <span class="donut-sub" id="donut-status-text">Risk</span>
+                </div>
+              </div>
+
+              <div class="gauge-legend">
+                <span class="legend-item"><span class="dot dot-risk"></span> Pathogen Risk Proxy</span>
+                <span class="legend-item"><span class="dot dot-safe"></span> Safe Margin</span>
+              </div>
+            </div>
+
+            <div class="why-risk-box">
+              <div class="why-header">
+                <span class="why-icon">💡</span>
+                <strong>Why this risk?</strong>
+              </div>
+              <p id="why-risk-explanation">High humidity and extended leaf moisture combined with warm canopy temperatures favour early foliar fungal development.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECOMMENDED ACTIONS -->
+        <div class="card recommended-card">
+          <div class="recommended-flex">
+            <div class="recommended-text">
+              <h3>Recommended Field Actions</h3>
+              <ul class="actions-list" id="recommended-actions-list">
+                <li><span class="check-icon">✓</span> <span>Maintain ridge drainage to prevent localized water-logging around the roots.</span></li>
+                <li><span class="check-icon">✓</span> <span>Prune dense lower foliage to increase airflow and shorten leaf wetness duration.</span></li>
+                <li><span class="check-icon">✓</span> <span>Inspect lower leaves early morning for concentric dark spots or fungal halos.</span></li>
+                <li><span class="check-icon">✓</span> <span>Consult nearest Krishi Vigyan Kendra (KVK) officer before applying any chemical spray.</span></li>
+              </ul>
+
+              <div class="action-buttons-row">
+                <button class="btn-primary" id="btn-ask-ai-from-rec">
+                  <span>💬 Ask AI Assistant about this</span>
+                </button>
+                <button class="btn-secondary" id="btn-download-soil-report">
+                  <span>📄 Download Advisory Report</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="recommended-art">
+              <svg viewBox="0 0 100 100" width="100" height="100" fill="none">
+                <path d="M10 85 Q 50 78, 90 85 L 90 95 L 10 95 Z" fill="#78350F" opacity="0.6" />
+                <path d="M50 85 Q 50 45, 52 28" stroke="#10B981" stroke-width="5" stroke-linecap="round" />
+                <path d="M50 55 C 30 50, 20 30, 36 26 C 46 24, 50 45, 50 55 Z" fill="#34D399" />
+                <path d="M51 40 C 72 35, 82 15, 66 12 C 55 10, 51 32, 51 40 Z" fill="#059669" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 3: AI ASSISTANT (CHAT)                                     -->
+      <!-- =============================================================== -->
+      <section class="view-panel" id="view-assistant">
+        <div class="assistant-layout">
+          <!-- CHAT MAIN AREA -->
+          <div class="chat-main">
+            <div class="chat-header-banner">
+              <div class="assistant-avatar">🤖</div>
+              <div class="assistant-header-text">
+                <h2>Sarva Mitra Assistant</h2>
+                <p>Ask anything about soil, crops, diseases, sprays, or farming practices!</p>
+              </div>
+              <div class="assistant-actions">
+                <button class="btn-download-sm" id="btn-download-chat-report" title="Download Advisory Report">
+                  📄 Download Report
+                </button>
+              </div>
+            </div>
+
+            <!-- CHAT MESSAGES THREAD -->
+            <div class="chat-messages" id="chat-messages-container">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- CHAT INPUT BAR -->
+            <div class="chat-input-bar">
+              <input type="text" id="chat-text-input" placeholder="Ask a question about crop diseases, sprays, irrigation..." />
+              <button class="btn-voice" id="btn-voice-input" title="Tap to record spoken question (Groq Whisper Turbo)">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </button>
+              <button class="btn-send" id="btn-send-chat" title="Send message">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+            <div class="voice-status" id="voice-status-text"></div>
+          </div>
+
+          <!-- CHAT RIGHT SIDEBAR -->
+          <div class="chat-sidebar">
+            <div class="popular-questions-box">
+              <div class="popular-title">
+                <span>⭐</span>
+                <strong>Popular Questions</strong>
+              </div>
+              <p class="popular-subtitle">Tap any question below to ask Mitra instantly:</p>
+              <div class="questions-list">
+                <button class="chip-question" data-q="Should I irrigate today based on my current soil moisture and weather?">
+                  <span>💧</span> Should I irrigate today based on soil moisture?
+                </button>
+                <button class="chip-question" data-q="What specific diseases or pests should I inspect for given current temperature and humidity?">
+                  <span>🔍</span> What specific diseases should I inspect for?
+                </button>
+                <button class="chip-question" data-q="How can I prevent flower drop and yellowing leaves under these conditions?">
+                  <span>🍂</span> How to prevent flower drop and yellow leaves?
+                </button>
+                <button class="chip-question" data-q="What are the recommended fertilizer practices and soil moisture bands for my crop?">
+                  <span>🌾</span> Best fertilizer & moisture bands for this crop?
+                </button>
+              </div>
+            </div>
+
+            <!-- FARM ADVICE CARD -->
+            <div class="farmer-tip-card">
+              <div class="tip-avatar">👨‍🌾</div>
+              <div>
+                <strong>Farmer Tip:</strong>
+                <p>Describe visible symptoms (e.g. leaf spots, stem browning, or wilting) for higher diagnosis accuracy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 4: HISTORY (DEDICATED PAGE)                                -->
+      <!-- =============================================================== -->
+      <section class="view-panel" id="view-history">
+        <div class="panel-page-header">
+          <h2>🕒 Prediction & Telemetry History</h2>
+          <p>Review 8-day chronological sensor trends, daily soil moisture fluctuations, and historical pathogen risk scores.</p>
+        </div>
+
+        <div class="history-dedicated-grid">
+          <!-- 1. TREND CHART CARD -->
+          <div class="card trend-card-full">
+            <div class="card-header">
+              <div class="card-title-row">
+                <span class="card-title-icon">📈</span>
+                <h3>8-Day Soil & Pathogen Risk Progression</h3>
+              </div>
+              <span class="badge-source">Trained Model Backfill</span>
+            </div>
+            <div class="trend-chart-box-full">
+              <div class="svg-chart-container" id="trend-chart-container">
+                <!-- SVG Line Chart dynamically generated -->
+              </div>
+            </div>
+            <div class="chart-threshold-legend">
+              <span class="thresh-pill thresh-safe">🟢 0% – 30% (Safe / Low Risk)</span>
+              <span class="thresh-pill thresh-mod">🟡 30% – 60% (Moderate Risk Window)</span>
+              <span class="thresh-pill thresh-high">🔴 60% – 100% (High Pathogen Stress)</span>
+            </div>
+          </div>
+
+          <!-- 2. HISTORY TABLE CARD -->
+          <div class="card history-table-card">
+            <div class="card-header">
+              <div class="card-title-row">
+                <span class="card-title-icon">📋</span>
+                <h3>Historical Telemetry & Risk Log</h3>
+              </div>
+              <button class="btn-csv-export" id="btn-export-history-csv">📥 Download CSV Log</button>
+            </div>
+
+            <div class="history-table-box">
+              <table class="styled-table" id="history-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Soil Moisture</th>
+                    <th>Air Temp</th>
+                    <th>Humidity</th>
+                    <th>Rainfall</th>
+                    <th>Risk Index</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="history-table-body">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 5: GOVERNMENT SCHEMES (DEDICATED PAGE)                     -->
+      <!-- =============================================================== -->
+      <section class="view-panel" id="view-schemes">
+        <div class="panel-page-header">
+          <h2>🏛️ Government Agricultural Schemes & Farmer Support</h2>
+          <p>Verified central and state government farmer welfare initiatives, subsidies, insurance coverage, and extension contacts.</p>
+        </div>
+
+        <div class="schemes-grid-dedicated">
+          <!-- SCHEME 1: PM-KISAN -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-direct">Income Support</span>
+              <span class="scheme-tag tag-central">Central Govt</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-emerald-light">🌱</div>
+              <div>
+                <h3>PM-KISAN</h3>
+                <small>Pradhan Mantri Kisan Samman Nidhi</small>
+              </div>
+            </div>
+            <p class="scheme-desc">Direct income support of <b>₹6,000 per year</b> transferred in 3 equal four-monthly installments into the Aadhaar-linked bank accounts of landholder farmer families.</p>
+            <div class="scheme-eligibility">
+              <strong>Eligibility:</strong> All small, marginal, and landholding farmer families across India.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://pmkisan.gov.in" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>Visit PM-KISAN Portal</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- SCHEME 2: SOIL HEALTH CARD -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-nutrient">Soil Health</span>
+              <span class="scheme-tag tag-central">DA&FW</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-amber-light">🚜</div>
+              <div>
+                <h3>Soil Health Card Scheme</h3>
+                <small>Ministry of Agriculture & Farmers Welfare</small>
+              </div>
+            </div>
+            <p class="scheme-desc">Provides farmers with tailored soil test reports for <b>12 essential parameters</b> (N, P, K, S, Zn, Fe, Cu, Mn, Bo, pH, EC, OC) with crop-wise nutrient management guidance.</p>
+            <div class="scheme-eligibility">
+              <strong>Benefits:</strong> Reduces excessive fertilizer expenses by up to 20% and prevents soil degradation.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>Access Soil Health Portal</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- SCHEME 3: PMFBY -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-insurance">Crop Insurance</span>
+              <span class="scheme-tag tag-central">Subsidized</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-blue-light">🌾</div>
+              <div>
+                <h3>PM Fasal Bima Yojana</h3>
+                <small>Pradhan Mantri Fasal Bima Yojana (PMFBY)</small>
+              </div>
+            </div>
+            <p class="scheme-desc">Comprehensive insurance shield covering crop failure from pre-sowing to post-harvest against unseasonal rainfall, drought, floods, and localized pathogen outbreaks.</p>
+            <div class="scheme-eligibility">
+              <strong>Farmer Premium:</strong> Only 2% for Kharif crops, 1.5% for Rabi, and 5% for annual commercial crops.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://pmfby.gov.in" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>Check Coverage & Premium</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- SCHEME 4: KVK -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-ext">Advisory & Labs</span>
+              <span class="scheme-tag tag-central">ICAR</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-purple-light">🏛️</div>
+              <div>
+                <h3>Krishi Vigyan Kendra (KVK)</h3>
+                <small>Agricultural Extension & Diagnostic Network</small>
+              </div>
+            </div>
+            <p class="scheme-desc">District-level agricultural science stations that provide on-field testing, certified disease diagnosis, seed verification, and free advisory by agronomists.</p>
+            <div class="scheme-eligibility">
+              <strong>Locate:</strong> Find your nearest district KVK for certified disease sample testing.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://kvk.icar.gov.in" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>Locate Nearest KVK</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- SCHEME 5: PKVY -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-nutrient">Organic Farming</span>
+              <span class="scheme-tag tag-central">Assistance</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-emerald-light">🌿</div>
+              <div>
+                <h3>Paramparagat Krishi Vikas</h3>
+                <small>PKVY — Organic Farming Promotion</small>
+              </div>
+            </div>
+            <p class="scheme-desc">Financial assistance of <b>₹50,000 per hectare</b> for 3 years to adopt organic inputs, bio-fertilizers, vermicompost, and cluster-based certification.</p>
+            <div class="scheme-eligibility">
+              <strong>Goal:</strong> Sustainable chemical-free farming and higher market premiums for organic produce.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://pgsindia-ncof.gov.in" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>View Organic Guidelines</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- SCHEME 6: KCC -->
+          <div class="scheme-card-dedicated">
+            <div class="scheme-badge-row">
+              <span class="scheme-tag tag-direct">Credit & Loans</span>
+              <span class="scheme-tag tag-central">Low Interest</span>
+            </div>
+            <div class="scheme-header-row">
+              <div class="scheme-icon bg-amber-light">💳</div>
+              <div>
+                <h3>Kisan Credit Card (KCC)</h3>
+                <small>Institutional Farm Credit Scheme</small>
+              </div>
+            </div>
+            <p class="scheme-desc">Affordable agricultural credit at a subsidized <b>effective interest rate of 4%</b> per annum for timely purchasing of seeds, fertilizers, irrigation electricity, and tools.</p>
+            <div class="scheme-eligibility">
+              <strong>Limit:</strong> Up to ₹3 Lakh collateral-free borrowing for cultivation expenses.
+            </div>
+            <div class="scheme-action-row">
+              <a href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener" class="btn-scheme-link">
+                <span>Apply for Kisan Credit Card</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VIEW 6: SETTINGS & FARM CONFIGURATION                           -->
+      <!-- =============================================================== -->
+      <section class="view-panel" id="view-settings">
+        <div class="card settings-card">
+          <h2>🌾 Farm Setup & Location Configuration</h2>
+          <p class="settings-desc">Configure your farm coordinates, target crop, and growth stage to calibrate the ML risk model and RAG pipeline.</p>
+
+          <form id="settings-form" class="settings-form">
+            <div class="form-group">
+              <label for="settings-location">Location Preset:</label>
+              <select id="settings-location">
+                <option value="Vijayawada (Andhra Pradesh)" selected>Vijayawada (Andhra Pradesh) — [16.51, 80.52]</option>
+                <option value="Bengaluru (Karnataka)">Bengaluru (Karnataka) — [12.97, 77.59]</option>
+                <option value="Hyderabad (Telangana)">Hyderabad (Telangana) — [17.39, 78.49]</option>
+                <option value="Chennai (Tamil Nadu)">Chennai (Tamil Nadu) — [13.08, 80.27]</option>
+                <option value="Nagpur (Maharashtra)">Nagpur (Maharashtra) — [21.15, 79.09]</option>
+                <option value="Bhubaneswar (Odisha)">Bhubaneswar (Odisha) — [20.30, 85.82]</option>
+                <option value="Lucknow (Uttar Pradesh)">Lucknow (Uttar Pradesh) — [26.85, 80.95]</option>
+                <option value="Jaipur (Rajasthan)">Jaipur (Rajasthan) — [26.91, 75.79]</option>
+                <option value="Kolkata (West Bengal)">Kolkata (West Bengal) — [22.57, 88.36]</option>
+                <option value="Patna (Bihar)">Patna (Bihar) — [25.61, 85.14]</option>
+                <option value="custom">Custom Location (Enter Coordinates)</option>
+              </select>
+            </div>
+
+            <div class="coords-row" id="custom-coords-row" style="display: none;">
+              <div class="form-group">
+                <label for="custom-lat">Latitude:</label>
+                <input type="number" step="0.01" id="custom-lat" value="16.51" />
+              </div>
+              <div class="form-group">
+                <label for="custom-lon">Longitude:</label>
+                <input type="number" step="0.01" id="custom-lon" value="80.52" />
+              </div>
+              <div class="form-group">
+                <label for="custom-name">Farm Name:</label>
+                <input type="text" id="custom-name" value="My Farm" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="settings-crop">Crop Type:</label>
+              <select id="settings-crop">
+                <option value="tomato" selected>Tomato 🍅</option>
+                <option value="chilli">Chilli 🌶️</option>
+                <option value="ragi">Ragi (Finger Millet) 🌾</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="settings-stage">Current Growth Stage:</label>
+              <select id="settings-stage">
+                <option value="🌱 Seedling / Nursery Stage (0-25 days)">🌱 Seedling / Nursery Stage (0-25 days)</option>
+                <option value="🌿 Vegetative Canopy Growth (25-50 days)">🌿 Vegetative Canopy Growth (25-50 days)</option>
+                <option value="🌸 Flowering & Fruit Set (50-80 days)" selected>🌸 Flowering & Fruit Set (50-80 days)</option>
+                <option value="🍅 Fruit Maturation & Harvesting (80+ days)">🍅 Fruit Maturation & Harvesting (80+ days)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+              <span>💾 Save Farm Configuration & Sync</span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/marked.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

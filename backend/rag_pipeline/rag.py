@@ -273,6 +273,23 @@ def low_risk_crop_parent_ids(crop: str) -> list[str]:
     return []
 
 
+def clean_advisory_text(text: str) -> str:
+    """Strips machine-readable structured JSON, delimiters, and codeblocks from advisory text."""
+    if not text:
+        return ""
+    # 1. Strip complete or unclosed BEGIN_STRUCTURED_JSON blocks
+    cleaned = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON", "", text, flags=re.IGNORECASE)
+    cleaned = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*$", "", cleaned, flags=re.IGNORECASE)
+    # 2. Strip code block json (complete or unclosed)
+    cleaned = re.sub(r"```(?:json)?\s*\{[\s\S]*?\}\s*```", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"```(?:json)?[\s\S]*$", "", cleaned, flags=re.IGNORECASE)
+    # 3. Strip standalone JSON objects with response_mode or overview to end of text
+    cleaned = re.sub(r'\{\s*"response_mode"[\s\S]*$', '', cleaned, flags=re.IGNORECASE)
+    # 4. Remove standalone markers
+    cleaned = re.sub(r"END_STRUCTURED_JSON", "", cleaned, flags=re.IGNORECASE)
+    return cleaned.strip()
+
+
 class RAGPipeline:
     def __init__(self, collection_name: str | None = None) -> None:
         self.collection_name = collection_name
@@ -662,17 +679,21 @@ class RAGPipeline:
                 f"ML_PREDICTION: {json.dumps(ml_prediction, ensure_ascii=False, sort_keys=True)}\n"
                 f"CROP: {crop}\nLOCATION: {location}\n"
                 f"QUESTION: {question}\nPREVIOUS CHAT:\n{history}\n"
-                f"RETRIEVED DOCUMENTS:\n{context}\n"
-                "Return the human-readable advisory first, then exactly one JSON object "
-                "marked BEGIN_STRUCTURED_JSON and END_STRUCTURED_JSON with keys "
-                "response_mode, overview, model_interpretation, sensor_readings, "
-                "possible_conditions, watch_list, recommendations, uncertainty, "
-                "next_step, documents_used."
+                f"RETRIEVED DOCUMENTS:\n{context}\n\n"
+                "INSTRUCTIONS:\n"
+                "Generate a complete, professional agronomic field advisory report in clean Markdown covering:\n"
+                "1. What the sensors show (with exact units & status)\n"
+                "2. What the model signal means (environmental risk warning, not a diagnosis)\n"
+                "3. Possible things to check in the field (ranked with citations DOC_ID, S#)\n"
+                "4. Practical agronomic actions to take now (irrigation, canopy airflow, non-chemical field hygiene)\n"
+                "5. What the sensors cannot tell (limitations & verification needs)\n"
+                "6. Immediate next steps & local KVK extension recommendations.\n"
+                "Do NOT output raw JSON blocks, codeblocks, or delimiter tags. Deliver the complete advisory report with full sentences."
             )
         last_error: Exception | None = None
         content = ""
 
-        max_gen_tokens = 1400 if mode == "chat" else 1000
+        max_gen_tokens = 2048
         # 1. Try Ollama first (OpenAI-compatible) if configured
         if LLM_PROVIDER == "ollama" or OLLAMA_API_KEY:
             ollama_ans = call_ollama_llm(
@@ -749,11 +770,11 @@ class RAGPipeline:
         if not content:
             raise RuntimeError(f"Advisory generation failed: {last_error or 'No response from Ollama or Groq'}")
         match = re.search(
-            r"BEGIN_STRUCTURED_JSON\s*(\{[\s\S]*\})\s*END_STRUCTURED_JSON",
+            r"BEGIN_STRUCTURED_JSON\s*(\{[\s\S]*?\})\s*(?:END_STRUCTURED_JSON|$)",
             content,
         )
         if not match:
-            match = re.search(r"```json\s*(\{[\s\S]*\})\s*```", content)
+            match = re.search(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", content)
         if match:
             try:
                 structured = json.loads(match.group(1))
@@ -778,14 +799,5 @@ class RAGPipeline:
             structured["response_mode"] = (
                 "abnormality" if ml_output == 1 else "healthy"
             )
-        answer = re.sub(
-            r"\s*BEGIN_STRUCTURED_JSON\s*\{[\s\S]*\}\s*END_STRUCTURED_JSON\s*$",
-            "",
-            content,
-        ).strip()
-        answer = re.sub(
-            r"\s*```json\s*\{[\s\S]*\}\s*```\s*$",
-            "",
-            answer,
-        ).strip()
+        answer = clean_advisory_text(content)
         return answer, structured

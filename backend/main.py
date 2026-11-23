@@ -13,11 +13,12 @@ import logging
 import os
 from contextlib import asynccontextmanager
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any, Literal
 from uuid import uuid4
 
 import joblib
-from fastapi import APIRouter, FastAPI, HTTPException, Query, Request
+from fastapi import APIRouter, FastAPI, HTTPException, Query, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -42,7 +43,7 @@ from backend.rag_pipeline.config import (
     OLLAMA_MODEL,
     LLM_PROVIDER,
 )
-from backend.rag_pipeline.rag import RAGPipeline
+from backend.rag_pipeline.rag import RAGPipeline, clean_advisory_text
 from backend.rag_pipeline.app import AdvisoryRequest, CurrentSensorData, WeatherData, ml_output as parse_ml_output
 
 logger = logging.getLogger("sarva_mitra_unified")
@@ -111,6 +112,7 @@ class UnifiedChatRequest(BaseModel):
     location: str = Field(default="Vijayawada", description="Location name or district")
     chat_history: list[ChatHistoryMessage] = Field(default_factory=list, description="Prior conversation messages")
     session_id: str | None = Field(default=None, description="Optional frontend session ID")
+    mode: str = Field(default="chat", description="'report' for initial telemetry assessment or 'chat' for conversational Q&A")
 
     model_config = {
         "json_schema_extra": {
@@ -333,6 +335,9 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
     }
 
     try:
+        mode_val = req.mode if req.mode in ("report", "chat") else (
+            "report" if len(chat_history_dicts) == 0 and "complete agronomic status assessment" in req.question.lower() else "chat"
+        )
         answer, structured = rag.answer(
             readings=readings,
             ml_output=ml_output_val,
@@ -341,7 +346,9 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
             question=req.question.strip(),
             chat_history=chat_history_dicts,
             ml_prediction=prediction,
+            mode=mode_val,
         )
+        answer = clean_advisory_text(answer)
     except Exception as exc:
         logger.error("RAG pipeline answer generation failed: %s", exc)
         raise HTTPException(503, f"Advisory generation error: {exc}") from exc
@@ -367,6 +374,102 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
         telemetry=readings,
         chat_history=updated_history,
         retrieval_context=getattr(rag, "last_retrieval", None),
+    )
+
+
+@app.post("/api/transcribe", tags=["Voice / Audio"])
+async def transcribe_audio_endpoint(file: UploadFile = File(...)):
+    """Transcribes farmer spoken audio payload using Groq Whisper Turbo."""
+    contents = await file.read()
+    if not contents:
+        raise HTTPException(status_code=400, detail="Empty audio recording payload")
+
+    import io
+    from groq import Groq
+
+    for key in reversed(GROQ_API_KEYS):
+        try:
+            client = Groq(api_key=key)
+            audio_io = io.BytesIO(contents)
+            audio_io.name = file.filename or "recording.webm"
+            res = client.audio.transcriptions.create(
+                file=audio_io,
+                model="whisper-large-v3-turbo",
+                response_format="text",
+            )
+            text = str(res).strip()
+            if text:
+                return {"text": text, "status": "ok"}
+        except Exception as exc:
+            logger.warning("Groq Whisper transcription attempt failed: %s", exc)
+            continue
+
+    raise HTTPException(status_code=502, detail="Speech transcription service temporarily unavailable")
+
+
+# ---------------------------------------------------------------------------
+# PDF Report Generation Endpoint
+# ---------------------------------------------------------------------------
+class PDFReportRequest(BaseModel):
+    crop: str = Field(default="tomato", description="Target crop")
+    location: str = Field(default="Vijayawada", description="Farm location name")
+    lat: float = Field(default=16.51, description="Farm latitude")
+    lon: float = Field(default=80.52, description="Farm longitude")
+    stage: str = Field(default="🌸 Flowering & Fruit Set (50-80 days)", description="Growth stage")
+    advisory_text: str | None = Field(default=None, description="Advisory text content")
+
+
+@app.post("/api/report/pdf", tags=["Reports / PDF"])
+def generate_pdf_report_endpoint(req: PDFReportRequest):
+    """Generates an official PDF agronomic advisory report without logo as requested."""
+    from fastapi.responses import Response
+    from frontend.pdf_generator import generate_advisory_pdf
+
+    telemetry = telemetry_service.get_current_readings(lat=req.lat, lon=req.lon)
+    today = datetime.now(IST).date()
+    history = telemetry_service.get_historical_records(lat=req.lat, lon=req.lon, target_date=today, days=8)
+
+    bundle = getattr(app.state, "ml_bundle", None) or load_bundle()
+    ml_req = PredictRequest(
+        device_id="virtual-node-01",
+        location=req.location,
+        lat=req.lat,
+        lon=req.lon,
+        target_date=today,
+        history=history,
+    )
+    prediction = run_prediction(ml_req, bundle)
+
+    farm_cfg = {
+        "name": req.location,
+        "lat": req.lat,
+        "lon": req.lon,
+        "crop": req.crop,
+        "stage": req.stage,
+    }
+
+    # Resolve official Sarva Mitra logo (SVG preferred, then JPG)
+    project_root = Path(__file__).resolve().parent.parent
+    logo_svg = project_root / "frontend" / "assets" / "logo.svg"
+    logo_web_svg = project_root / "frontend" / "web" / "assets" / "logo.svg"
+    logo_jpg = project_root / "frontend" / "assets" / "logo.jpg"
+    logo_path = logo_svg if logo_svg.exists() else (logo_web_svg if logo_web_svg.exists() else (logo_jpg if logo_jpg.exists() else None))
+
+    # Generate PDF bytes with official logo
+    clean_adv = clean_advisory_text(req.advisory_text or "Official agronomic advisory report.")
+    pdf_bytes = generate_advisory_pdf(
+        farm_config=farm_cfg,
+        telemetry=telemetry,
+        ml_prediction=prediction,
+        advisory_text=clean_adv,
+        logo_path=logo_path,
+    )
+
+    filename = f"sarva_mitra_{req.crop}_report_{datetime.now(IST).strftime('%Y%m%d_%H%M')}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 
@@ -436,3 +539,18 @@ def rag_advisory(req: AdvisoryRequest, request: Request):
     return run_advisory(req)
 
 app.include_router(rag_router)
+
+# ---------------------------------------------------------------------------
+# Mount Modern Web UI (HTML/CSS/JS)
+# ---------------------------------------------------------------------------
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+
+WEB_DIR = Path(__file__).resolve().parent.parent / "frontend" / "web"
+if WEB_DIR.exists():
+    app.mount("/ui", StaticFiles(directory=str(WEB_DIR), html=True), name="web_ui")
+
+@app.get("/app", include_in_schema=False)
+def app_redirect():
+    return RedirectResponse(url="/ui/")

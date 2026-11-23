@@ -293,8 +293,12 @@ def generate_advisory_pdf(
     clean_text = advisory_text
     # Remove BEGIN_STRUCTURED_JSON blocks if any
     import re
-    clean_text = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON", "", clean_text).strip()
-    clean_text = re.sub(r"```json[\s\S]*?```", "", clean_text).strip()
+    clean_text = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON", "", clean_text, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*$", "", clean_text, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r"```(?:json)?\s*\{[\s\S]*?\}\s*```", "", clean_text, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r"```(?:json)?[\s\S]*$", "", clean_text, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r'\{\s*"response_mode"[\s\S]*$', '', clean_text, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r"END_STRUCTURED_JSON", "", clean_text, flags=re.IGNORECASE).strip()
 
     # Split into sections/lines and format
     lines = clean_text.split("\n")
