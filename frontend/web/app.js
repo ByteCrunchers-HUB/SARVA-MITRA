@@ -46,6 +46,11 @@
   // DOM Elements
   // --------------------------------------------------------------------------
   const navButtons = document.querySelectorAll('.nav-item');
+  const bottomNavButtons = document.querySelectorAll('.bottom-nav-item');
+  const appSidebar = document.getElementById('app-sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const btnMobileMenu = document.getElementById('btn-mobile-menu');
+  const btnDrawerClose = document.getElementById('btn-drawer-close');
   const viewPanels = document.querySelectorAll('.view-panel');
   const btnSync = document.getElementById('btn-sync-telemetry');
   const btnHeroGetStarted = document.getElementById('btn-hero-get-started');
@@ -95,6 +100,23 @@
   const trendChartContainer = document.getElementById('trend-chart-container');
 
   // --------------------------------------------------------------------------
+  // Mobile Drawer Controls
+  // --------------------------------------------------------------------------
+  function openMobileDrawer() {
+    if (appSidebar) appSidebar.classList.add('drawer-open');
+    if (sidebarOverlay) sidebarOverlay.classList.add('active');
+  }
+
+  function closeMobileDrawer() {
+    if (appSidebar) appSidebar.classList.remove('drawer-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+  }
+
+  if (btnMobileMenu) btnMobileMenu.addEventListener('click', openMobileDrawer);
+  if (btnDrawerClose) btnDrawerClose.addEventListener('click', closeMobileDrawer);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileDrawer);
+
+  // --------------------------------------------------------------------------
   // Navigation Router (Separating History and Schemes Completely)
   // --------------------------------------------------------------------------
   function switchView(viewName) {
@@ -104,14 +126,27 @@
       btn.classList.toggle('active', target === viewName);
     });
 
+    bottomNavButtons.forEach(btn => {
+      const target = btn.getAttribute('data-view');
+      btn.classList.toggle('active', target === viewName);
+    });
+
     viewPanels.forEach(panel => {
       panel.classList.toggle('active', panel.id === `view-${viewName}`);
     });
 
+    closeMobileDrawer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-view');
+      switchView(target);
+    });
+  });
+
+  bottomNavButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-view');
       switchView(target);
@@ -317,6 +352,20 @@
     }
   }
 
+  function formatDisplayDate(dateStr) {
+    if (!dateStr || dateStr === 'Today') return 'Today';
+    try {
+      const parts = String(dateStr).split('-');
+      if (parts.length === 3) {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const m = parseInt(parts[1], 10) - 1;
+        const d = parseInt(parts[2], 10);
+        return `${months[m] || parts[1]} ${d}`;
+      }
+    } catch (e) {}
+    return dateStr;
+  }
+
   function renderHistoryTable(historyList) {
     if (!historyTableBody) return;
     historyTableBody.innerHTML = '';
@@ -324,7 +373,7 @@
 
     slice.reverse().forEach(item => {
       const tr = document.createElement('tr');
-      const d = item.date ? (typeof item.date === 'string' && item.date.length > 5 ? item.date.substring(5) : item.date) : 'Today';
+      const d = formatDisplayDate(item.date);
       const sm = item.soil_moisture_pct ? `${item.soil_moisture_pct.toFixed(1)} %` : '22.0 %';
       const temp = item.air_temperature_c ? `${item.air_temperature_c.toFixed(1)} °C` : '26.0 °C';
       const hum = item.humidity_pct ? `${item.humidity_pct.toFixed(0)} %` : '70 %';
