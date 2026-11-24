@@ -2,6 +2,39 @@
 
 An interactive web dashboard and continuous AI assistant for testing Sarva Mitra without physical IoT hardware.
 
+This folder also contains the Expo/React Native mobile app (`src/app/`). It uses the unified FastAPI service, not the Python modules directly.
+
+---
+
+## 📱 Mobile App (Expo)
+
+From `frontend/`:
+
+```bash
+npm install
+npx expo start
+```
+
+Set the unified API URL in `frontend/.env` (copy from `.env.example`):
+
+```bash
+EXPO_PUBLIC_API_BASE_URL=http://localhost:8000
+```
+
+Use `http://10.0.2.2:8000` for an Android emulator or `http://<your-computer-lan-ip>:8000` for a physical device on the same Wi-Fi. Start the API from the repo root with:
+
+```bash
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
+
+Checks:
+
+```bash
+npx tsc --noEmit
+npx expo lint
+npx expo-doctor
+```
+
 ---
 
 ## 🚀 Running Locally
