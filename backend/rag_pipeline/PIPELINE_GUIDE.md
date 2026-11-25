@@ -10,6 +10,17 @@ A compact, stateless agricultural advisory pipeline using:
 
 The ML model supplies a risk signal. It does not identify a disease.
 
+---
+
+## 📌 Project Links
+
+* **GitHub Repository:** [https://github.com/ByteCrunchers-HUB/SARVA-MITRA](https://github.com/ByteCrunchers-HUB/SARVA-MITRA)
+* **Live Web Application:** [https://sarva-mitra-api.onrender.com/ui/](https://sarva-mitra-api.onrender.com/ui/)
+* **Live API Documentation:** [https://sarva-mitra-api.onrender.com/docs](https://sarva-mitra-api.onrender.com/docs)
+* **Setup Guide:** [SETUP.md](../../SETUP.md)
+
+---
+
 ## Setup
 
 ```bash
@@ -494,3 +505,16 @@ ML_ENGINE_URL=https://<ml-service>.onrender.com
 CHAT_HISTORY_LIMIT=12
 CORS_ORIGINS=*
 ```
+
+---
+
+## 👥 Credits — Team ANVEXA
+
+* **PRIYANSHU SARMA** (RAG Architecture, Vector Search, Knowledge Base)
+* **LIBERATOR NYADUNDU**
+* **RYALI VENKATA SRI VIJAY KARTHIK**
+* **Gajulapalli Venkata Raviteja**
+* **Sneha Sarma**
+
+**Repository:** [https://github.com/ByteCrunchers-HUB/SARVA-MITRA](https://github.com/ByteCrunchers-HUB/SARVA-MITRA)  
+**Live Application:** [https://sarva-mitra-api.onrender.com/ui/](https://sarva-mitra-api.onrender.com/ui/)

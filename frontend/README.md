@@ -1,34 +1,85 @@
-# 🌱 Sarva Mitra - Streamlit Frontend UI
+# 🌱 Sarva Mitra — Frontend Client Suite
 
-An interactive web dashboard and continuous AI assistant for testing Sarva Mitra without physical IoT hardware.
-
-This folder also contains the Expo/React Native mobile app (`src/app/`). It uses the unified FastAPI service, not the Python modules directly.
+The `frontend` directory contains the presentation tier of Sarva Mitra, providing three distinct user experiences:
+1. **Modern Responsive Web UI (`frontend/web/`)**: HTML5, CSS3, and JavaScript web dashboard served natively by FastAPI at `/ui/`.
+2. **Interactive Streamlit Web Dashboard (`frontend/app.py`)**: Instant diagnostic dashboard for testing telemetry, risk indices, and conversational RAG.
+3. **Cross-Platform Mobile Application (`frontend/src/`)**: React Native & Expo mobile application with offline-friendly UI patterns.
 
 ---
 
-## 📱 Mobile App (Expo)
+## 📌 Project Links
 
-From `frontend/`:
+* **GitHub Repository:** [https://github.com/ByteCrunchers-HUB/SARVA-MITRA](https://github.com/ByteCrunchers-HUB/SARVA-MITRA)
+* **Live Deployed Web Application:** [https://sarva-mitra-api.onrender.com/ui/](https://sarva-mitra-api.onrender.com/ui/)
+* **Backend API Documentation:** [https://sarva-mitra-api.onrender.com/docs](https://sarva-mitra-api.onrender.com/docs)
+* **Full Setup Instructions:** [SETUP.md](../SETUP.md)
 
+---
+
+## 📸 Screenshots Showcase
+
+| Farmer Dashboard | Agronomic AI Assistant |
+|:---:|:---:|
+| ![Dashboard](../outputs/webapp_dashboard.png) | ![AI Assistant](../outputs/webapp_aiassistant.png) |
+
+| ML Risk Prediction | Government Schemes Explorer |
+|:---:|:---:|
+| ![Risk Prediction](../outputs/webapp_prediction.png) | ![Govt Schemes](../outputs/webap_govtshcemes.png) |
+
+---
+
+## 🌐 1. Modern Web Application (`frontend/web/`)
+
+Located in `frontend/web/`, this single-page dashboard communicates directly with the unified FastAPI backend.
+
+### Features:
+- 📍 **Preset & Custom Farm Geolocation**: Instant coordinate selection for Vijayawada, Bengaluru, Guntur, Kurnool, Anantapur, and Hyderabad.
+- 📡 **Live Telemetry Gauges**: Real-time cards for Temperature, Relative Humidity, Soil Moisture %, Precipitation, and Solar Irradiance.
+- 🚨 **Risk Meter**: Color-coded risk alerts (Low 🟢 / Moderate 🟡 / High 🔴).
+- 💬 **Multi-Turn Agricultural Chat**: Context-aware dialogue with quick-action chips.
+- 🏛️ **Government Subsidies Directory**: Curated schemes for crop loans, micro-irrigation, and insurance.
+- 📄 **Advisory PDF Generator**: One-click generation and download of formatted reports.
+
+### Running:
+The web app is hosted automatically by running the backend:
 ```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+```
+Open **[http://localhost:8000/ui/](http://localhost:8000/ui/)** in your browser.
+
+---
+
+## 🌿 2. Streamlit Web UI (`frontend/app.py`)
+
+A rapid prototyping interface written in Python.
+
+### Running Streamlit:
+From the project root:
+```bash
+streamlit run frontend/app.py
+```
+Open **[http://localhost:8501](http://localhost:8501)** in your browser.
+
+---
+
+## 📱 3. Mobile Application (Expo / React Native)
+
+A cross-platform mobile experience located in `frontend/` (using `src/app/` Expo Router).
+
+### Local Setup:
+```bash
+cd frontend
 npm install
 npx expo start
 ```
 
-Set the unified API URL in `frontend/.env` (copy from `.env.example`):
-
+Configure your API endpoint in `frontend/.env`:
 ```bash
 EXPO_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
+> For Android Emulator use `http://10.0.2.2:8000`; for physical phones use your machine's LAN IP.
 
-Use `http://10.0.2.2:8000` for an Android emulator or `http://<your-computer-lan-ip>:8000` for a physical device on the same Wi-Fi. Start the API from the repo root with:
-
-```bash
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
-```
-
-Checks:
-
+### Code Quality Verification:
 ```bash
 npx tsc --noEmit
 npx expo lint
@@ -37,62 +88,13 @@ npx expo-doctor
 
 ---
 
-## 🚀 Running Locally
+## 👥 Credits — Team ANVEXA
 
-From the project root:
+* **PRIYANSHU SARMA**
+* **LIBERATOR NYADUNDU**
+* **RYALI VENKATA SRI VIJAY KARTHIK**
+* **Gajulapalli Venkata Raviteja**
+* **Sneha Sarma**
 
-```bash
-# Launch Streamlit with virtual environment
-.venv/bin/streamlit run frontend/app.py
-```
-
-Open your browser at:
-👉 **`http://localhost:8501`**
-
----
-
-## ☁️ Deploying & Accessing on Render
-
-When deployed on Render, Streamlit runs as a cloud Web Service and can be accessed from any phone, tablet, or PC browser via a public HTTPS URL.
-
-### Deployment Steps on Render
-
-1. **Option A: Via Blueprint (`render.yaml`)**
-   * Connect your GitHub repo to Render and choose **New Blueprint Instance**.
-   * Render automatically configures `sarva-mitra-ui` using `frontend/Dockerfile`.
-   * Add your secret environment variables (`GROQ_API_KEY`, `MONGODB_URI`, `WEATHERAPI_KEY`, etc.).
-
-2. **Option B: Manual Web Service Setup**
-   * In Render, click **New +** ➔ **Web Service**.
-   * Connect your repository: `ByteCrunchers-HUB/SARVA-MITRA`.
-   * **Language / Environment:** `Docker` (Dockerfile Path: `frontend/Dockerfile`, Context: `.`)
-     * *OR* if using native Python:
-       * **Build Command:** `pip install -r requirements.txt`
-       * **Start Command:** `streamlit run frontend/app.py --server.port $PORT --server.address 0.0.0.0 --server.enableCORS false --server.enableXsrfProtection false`
-   * **Plan:** Free
-   * **Environment Variables:** Add keys from `.env` (`MONGODB_URI`, `GROQ_API_KEY`, `WEATHERAPI_KEY`, `SARVA_MODEL_PATH=backend/ml_engine/models/sarva_mitra_risk_model.joblib`).
-   * Click **Create Web Service**.
-
-### How to Access:
-Once Render completes building:
-* Render assigns a public URL such as `https://sarva-mitra-ui.onrender.com`.
-* Open that URL in any browser to interact with the live telemetry cards, ML model, and AI assistant!
-
----
-
-## ✨ Features
-
-1. **📍 Location & Crop Selector:**
-   * Select from presets (**Vijayawada**, **Bengaluru**, **Guntur**, **Kurnool**, **Anantapur**, **Hyderabad**) or enter custom coordinates.
-   * Supported crops: **Tomato 🍅**, **Chilli 🌶️**, **Ragi 🌾**.
-
-2. **📡 Real-Time Telemetry Cards:**
-   * Air Temperature (°C), Relative Humidity (%), Soil Moisture (%), Rainfall (mm), and Solar Radiation (W/m²).
-
-3. **🧠 ML Risk Status Banner:**
-   * Displays the risk percentage and color-coded risk alert (Low 🟢 / Moderate 🟡 / High 🔴).
-
-4. **💬 Continuous AI Agronomic Chat (RAG):**
-   * Pre-loads the initial proactive diagnosis as the first assistant message.
-   * Full continuous conversation with persistent memory.
-   * Quick question chips for testing common field scenarios.
+**Repository:** [https://github.com/ByteCrunchers-HUB/SARVA-MITRA](https://github.com/ByteCrunchers-HUB/SARVA-MITRA)  
+**Live Web Application:** [https://sarva-mitra-api.onrender.com/ui/](https://sarva-mitra-api.onrender.com/ui/)

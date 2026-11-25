@@ -1,5 +1,9 @@
 # ML and RAG Sample Records Tested
 
+> **Project Repository:** [https://github.com/ByteCrunchers-HUB/SARVA-MITRA](https://github.com/ByteCrunchers-HUB/SARVA-MITRA)  
+> **Live Web Application:** [https://sarva-mitra-api.onrender.com/ui/](https://sarva-mitra-api.onrender.com/ui/)  
+> **Engineered by:** **Team ANVEXA**
+
 **Tested:** 2026-11-22
 **Environment:** Local ML engine and local RAG API  
 **Result:** PASS - 5 of 5 ML predictions and 5 of 5 RAG advisories succeeded
@@ -206,3 +210,13 @@ Keys are selected round-robin for each LLM invocation. If an invocation fails wi
 - Retrieved documents: `02_weather_thresholds_by_disease`, chilli crop-stage, field-checklist, soil-moisture, heat, nutrient, and disease documents.
 
 **Verdict:** PASS
+
+---
+
+## 👥 Credits — Team ANVEXA
+
+* **PRIYANSHU SARMA**
+* **LIBERATOR NYADUNDU**
+* **RYALI VENKATA SRI VIJAY KARTHIK**
+* **Gajulapalli Venkata Raviteja**
+* **Sneha Sarma**
