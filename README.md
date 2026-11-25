@@ -308,6 +308,7 @@ Sarva Mitra was designed and engineered with dedication by **Team ANVEXA**:
 
 | Team Member | Project Role & Contribution |
 |---|---|
+| 🌟 **Teja Sai Gudla** | Managing backend, database, APIs, and ML integration.  |
 | 🌟 **PRIYANSHU SARMA** | RAG Advisory Pipeline, LLM Integration, Vector Search |
 | 🌟 **LIBERATOR NYADUNDU** | Machine Learning Risk Engine & Weather Anomaly Scoring |
 | 🌟 **RYALI VENKATA SRI VIJAY KARTHIK** | Full-Stack Integration, Unified FastAPI Backend & Web UI |
