@@ -9,6 +9,7 @@ type IconButtonProps = {
   color?: string;
   badge?: number;
   accessibilityLabel: string;
+  disabled?: boolean;
 };
 
 export function IconButton({
@@ -17,14 +18,20 @@ export function IconButton({
   color = colors.white,
   badge,
   accessibilityLabel,
+  disabled = false,
 }: IconButtonProps) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      disabled={disabled}
       hitSlop={10}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        pressed && !disabled && styles.pressed,
+        disabled && { opacity: 0.6 },
+      ]}
     >
       <Ionicons name={name} size={22} color={color} />
       {badge ? (

@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -8,6 +9,7 @@ import {
   View,
 } from "react-native";
 
+import { sendChat } from "@/api/client";
 import { ActionTile } from "@/components/ActionTile";
 import { AdvisoryCard } from "@/components/AdvisoryCard";
 import { ApiErrorState } from "@/components/ApiErrorState";
@@ -23,6 +25,8 @@ import { Sparkline } from "@/components/Sparkline";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useFarmConfig } from "@/hooks/useFarmConfig";
 import { soilReferenceForFarm } from "@/data/soilSnapshot";
+import { getLatestAdvisoryText, saveLatestAdvisoryText } from "@/store/chat";
+import { cleanAssistantText, downloadAdvisoryReport } from "@/utils/report";
 import { colors, fonts, radii, shadows, sizes, spacing } from "@/theme";
 import {
   deriveCondition,
@@ -50,6 +54,53 @@ export default function HomeScreen() {
       : data
         ? "Live"
         : "Awaiting API";
+
+  const [isDownloadingReport, setIsDownloadingReport] = useState(false);
+
+  // Automatically pre-fetch complete agronomic assessment report in the background, matching Web UI process
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const cached = await getLatestAdvisoryText(farm.crop, farm.stage);
+        if (!cached || cached.length < 200) {
+          const res = await sendChat({
+            question: `Provide a complete agronomic status assessment and recommendations for ${farm.crop} (${farm.stage}) based on current field conditions.`,
+            crop: farm.crop,
+            lat: farm.lat,
+            lon: farm.lon,
+            location: farm.location,
+            stage: farm.stage,
+            chat_history: [],
+            mode: "report",
+          });
+          if (active && res?.answer) {
+            const cleaned = cleanAssistantText(res.answer);
+            if (cleaned.length >= 200) {
+              await saveLatestAdvisoryText(farm.crop, farm.stage, cleaned);
+            }
+          }
+        }
+      } catch {
+        // Non-blocking background sync
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [farm.crop, farm.lat, farm.location, farm.lon, farm.stage]);
+
+  const handleDownloadReport = async () => {
+    if (isDownloadingReport) return;
+    setIsDownloadingReport(true);
+    try {
+      await downloadAdvisoryReport({
+        farm,
+      });
+    } finally {
+      setIsDownloadingReport(false);
+    }
+  };
 
   const go = (path: string) => router.push(path as never);
 
@@ -219,6 +270,8 @@ export default function HomeScreen() {
             "An advisory will appear once the field engine responds."
           }
           onAskAssistant={() => go("/chat")}
+          onDownloadReport={handleDownloadReport}
+          isDownloading={isDownloadingReport}
         />
 
         <SectionHeader

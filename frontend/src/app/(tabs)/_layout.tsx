@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, fonts, shadows } from "@/theme";
@@ -17,7 +17,11 @@ function CenterTabButton(props: any) {
       style={styles.centerWrap}
     >
       <View style={[styles.centerButton, focused && styles.centerButtonActive]}>
-        <Ionicons name="leaf" size={27} color={colors.white} />
+        <Image
+          source={require("../../../assets/logo-compact.png")}
+          style={styles.centerLogo}
+          resizeMode="cover"
+        />
       </View>
     </Pressable>
   );
@@ -117,5 +121,10 @@ const styles = StyleSheet.create({
   },
   centerButtonActive: {
     backgroundColor: colors.green,
+  },
+  centerLogo: {
+    width: 34,
+    height: 34,
+    borderRadius: 7,
   },
 });

@@ -7,8 +7,8 @@ export type LocationPreset = {
 };
 
 export const LOCATION_PRESETS: LocationPreset[] = [
-  { name: "Kakinada, AP", lat: 16.98, lon: 82.24 },
   { name: "Vijayawada, AP", lat: 16.51, lon: 80.52 },
+  { name: "Kakinada, AP", lat: 16.98, lon: 82.24 },
   { name: "Bengaluru, KA", lat: 12.97, lon: 77.59 },
   { name: "Hyderabad, TS", lat: 17.38, lon: 78.49 },
   { name: "Chennai, TN", lat: 13.08, lon: 80.27 },

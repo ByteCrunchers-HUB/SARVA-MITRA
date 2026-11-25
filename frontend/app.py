@@ -465,7 +465,7 @@ def transcribe_voice(audio_bytes: bytes, filename: str = "query.wav") -> str:
 def generate_audio_speech(text: str, lang: str = "en") -> bytes:
     """Generates audio voice bytes from advisory text using gTTS."""
     clean = re.sub(r"\[.*?\]|\(.*?\)|#+|\*+|_|`", " ", text)
-    clean = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON", "", clean)
+    clean = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?(?:END_STRUCTURED_JSON|$)", "", clean, flags=re.IGNORECASE)
     clean = re.sub(r"\s+", " ", clean).strip()
     if len(clean) > 550:
         clean = clean[:550].rsplit(".", 1)[0] + "."

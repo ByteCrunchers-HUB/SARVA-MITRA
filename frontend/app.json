@@ -9,7 +9,8 @@
     "userInterfaceStyle": "light",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "androidStatusBar": {
       "backgroundColor": "#0B5D1E",
@@ -40,7 +41,8 @@
         }
       ],
       "expo-font",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true
@@ -52,7 +54,7 @@
         }
       },
       "eas": {
-        "projectId": "1c243c93-fe8f-4cd9-a88e-1780f2210728"
+        "projectId": "daba931c-9554-44f5-baa4-72d073a97770"
       }
     }
   }

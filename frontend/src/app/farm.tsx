@@ -130,13 +130,15 @@ function FarmForm({ initialFarm }: { initialFarm: FarmConfig }) {
                     key={preset.name}
                     accessibilityRole="button"
                     accessibilityLabel={`Use ${preset.name}`}
-                    onPress={() =>
+                    onPress={() => {
                       update({
                         location: preset.name,
                         lat: preset.lat,
                         lon: preset.lon,
-                      })
-                    }
+                      });
+                      setLatText(String(preset.lat));
+                      setLonText(String(preset.lon));
+                    }}
                     style={[styles.chip, selected && styles.chipSelected]}
                   >
                     <Text

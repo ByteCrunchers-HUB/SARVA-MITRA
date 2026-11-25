@@ -20,7 +20,7 @@ export default function AboutScreen() {
       <View style={styles.body}>
         <View style={styles.hero}>
           <Image
-            source={require("../../assets/logo.jpg")}
+            source={require("../../assets/icon.png")}
             style={styles.logo}
             resizeMode="contain"
           />

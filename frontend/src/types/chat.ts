@@ -6,4 +6,5 @@ export type UiMessage = {
   content: string;
   createdAt: string;
   structured?: StructuredAdvisory | null;
+  isInitialReport?: boolean;
 };

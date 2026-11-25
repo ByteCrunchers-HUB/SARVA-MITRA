@@ -87,8 +87,10 @@ export type ChatRequest = {
   lat: number;
   lon: number;
   location: string;
+  stage?: string;
   chat_history: ChatHistoryMessage[];
   session_id?: string;
+  mode?: "report" | "chat" | string;
 };
 
 export type StructuredAdvisory = {

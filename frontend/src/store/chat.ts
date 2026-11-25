@@ -6,6 +6,41 @@ import { createId } from "@/utils/id";
 
 const SESSION_KEY = "sarva.chat.session.v1";
 const MESSAGES_KEY_PREFIX = "sarva.chat.messages.v1.";
+const LATEST_ADVISORY_KEY_PREFIX = "sarva.chat.latest_advisory.v1.";
+
+function latestAdvisoryKey(crop?: string, stage?: string): string {
+  const c = (crop || "default").toLowerCase().trim();
+  const s = (stage || "default").toLowerCase().trim().replace(/[^a-z0-9]/g, "_");
+  return `${LATEST_ADVISORY_KEY_PREFIX}${c}.${s}`;
+}
+
+export async function saveLatestAdvisoryText(
+  crop: string,
+  stage: string,
+  text: string,
+): Promise<void> {
+  try {
+    await AsyncStorage.setItem(latestAdvisoryKey(crop, stage), text);
+    await AsyncStorage.setItem(`${LATEST_ADVISORY_KEY_PREFIX}latest`, text);
+  } catch {
+    // persistence failure should not break the app
+  }
+}
+
+export async function getLatestAdvisoryText(
+  crop?: string,
+  stage?: string,
+): Promise<string | null> {
+  try {
+    if (crop && stage) {
+      const specific = await AsyncStorage.getItem(latestAdvisoryKey(crop, stage));
+      if (specific) return specific;
+    }
+    return await AsyncStorage.getItem(`${LATEST_ADVISORY_KEY_PREFIX}latest`);
+  } catch {
+    return null;
+  }
+}
 
 export function newSessionId(): string {
   return createId("session");
