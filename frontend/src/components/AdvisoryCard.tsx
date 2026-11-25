@@ -1,14 +1,22 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
+import { MarkdownView } from "@/components/MarkdownView";
 import { colors, fonts, radii, sizes, spacing } from "@/theme";
 
 type AdvisoryCardProps = {
   text: string;
   onAskAssistant: () => void;
+  onDownloadReport?: () => void;
+  isDownloading?: boolean;
 };
 
-export function AdvisoryCard({ text, onAskAssistant }: AdvisoryCardProps) {
+export function AdvisoryCard({
+  text,
+  onAskAssistant,
+  onDownloadReport,
+  isDownloading = false,
+}: AdvisoryCardProps) {
   return (
     <View style={styles.card}>
       <View style={styles.heading}>
@@ -17,16 +25,37 @@ export function AdvisoryCard({ text, onAskAssistant }: AdvisoryCardProps) {
         </View>
         <Text style={styles.title}>Quick Advisory</Text>
       </View>
-      <Text style={styles.text}>{text}</Text>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Ask the AI assistant"
-        onPress={onAskAssistant}
-        style={({ pressed }) => [styles.link, pressed && styles.pressed]}
-      >
-        <Text style={styles.linkText}>Ask Assistant</Text>
-        <Ionicons name="arrow-forward" size={14} color={colors.greenDeep} />
-      </Pressable>
+      <MarkdownView content={text} baseTextStyle={styles.text} />
+      <View style={styles.actionRow}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Ask the AI assistant"
+          onPress={onAskAssistant}
+          style={({ pressed }) => [styles.link, pressed && styles.pressed]}
+        >
+          <Text style={styles.linkText}>Ask Assistant</Text>
+          <Ionicons name="arrow-forward" size={14} color={colors.greenDeep} />
+        </Pressable>
+
+        {onDownloadReport ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Download advisory report"
+            onPress={onDownloadReport}
+            disabled={isDownloading}
+            style={({ pressed }) => [styles.downloadBtn, pressed && styles.pressed]}
+          >
+            {isDownloading ? (
+              <ActivityIndicator size="small" color={colors.greenDeep} />
+            ) : (
+              <Ionicons name="download-outline" size={14} color={colors.greenDeep} />
+            )}
+            <Text style={styles.downloadText}>
+              {isDownloading ? "Downloading..." : "Download Report"}
+            </Text>
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -65,12 +94,35 @@ const styles = StyleSheet.create({
     fontSize: sizes.small,
     lineHeight: 20,
   },
+  actionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
   link: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    alignSelf: "flex-start",
-    marginTop: spacing.sm,
+  },
+  downloadBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: "#F0D39B",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: radii.md,
+  },
+  downloadText: {
+    color: colors.greenDeep,
+    fontFamily: fonts.semibold,
+    fontSize: 12,
+    lineHeight: 16,
   },
   pressed: {
     opacity: 0.7,

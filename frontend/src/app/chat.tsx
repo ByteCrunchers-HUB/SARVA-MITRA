@@ -17,8 +17,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { GreenHeader } from "@/components/GreenHeader";
 import { IconButton } from "@/components/IconButton";
+import { MarkdownView } from "@/components/MarkdownView";
 import { useChatSession } from "@/hooks/useChatSession";
 import { useFarmConfig } from "@/hooks/useFarmConfig";
+import { downloadAdvisoryReport } from "@/utils/report";
 import { colors, fonts, radii, sizes, spacing } from "@/theme";
 import type { UiMessage } from "@/types/chat";
 
@@ -32,8 +34,45 @@ function formatTime(iso: string): string {
   return iso.length >= 16 ? iso.slice(11, 16) : "";
 }
 
-function MessageBubble({ message }: { message: UiMessage }) {
+type MessageBubbleProps = {
+  message: UiMessage;
+  onSendFollowup: (question: string) => void;
+  onDownloadReport: (content: string) => void;
+  isDownloading: boolean;
+};
+
+function MessageBubble({
+  message,
+  onSendFollowup,
+  onDownloadReport,
+  isDownloading,
+}: MessageBubbleProps) {
   const isUser = message.role === "user";
+
+  // Separate Suggested Follow-up Questions from main text
+  let mainText = message.content;
+  const followups: string[] = [];
+
+  const followupMatch = message.content.match(
+    /###\s*💡\s*Suggested Follow[‑-]Up Questions:?([\s\S]*)/i,
+  );
+  if (followupMatch) {
+    mainText = message.content.substring(0, followupMatch.index).trim();
+    const rawLines = followupMatch[1].split("\n");
+    rawLines.forEach((l) => {
+      const cleanL = l
+        .replace(/^\s*[-*•\d.]+\s*/, "")
+        .replace(/\*\*/g, "")
+        .replace(/\*/g, "")
+        .replace(/__/g, "")
+        .replace(/_/g, "")
+        .trim();
+      if (cleanL && cleanL.length > 5) {
+        followups.push(cleanL);
+      }
+    });
+  }
+
   const recommendations = Array.isArray(message.structured?.recommendations)
     ? message.structured.recommendations
         .filter((item): item is string => typeof item === "string")
@@ -48,9 +87,8 @@ function MessageBubble({ message }: { message: UiMessage }) {
         </View>
       ) : null}
       <View style={[styles.bubble, isUser && styles.bubbleUser]}>
-        <Text style={[styles.bubbleText, isUser && styles.bubbleTextUser]}>
-          {message.content}
-        </Text>
+        <MarkdownView content={mainText} isUser={isUser} />
+
         {recommendations.length > 0 ? (
           <View style={styles.recommendations}>
             <Text style={styles.recommendationsTitle}>Key actions</Text>
@@ -62,6 +100,67 @@ function MessageBubble({ message }: { message: UiMessage }) {
             ))}
           </View>
         ) : null}
+
+        {!isUser && (message.isInitialReport || message.content.length > 300) ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Download Official Advisory Report (PDF)"
+            disabled={isDownloading}
+            onPress={() => onDownloadReport(message.content)}
+            style={({ pressed }) => [
+              styles.downloadReportBtn,
+              pressed && styles.pressed,
+            ]}
+          >
+            {isDownloading ? (
+              <ActivityIndicator size="small" color={colors.white} />
+            ) : (
+              <Ionicons
+                name="document-text-outline"
+                size={16}
+                color={colors.white}
+              />
+            )}
+            <Text style={styles.downloadReportBtnText}>
+              {isDownloading
+                ? "Generating PDF..."
+                : "Download Official Advisory Report (PDF)"}
+            </Text>
+          </Pressable>
+        ) : null}
+
+        {!isUser && followups.length > 0 ? (
+          <View style={styles.followupContainer}>
+            <View style={styles.followupHeader}>
+              <Ionicons name="bulb-outline" size={14} color={colors.amberDark} />
+              <Text style={styles.followupTitle}>
+                Suggested Questions (Tap to ask):
+              </Text>
+            </View>
+            <View style={styles.followupChips}>
+              {followups.slice(0, 3).map((fq) => (
+                <Pressable
+                  key={fq}
+                  accessibilityRole="button"
+                  accessibilityLabel={fq}
+                  onPress={() => onSendFollowup(fq)}
+                  style={({ pressed }) => [
+                    styles.followupChip,
+                    pressed && styles.followupChipPressed,
+                  ]}
+                >
+                  <Ionicons
+                    name="add-circle-outline"
+                    size={14}
+                    color={colors.greenDeep}
+                  />
+                  <Text style={styles.followupChipText}>{fq}</Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        ) : null}
+
         <Text style={[styles.time, isUser && styles.timeUser]}>
           {formatTime(message.createdAt)}
         </Text>
@@ -78,10 +177,12 @@ export default function ChatScreen() {
     retry,
     reset,
     isSending,
+    isInitialLoading,
     error,
     initialized,
   } = useChatSession();
   const [draft, setDraft] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
   const scrollRef = useRef<ScrollViewInstance>(null);
 
   useEffect(() => {
@@ -90,7 +191,7 @@ export default function ChatScreen() {
       80,
     );
     return () => clearTimeout(timer);
-  }, [messages.length, isSending, error]);
+  }, [messages.length, isSending, isInitialLoading, error]);
 
   const handleSend = () => {
     const question = draft.trim();
@@ -99,10 +200,27 @@ export default function ChatScreen() {
     void send(question);
   };
 
+  const handleDownload = async (advisoryText?: string) => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const textToUse =
+        advisoryText ||
+        messages.find((m) => m.isInitialReport)?.content ||
+        messages.find((m) => m.role === "assistant" && m.content.length > 200)?.content;
+      await downloadAdvisoryReport({
+        farm,
+        advisoryText: textToUse,
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   const handleReset = () => {
     Alert.alert(
       "Start a new chat?",
-      "This clears the conversation on this device.",
+      "This clears the conversation on this device and refreshes the agronomic assessment.",
       [
         { text: "Cancel", style: "cancel" },
         {
@@ -121,11 +239,18 @@ export default function ChatScreen() {
         title="AI Assistant"
         subtitle={`${farm.crop} · ${farm.location}`}
         right={
-          <IconButton
-            accessibilityLabel="Start a new chat"
-            name="refresh-outline"
-            onPress={handleReset}
-          />
+          <>
+            <IconButton
+              accessibilityLabel="Download Advisory Report"
+              name={isDownloading ? "hourglass-outline" : "download-outline"}
+              onPress={() => void handleDownload()}
+            />
+            <IconButton
+              accessibilityLabel="Start a new chat"
+              name="refresh-outline"
+              onPress={handleReset}
+            />
+          </>
         }
       />
 
@@ -147,8 +272,26 @@ export default function ChatScreen() {
             </View>
           ) : null}
 
+          {isInitialLoading ? (
+            <View style={styles.initialLoadingCard}>
+              <ActivityIndicator size="small" color={colors.greenDeep} />
+              <Text style={styles.initialLoadingText}>
+                Connecting to field sensors & preparing agronomic assessment for{" "}
+                {farm.crop} ({farm.stage})...
+              </Text>
+            </View>
+          ) : null}
+
           {messages.map((message) => (
-            <MessageBubble key={message.id} message={message} />
+            <MessageBubble
+              key={message.id}
+              message={message}
+              onSendFollowup={(q) => {
+                if (!isSending) void send(q);
+              }}
+              onDownloadReport={(text) => void handleDownload(text)}
+              isDownloading={isDownloading}
+            />
           ))}
 
           {isSending ? (
@@ -464,5 +607,83 @@ const styles = StyleSheet.create({
     lineHeight: 13,
     textAlign: "center",
     marginTop: spacing.sm,
+  },
+  downloadReportBtn: {
+    backgroundColor: colors.greenDeep,
+    borderRadius: radii.md,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xs,
+    gap: 8,
+  },
+  downloadReportBtnText: {
+    color: colors.white,
+    fontFamily: fonts.semibold,
+    fontSize: sizes.small,
+  },
+  followupContainer: {
+    marginTop: spacing.sm,
+    paddingTop: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  followupHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    marginBottom: 6,
+  },
+  followupTitle: {
+    fontFamily: fonts.medium,
+    fontSize: 11,
+    color: colors.amberDark,
+  },
+  followupChips: {
+    gap: 6,
+  },
+  followupChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: colors.greenPale,
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#CCE3D1",
+  },
+  followupChipPressed: {
+    backgroundColor: "#D3E9D8",
+  },
+  followupChipText: {
+    fontFamily: fonts.medium,
+    fontSize: 11,
+    color: colors.greenDeep,
+    flex: 1,
+  },
+  initialLoadingCard: {
+    backgroundColor: colors.card,
+    borderRadius: radii.md,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    marginVertical: spacing.md,
+  },
+  initialLoadingText: {
+    fontFamily: fonts.regular,
+    fontSize: sizes.small,
+    color: colors.textBody,
+    flex: 1,
+    lineHeight: 18,
+  },
+  pressed: {
+    opacity: 0.8,
   },
 });

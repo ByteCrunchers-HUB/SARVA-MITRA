@@ -282,6 +282,10 @@ body {
   100% { transform: rotate(360deg); }
 }
 
+.lang-selector {
+  display: none !important;
+}
+
 .lang-selector select {
   background-color: #FFFFFF;
   border: 1px solid var(--border-card);
@@ -1857,7 +1861,7 @@ body {
   }
 
   .topbar {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.6rem;
     padding: 0.75rem 1.25rem;
   }
@@ -1913,36 +1917,71 @@ body {
 
   /* Mobile Topbar */
   .topbar {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    padding: 0.65rem 0.85rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    min-height: 54px;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    position: sticky;
+    top: 0;
+    z-index: 30;
   }
 
   .topbar-left {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-wrap: wrap;
-    flex: 1;
+    flex-wrap: nowrap;
+    flex: 1 1 auto;
     min-width: 0;
+    overflow: hidden;
   }
 
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    flex-wrap: wrap;
+    gap: 0.45rem;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
   }
 
-  .weather-pill, .crop-pill {
+  .crop-pill {
+    display: none;
+  }
+
+  .weather-pill {
     padding: 0.35rem 0.65rem;
     font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 175px;
+    flex-shrink: 1;
+  }
+
+  #top-location {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 85px;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   .btn-sync {
-    padding: 0.45rem 0.65rem;
-    font-size: 0.8rem;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   .btn-sync span {
@@ -1950,11 +1989,29 @@ body {
   }
 
   .profile-pill {
-    padding: 0.3rem 0.5rem;
+    padding: 0.25rem 0.5rem;
+    height: 36px;
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
 
   .profile-name {
     display: none; /* Avatar only on mobile */
+  }
+
+  .mobile-menu-toggle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   .hero-card {
@@ -2160,13 +2217,23 @@ body {
 }
 
 @media (max-width: 480px) {
+  .topbar {
+    padding: 0.45rem 0.65rem;
+    min-height: 52px;
+  }
+
   .topbar-left {
     gap: 0.35rem;
   }
 
   .weather-pill {
     font-size: 0.72rem;
-    padding: 0.3rem 0.5rem;
+    padding: 0.28rem 0.45rem;
+    max-width: 145px;
+  }
+
+  #top-location {
+    max-width: 65px;
   }
 
   .crop-pill {

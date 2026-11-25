@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ApiErrorState } from "@/components/ApiErrorState";
 import { GreenHeader } from "@/components/GreenHeader";
+import { IconButton } from "@/components/IconButton";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { RiskGauge } from "@/components/RiskGauge";
 import { Screen } from "@/components/Screen";
@@ -11,6 +13,7 @@ import { SoilReferenceCard } from "@/components/SoilReferenceCard";
 import { soilReferenceForFarm } from "@/data/soilSnapshot";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useFarmConfig } from "@/hooks/useFarmConfig";
+import { downloadAdvisoryReport } from "@/utils/report";
 import { colors, fonts, radii, sizes, spacing } from "@/theme";
 import { formatRelativeTime, riskSoftColor } from "@/utils/format";
 
@@ -39,12 +42,33 @@ export default function PredictScreen() {
   const risk = dashboard.data?.ml_risk;
   const level = risk?.risk_level ?? "low";
   const actions = ACTIONS[level] ?? ACTIONS.low;
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    try {
+      await downloadAdvisoryReport({
+        farm,
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <Screen edges={["left", "right"]}>
       <GreenHeader
         title="Crop Risk Prediction"
         subtitle={`${farm.crop} · ${farm.stage} · ${farm.location}`}
+        right={
+          <IconButton
+            accessibilityLabel="Download Advisory Report"
+            name={isDownloading ? "hourglass-outline" : "download-outline"}
+            disabled={isDownloading}
+            onPress={() => void handleDownload()}
+          />
+        }
       />
 
       <View style={styles.body}>
@@ -127,6 +151,23 @@ export default function PredictScreen() {
           icon="chatbubble-ellipses-outline"
           onPress={() => router.push("/chat" as never)}
         />
+
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Download Advisory Report"
+          onPress={handleDownload}
+          disabled={isDownloading}
+          style={({ pressed }) => [styles.downloadSecondaryBtn, pressed && styles.pressed]}
+        >
+          {isDownloading ? (
+            <ActivityIndicator size="small" color={colors.greenDeep} />
+          ) : (
+            <Ionicons name="document-text-outline" size={18} color={colors.greenDeep} />
+          )}
+          <Text style={styles.downloadSecondaryText}>
+            {isDownloading ? "Generating Report..." : "Download Advisory Report (PDF)"}
+          </Text>
+        </Pressable>
 
         <View style={styles.footerNote}>
           <Ionicons name="leaf-outline" size={16} color={colors.greenDeep} />
@@ -256,5 +297,25 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 16,
     flex: 1,
+  },
+  downloadSecondaryBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.card,
+    borderWidth: 1.5,
+    borderColor: colors.greenDeep,
+    borderRadius: radii.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  downloadSecondaryText: {
+    color: colors.greenDeep,
+    fontFamily: fonts.semibold,
+    fontSize: sizes.body,
+  },
+  pressed: {
+    opacity: 0.75,
   },
 });

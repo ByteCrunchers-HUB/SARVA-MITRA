@@ -181,3 +181,20 @@ export function predictRisk(
     timeoutMs: 20_000,
   });
 }
+
+export function getReportPdfUrl(
+  farm: FarmConfig,
+  advisoryText?: string | null,
+): string {
+  const params = new URLSearchParams({
+    crop: farm.crop,
+    location: farm.location,
+    lat: String(farm.lat),
+    lon: String(farm.lon),
+    stage: farm.stage,
+  });
+  if (advisoryText && advisoryText.trim()) {
+    params.append("advisory_text", advisoryText.trim());
+  }
+  return `${API_BASE_URL}/api/report/pdf?${params.toString()}`;
+}

@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import type { ReactNode } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, fonts, sizes, spacing } from "@/theme";
@@ -13,6 +13,7 @@ type GreenHeaderProps = {
   left?: ReactNode;
   right?: ReactNode;
   showBack?: boolean;
+  showLogo?: boolean;
   onBack?: () => void;
   children?: ReactNode;
 };
@@ -23,6 +24,7 @@ export function GreenHeader({
   left,
   right,
   showBack = false,
+  showLogo,
   onBack,
   children,
 }: GreenHeaderProps) {
@@ -68,9 +70,18 @@ export function GreenHeader({
         </View>
 
         <View style={styles.titleWrap}>
-          <Text numberOfLines={1} style={styles.title}>
-            {title}
-          </Text>
+          <View style={styles.titleRow}>
+            {(showLogo || title === "Sarva Mitra") && (
+              <Image
+                source={require("../../assets/logo-compact.png")}
+                style={styles.compactLogo}
+                resizeMode="cover"
+              />
+            )}
+            <Text numberOfLines={1} style={styles.title}>
+              {title}
+            </Text>
+          </View>
           {subtitle ? (
             <Text numberOfLines={2} style={styles.subtitle}>
               {subtitle}
@@ -98,11 +109,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   side: {
-    width: 44,
+    minWidth: 44,
     alignItems: "flex-start",
   },
   right: {
     alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 4,
   },
   iconButton: {
     width: 40,
@@ -118,6 +132,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingHorizontal: spacing.sm,
+  },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  compactLogo: {
+    width: 24,
+    height: 24,
+    borderRadius: 5,
   },
   title: {
     color: colors.white,

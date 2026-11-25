@@ -111,6 +111,7 @@ class UnifiedChatRequest(BaseModel):
     lat: float = Field(default=16.51, ge=-90, le=90, description="Farm latitude")
     lon: float = Field(default=80.52, ge=-180, le=180, description="Farm longitude")
     location: str = Field(default="Vijayawada", description="Location name or district")
+    stage: str | None = Field(default=None, description="Optional crop growth stage")
     chat_history: list[ChatHistoryMessage] = Field(default_factory=list, description="Prior conversation messages")
     session_id: str | None = Field(default=None, description="Optional frontend session ID")
     mode: str = Field(default="chat", description="'report' for initial telemetry assessment or 'chat' for conversational Q&A")
@@ -459,43 +460,62 @@ def unified_chat(req: UnifiedChatRequest, request: Request):
                 ]
             }
 
-        # 4. Default / General Agronomic Overview
+        # 4. Default / General Agronomic Overview or Comprehensive Assessment
         else:
-            if sm_val < 18.0:
-                irrigation_note = f"Root-zone soil moisture is low ({sm_val:.1f}%). Initiate scheduled drip irrigation (2–3 L/m²) early morning to protect against blossom drop and moisture stress."
-            elif sm_val > 35.0:
-                irrigation_note = f"Soil moisture is elevated ({sm_val:.1f}%). Pause irrigation and ensure surface furrows drain rapidly to prevent root rot."
+            if mode_val == "report":
+                stage_val = getattr(req, "stage", None) or "Flowering Stage"
+                answer = generate_comprehensive_advisory(
+                    crop=req.crop,
+                    stage=stage_val,
+                    location=req.location,
+                    telemetry=readings,
+                    prediction=prediction,
+                )
+                structured = {
+                    "response_mode": "report",
+                    "overview": f"Comprehensive agronomic telemetry assessment for {crop_title}.",
+                    "model_interpretation": f"ML risk index: {risk_pct_val:.1f}% ({risk_level}).",
+                    "recommendations": [
+                        {"step": 1, "action": "Follow targeted field scouting checklist for fungal and foliar pathogens."},
+                        {"step": 2, "action": "Adjust irrigation to maintain optimal root zone moisture band."}
+                    ]
+                }
             else:
-                irrigation_note = f"Soil moisture ({sm_val:.1f}%) is within optimal crop tolerance. Maintain regular morning hydration intervals."
+                if sm_val < 18.0:
+                    irrigation_note = f"Root-zone soil moisture is low ({sm_val:.1f}%). Initiate scheduled drip irrigation (2–3 L/m²) early morning to protect against blossom drop and moisture stress."
+                elif sm_val > 35.0:
+                    irrigation_note = f"Soil moisture is elevated ({sm_val:.1f}%). Pause irrigation and ensure surface furrows drain rapidly to prevent root rot."
+                else:
+                    irrigation_note = f"Soil moisture ({sm_val:.1f}%) is within optimal crop tolerance. Maintain regular morning hydration intervals."
 
-            if risk_level == "high":
-                protection_note = f"Under ambient {temp_val:.1f}°C and {hum_val:.0f}% RH, pathogen stress index is elevated ({risk_pct_val:.1f}%). Prune senescent lower leaves, inspect undersides for fungal spots, and apply certified biocontrol spray (Trichoderma or copper hydroxide)."
-            elif risk_level == "moderate":
-                protection_note = f"Ambient conditions ({temp_val:.1f}°C, {hum_val:.0f}% RH) represent moderate disease favorability ({risk_pct_val:.1f}%). Inspect lower canopy twice weekly and spray preventive neem formulation (3ml/L) if humidity exceeds 70%."
-            else:
-                protection_note = f"Environmental pathogen favorability is low ({risk_pct_val:.1f}%). Focus on balanced NPK fertilizer application and standard field sanitation."
+                if risk_level == "high":
+                    protection_note = f"Under ambient {temp_val:.1f}°C and {hum_val:.0f}% RH, pathogen stress index is elevated ({risk_pct_val:.1f}%). Prune senescent lower leaves, inspect undersides for fungal spots, and apply certified biocontrol spray (Trichoderma or copper hydroxide)."
+                elif risk_level == "moderate":
+                    protection_note = f"Ambient conditions ({temp_val:.1f}°C, {hum_val:.0f}% RH) represent moderate disease favorability ({risk_pct_val:.1f}%). Inspect lower canopy twice weekly and spray preventive neem formulation (3ml/L) if humidity exceeds 70%."
+                else:
+                    protection_note = f"Environmental pathogen favorability is low ({risk_pct_val:.1f}%). Focus on balanced NPK fertilizer application and standard field sanitation."
 
-            answer = (
-                f"**Agronomic Assessment for {crop_title} ({loc_title})**:\n\n"
-                f"• **Live Sensors**: Temperature: {temp_val:.1f}°C | Humidity: {hum_val:.0f}% | Soil Moisture: {sm_val:.1f}% | Rain: {rain_val:.1f}mm\n"
-                f"• **AI Pathogen Risk Index**: {risk_pct_val:.1f}% ({risk_level.upper()})\n\n"
-                f"**Action Steps**:\n"
-                f"1. **Irrigation**: {irrigation_note}\n"
-                f"2. **Canopy & Protection**: {protection_note}\n"
-                f"3. **Field Confirmation**: Inspect flowers and leaf nodes during morning hours before spraying.\n\n"
-                f"### 💡 Suggested Follow‑Up Questions\n"
-                f"- What fertilizer or calcium spray should I apply during flowering?\n"
-                f"- What are the recommended fertilizer practices and soil moisture bands for my crop?"
-            )
-            structured = {
-                "response_mode": "chat",
-                "overview": f"Agronomic telemetry status for {crop_title}.",
-                "model_interpretation": f"ML risk index: {risk_pct_val:.1f}% ({risk_level}).",
-                "recommendations": [
-                    {"step": 1, "action": irrigation_note},
-                    {"step": 2, "action": protection_note}
-                ]
-            }
+                answer = (
+                    f"**Agronomic Assessment for {crop_title} ({loc_title})**:\n\n"
+                    f"• **Live Sensors**: Temperature: {temp_val:.1f}°C | Humidity: {hum_val:.0f}% | Soil Moisture: {sm_val:.1f}% | Rain: {rain_val:.1f}mm\n"
+                    f"• **AI Pathogen Risk Index**: {risk_pct_val:.1f}% ({risk_level.upper()})\n\n"
+                    f"**Action Steps**:\n"
+                    f"1. **Irrigation**: {irrigation_note}\n"
+                    f"2. **Canopy & Protection**: {protection_note}\n"
+                    f"3. **Field Confirmation**: Inspect flowers and leaf nodes during morning hours before spraying.\n\n"
+                    f"### 💡 Suggested Follow‑Up Questions\n"
+                    f"- What fertilizer or calcium spray should I apply during flowering?\n"
+                    f"- What are the recommended fertilizer practices and soil moisture bands for my crop?"
+                )
+                structured = {
+                    "response_mode": "chat",
+                    "overview": f"Agronomic telemetry status for {crop_title}.",
+                    "model_interpretation": f"ML risk index: {risk_pct_val:.1f}% ({risk_level}).",
+                    "recommendations": [
+                        {"step": 1, "action": irrigation_note},
+                        {"step": 2, "action": protection_note}
+                    ]
+                }
 
     # Updated conversation history
     updated_history = list(chat_history_dicts)
@@ -554,12 +574,126 @@ async def transcribe_audio_endpoint(file: UploadFile = File(...)):
 # ---------------------------------------------------------------------------
 # PDF Report Generation Endpoint
 # ---------------------------------------------------------------------------
+def generate_comprehensive_advisory(
+    crop: str,
+    stage: str,
+    location: str,
+    telemetry: dict,
+    prediction: dict,
+) -> str:
+    """Generates an exhaustive, multi-section agronomic assessment grounded in live telemetry and ML pathogen risk."""
+    crop_title = crop.strip().title() or "Crop"
+    loc_title = location or "Monitored Field"
+    stage_title = stage or "Active Growth"
+
+    temp = telemetry.get("temperature_c", 28.0)
+    hum = telemetry.get("humidity_pct", 65.0)
+    sm = telemetry.get("soil_moisture_pct", 22.0)
+    rain = telemetry.get("rainfall_mm", 0.0)
+    sun = telemetry.get("sunlight_wm2", 500.0)
+
+    risk_info = prediction.get("prediction", {}) if isinstance(prediction, dict) else {}
+    risk_pct = risk_info.get("risk_pct", 29.8)
+    risk_level = str(risk_info.get("risk_level", "moderate")).lower()
+
+    # Crop-specific pathogen vulnerabilities
+    crop_key = crop.strip().lower()
+    if "chilli" in crop_key:
+        diseases = [
+            ("Anthracnose / Fruit Rot (Colletotrichum capsici)", "Dark sunken circular lesions on maturing pods with concentric rings of acervuli. High humidity (>75%) with warm nights accelerate fruit rot."),
+            ("Powdery Mildew (Leveillula taurica)", "White powdery patches on leaf undersides with corresponding yellow chlorotic blotches on upper leaf surfaces; causes premature defoliation under dry soil and high atmospheric humidity."),
+            ("Bacterial Leaf Spot & Wilt (Xanthomonas / Ralstonia)", "Water-soaked dark angular spots on leaves and sudden midday wilting with vascular browning under elevated root-zone moisture."),
+            ("Thrips & Mite Vector Pressure", "Silvery feeding scars, upward boat-shaped leaf curling, and stunted shoot terminals transmitting Chilli Leaf Curl / Peanut Bud Necrosis virus.")
+        ]
+        soil_min, soil_max = 18.0, 26.0
+        special_nutrients = "Foliar Calcium Nitrate @ 0.5% (5g/L) combined with Boron (Solubor @ 1g/L) during active fruit set to prevent blossom-end rot and fruit shedding."
+    elif "ragi" in crop_key or "millet" in crop_key:
+        diseases = [
+            ("Finger / Neck Blast (Magnaporthe grisea)", "Spindle-shaped elliptical lesions with gray centers and brown margins on leaves; blackening of neck node causing lodging and chaffy earheads."),
+            ("Foot Rot / Seedling Blight (Sclerotium rolfsii)", "Basal collar rotting with white mycelial cottony growth and brown mustard-seed-like sclerotia under stagnant moisture."),
+            ("Banded Leaf & Sheath Blight (Rhizoctonia solani)", "Irregular bleached patches with dark purple borders on leaf sheaths progressing upward into the canopy.")
+        ]
+        soil_min, soil_max = 16.0, 24.0
+        special_nutrients = "Balanced top dressing of Potassium (MOP) to strengthen culm strength and prevent neck lodging; avoid excess urea in overcast weather."
+    else:  # Default to Tomato
+        diseases = [
+            ("Early Blight (Alternaria solani)", "Target-like concentric brown rings on older lower leaves progressing upward; stems show dark sunken collar cankers. Favored by warm temperatures (24–29°C) and alternating wet/dry periods."),
+            ("Late Blight (Phytophthora infestans)", "Rapidly enlarging water-soaked pale-green lesions that turn purplish-black with white downy mold on leaf margins under cool, saturated humidity (>80%)."),
+            ("Septoria Leaf Spot (Septoria lycopersici)", "Numerous small circular spots (1–3 mm) with dark brown margins and sunken gray centers sprinkled with tiny black pycnidia; causes severe lower defoliation."),
+            ("Blossom-End Rot & Calcium Disorder", "Water-soaked dark leathering at the blossom end of green fruits caused by irregular soil moisture hindering root calcium transport.")
+        ]
+        soil_min, soil_max = 20.0, 28.0
+        special_nutrients = "Foliar spray of water-soluble Calcium Nitrate (5g/L) + Boron 20% (1g/L) applied at 10-day intervals during flowering and pea-sized fruit stage."
+
+    # Soil moisture status & irrigation guidance
+    if sm < soil_min:
+        sm_status = f"Deficit ({sm:.1f}% vs optimal {soil_min:.0f}–{soil_max:.0f}%)"
+        irr_action = f"Initiate light, frequent drip hydration (2–3 hours in early morning, 06:00–08:30). Root moisture is below the {soil_min:.0f}% threshold, threatening flower drop and poor fruit expansion. Avoid heavy flood irrigation which causes fruit cracking."
+    elif sm > soil_max:
+        sm_status = f"Excess / Saturated ({sm:.1f}% vs optimal {soil_min:.0f}–{soil_max:.0f}%)"
+        irr_action = f"Immediately withhold irrigation and clear furrow tail-drains. High soil moisture ({sm:.1f}%) combined with warm ambient temperature induces root hypoxia and greatly heightens collar rot and bacterial wilt susceptibility."
+    else:
+        sm_status = f"Optimal ({sm:.1f}% within {soil_min:.0f}–{soil_max:.0f}% band)"
+        irr_action = f"Maintain the current 2-day pulse irrigation interval. Root-zone volumetric water content ({sm:.1f}%) is in the prime metabolic window for nutrient uptake and transpiration."
+
+    # Environmental risk interpretation
+    if risk_level == "high":
+        risk_interp = f"The XGBoost field risk model evaluates an elevated pathogen favorability index of **{risk_pct:.1f}% (HIGH RISK)**. Atmospheric relative humidity ({hum:.0f}%) and canopy temperatures ({temp:.1f}°C) create a sustained microclimate window conducive to fungal spore germination and secondary foliar infection."
+        urgency = "IMMEDIATE FIELD INSPECTION & PREVENTIVE SANITATION REQUIRED WITHIN 24 HOURS."
+    elif risk_level == "moderate":
+        risk_interp = f"The XGBoost field risk model computes an active pathogen favorability index of **{risk_pct:.1f}% (MODERATE RISK)**. While acute infection pressure is currently constrained, relative humidity ({hum:.0f}%) and ambient temperature ({temp:.1f}°C) support early fungal incubation, especially in dense or shaded canopy pockets."
+        urgency = "ACTIVE SCOUTING & PREVENTIVE CANOPY MANAGEMENT ADVISED OVER THE NEXT 48 HOURS."
+    else:
+        risk_interp = f"The field risk evaluation indicates **{risk_pct:.1f}% (LOW RISK)**. Ambient microclimate factors (temperature {temp:.1f}°C, RH {hum:.0f}%) are currently hostile to widespread fungal sporulation."
+        urgency = "ROUTINE SCOUTING & BALANCED AGRONOMIC MAINTENANCE."
+
+    # Disease checklist markdown table
+    disease_rows = "\n".join(
+        f"| **{name}** | {desc} | High |" for name, desc in diseases
+    )
+    disease_table = (
+        "| Crop Disease / Suspect Pathogen | Diagnostic Symptoms in Field | Priority Level |\n"
+        "|---|---|---|\n"
+        f"{disease_rows}"
+    )
+
+    # Interventions markdown table
+    interventions_table = (
+        "| Management Area | Recommended Field Action | Operational Timing |\n"
+        "|---|---|---|\n"
+        f"| **Irrigation & Hydration** | {irr_action} | Early morning (06:00–08:30) |\n"
+        "| **Canopy Hygiene** | Prune senescent lower leaves up to 20 cm from ground; maintain clean weed-free row margins. | Dry sunny midday |\n"
+        "| **Biological Protection** | Spray Neem Oil emulsion (5 ml/L + surfactant) or Trichoderma viride / Pseudomonas fluorescens (5g/L). | Calm evening hours |\n"
+        f"| **Targeted Nutrition** | {special_nutrients} | Active growth stage |\n"
+    )
+
+    advisory = f"""### 1. Executive Microclimate & Pathogen Risk Assessment
+- **Field Microclimate**: Ambient Air Temperature is **{temp:.1f}°C**, Relative Humidity is **{hum:.0f}%**, Volumetric Soil Moisture is **{sm:.1f}%** ({sm_status}), Daily Rainfall is **{rain:.1f} mm**, and Solar Irradiance is **{sun:.0f} W/m²**.
+- **ML Pathogen Risk Status**: **{risk_pct:.2f}% ({risk_level.upper()})** | Signal Code: **{'1 (Active)' if risk_level in {'moderate', 'high'} else '0 (Nominal)'}**.
+- **Model Diagnostic Note**: {risk_interp}
+- **Action Urgency**: {urgency}
+
+### 2. High-Priority Field Scouting & Disease Checklist
+Walk the crop rows in an inverted 'W' pattern during morning hours (07:30–10:00). Closely check the following priority issues for **{crop_title} ({stage_title})**:
+
+{disease_table}
+
+### 3. Practical Agronomic Field Interventions
+{interventions_table}
+
+### 4. Critical Boundaries & Official Agricultural Notice
+- **Telemetry Boundaries**: Sarva Mitra weather and soil telemetry detects microclimate favorability and disease vulnerability windows. It does not replace laboratory culture or physical plant pathology examination.
+- **KVK Extension Mandate**: Dosing, chemical brand names, and systemic fungicides/insecticides are strictly regulated. Farmers should carry any suspect leaf or pod samples to the nearest **Krishi Vigyan Kendra (KVK)** or consult their local Agricultural Extension Officer prior to chemical tank-mixing.
+"""
+    return advisory.strip()
+
+
 class PDFReportRequest(BaseModel):
     crop: str = Field(default="tomato", description="Target crop")
     location: str = Field(default="Vijayawada", description="Farm location name")
     lat: float = Field(default=16.51, description="Farm latitude")
     lon: float = Field(default=80.52, description="Farm longitude")
-    stage: str = Field(default="🌸 Flowering & Fruit Set (50-80 days)", description="Growth stage")
+    stage: str = Field(default="Flowering & Fruit Set (50-80 days)", description="Growth stage")
     advisory_text: str | None = Field(default=None, description="Advisory text content")
 
 
@@ -592,15 +726,82 @@ def generate_pdf_report_endpoint(req: PDFReportRequest):
         "stage": req.stage,
     }
 
-    # Resolve official Sarva Mitra logo (SVG preferred, then JPG)
+    # Resolve official Sarva Mitra logo (SVG vector or transparent PNG preferred for native ReportLab rendering)
     project_root = Path(__file__).resolve().parent.parent
-    logo_svg = project_root / "frontend" / "assets" / "logo.svg"
-    logo_web_svg = project_root / "frontend" / "web" / "assets" / "logo.svg"
-    logo_jpg = project_root / "frontend" / "assets" / "logo.jpg"
-    logo_path = logo_svg if logo_svg.exists() else (logo_web_svg if logo_web_svg.exists() else (logo_jpg if logo_jpg.exists() else None))
+    logo_report_svg = project_root / "frontend" / "assets" / "logo-report.svg"
+    emblem_png = project_root / "frontend" / "assets" / "logo-emblem.png"
+    icon_png = project_root / "frontend" / "assets" / "icon.png"
+    logo_path = logo_report_svg if logo_report_svg.exists() else (emblem_png if emblem_png.exists() else (icon_png if icon_png.exists() else None))
 
-    # Generate PDF bytes with official logo
-    clean_adv = clean_advisory_text(req.advisory_text or "Official agronomic advisory report.")
+    # Clean advisory text or generate complete comprehensive diagnostic report if missing/short
+    clean_adv = clean_advisory_text(req.advisory_text or "")
+    is_short = (
+        not clean_adv
+        or len(clean_adv) < 200
+        or (
+            len(clean_adv) < 400
+            and any(
+                clean_adv.startswith(p)
+                for p in (
+                    "Moderate risk",
+                    "Low risk",
+                    "High weather proxy risk",
+                    "Risk Level:",
+                )
+            )
+        )
+    )
+
+    if is_short:
+        clean_adv = ""  # Reset short text so fallback is guaranteed if RAG is unavailable or fails
+        rag: RAGPipeline | None = getattr(app.state, "rag_pipeline", None)
+        if not rag and (GROQ_API_KEYS or os.getenv("OLLAMA_API_KEY")):
+            try:
+                rag = RAGPipeline()
+                app.state.rag_pipeline = rag
+            except Exception:
+                rag = None
+
+        if rag:
+            try:
+                risk_info = prediction.get("prediction", {})
+                risk_level = risk_info.get("risk_level", "low")
+                ml_out = 1 if risk_level in {"moderate", "high"} else 0
+                rag_readings = {
+                    "temperature_c": telemetry.get("temperature_c", 0.0),
+                    "humidity_pct": telemetry.get("humidity_pct", 0.0),
+                    "soil_moisture_pct": telemetry.get("soil_moisture_pct", 0.0),
+                    "rainfall_mm": telemetry.get("rainfall_mm", 0.0),
+                    "sunlight_wm2": telemetry.get("sunlight_wm2", 0.0),
+                    "risk_pct": risk_info.get("risk_pct"),
+                    "risk_level": risk_level,
+                }
+                generated_ans, _ = rag.answer(
+                    readings=rag_readings,
+                    ml_output=ml_out,
+                    crop=req.crop.strip().lower() or "unknown",
+                    location=req.location,
+                    question=f"Provide a complete, comprehensive agronomic status assessment and recommendations for {req.crop} ({req.stage}) based on current field conditions.",
+                    chat_history=[],
+                    ml_prediction=prediction,
+                    mode="report",
+                )
+                if generated_ans:
+                    candidate = clean_advisory_text(generated_ans)
+                    if len(candidate) >= 400:
+                        clean_adv = candidate
+            except Exception as rag_err:
+                logger.warning("RAG report generation in PDF endpoint fell back: %s", rag_err)
+
+        if not clean_adv or len(clean_adv) < 400:
+            clean_adv = generate_comprehensive_advisory(
+                crop=req.crop,
+                stage=req.stage,
+                location=req.location,
+                telemetry=telemetry,
+                prediction=prediction,
+            )
+
     pdf_bytes = generate_advisory_pdf(
         farm_config=farm_cfg,
         telemetry=telemetry,
@@ -615,6 +816,27 @@ def generate_pdf_report_endpoint(req: PDFReportRequest):
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+@app.get("/api/report/pdf", tags=["Reports / PDF"])
+def generate_pdf_report_get_endpoint(
+    crop: str = "Tomato",
+    location: str = "Vijayawada, AP",
+    lat: float = 16.51,
+    lon: float = 80.52,
+    stage: str = "Flowering & Fruit Set (50-80 days)",
+    advisory_text: str | None = None,
+):
+    """GET endpoint enabling direct mobile/browser downloads of the advisory PDF report."""
+    req = PDFReportRequest(
+        crop=crop,
+        location=location,
+        lat=lat,
+        lon=lon,
+        stage=stage,
+        advisory_text=advisory_text,
+    )
+    return generate_pdf_report_endpoint(req)
 
 
 # ---------------------------------------------------------------------------

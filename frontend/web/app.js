@@ -54,8 +54,8 @@
     lat: 16.51,
     lon: 80.52,
     crop: 'tomato',
-    cropLabel: '🍅 Tomato',
-    stage: '🌸 Flowering & Fruit Set (50-80 days)',
+    cropLabel: 'Tomato',
+    stage: 'Flowering & Fruit Set (50-80 days)',
     telemetry: null,
     risk: null,
     history: [],
@@ -99,6 +99,12 @@
   const topLocation = document.getElementById('top-location');
   const topCrop = document.getElementById('top-crop');
   const topStage = document.getElementById('top-stage');
+  const cropPill = document.getElementById('crop-pill');
+  if (cropPill) {
+    cropPill.style.cursor = 'pointer';
+    cropPill.title = 'Click to change Crop or Growth Stage in Settings';
+    cropPill.addEventListener('click', () => switchView('settings'));
+  }
 
   // Soil Prediction Elements
   const alertBanner = document.getElementById('prediction-alert');
@@ -239,6 +245,7 @@
         lat: state.lat,
         lon: state.lon,
         location: state.locationName,
+        stage: state.stage,
         chat_history: [],
         mode: 'report'
       };
@@ -317,6 +324,17 @@
     fetchInitialAgronomicReport();
   }
 
+  function extractStageShortName(stageStr) {
+    if (!stageStr) return 'Flowering';
+    const clean = stageStr.replace(/^[^\w\s]+/, '').trim();
+    if (/seedling|nursery/i.test(clean)) return 'Seedling';
+    if (/vegetative/i.test(clean)) return 'Vegetative';
+    if (/flower|fruit set/i.test(clean)) return 'Flowering';
+    if (/matur|harvest/i.test(clean)) return 'Harvesting';
+    const words = clean.split(/\s+/).filter(w => !['&', 'and', 'the', 'of'].includes(w.toLowerCase()));
+    return words[0] || 'Flowering';
+  }
+
   function updateUIWithData(data) {
     const tel = data.current_telemetry || state.telemetry || {};
     const risk = data.ml_risk || state.risk || {};
@@ -326,8 +344,15 @@
     // 1. Update Topbar
     if (topTemp) topTemp.textContent = `${(tel.temperature_c || 25).toFixed(1)}°C`;
     if (topLocation) topLocation.textContent = `${state.locationName}, ${state.locationState || 'IN'}`;
-    if (topCrop) topCrop.textContent = state.cropLabel;
-    if (topStage) topStage.textContent = `(${state.stage.split(' ')[1] || 'Flowering'})`;
+    if (topCrop) {
+      const emojiMap = { tomato: '🍅', chilli: '🌶️', ragi: '🌾' };
+      const icon = emojiMap[state.crop] || '🌱';
+      const cleanName = (state.cropLabel || state.crop || 'Crop').replace(/[^\w\s()]/g, '').trim();
+      topCrop.textContent = `${cleanName} ${icon}`;
+    }
+    if (topStage) {
+      topStage.textContent = `(${extractStageShortName(state.stage)})`;
+    }
 
     // 2. Update Soil Prediction View
     if (valSoilMoisture) valSoilMoisture.textContent = `${(tel.soil_moisture_pct || 0).toFixed(1)} %`;
@@ -491,13 +516,15 @@
     // 1. Remove complete or unclosed BEGIN_STRUCTURED_JSON blocks
     cleaned = cleaned.replace(/BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON/gi, '');
     cleaned = cleaned.replace(/BEGIN_STRUCTURED_JSON[\s\S]*$/gi, '');
-    // 2. Remove code blocks containing json (complete or unclosed)
+    // 2. Remove code blocks containing json (complete or unclosed only when containing JSON '{')
     cleaned = cleaned.replace(/```(?:json)?\s*\{[\s\S]*?\}\s*```/gi, '');
-    cleaned = cleaned.replace(/```(?:json)?[\s\S]*$/gi, '');
+    cleaned = cleaned.replace(/```(?:json)?\s*\{[\s\S]*$/gi, '');
     // 3. Remove dangling raw json with response_mode
     cleaned = cleaned.replace(/\{\s*"response_mode"[\s\S]*$/gi, '');
     // 4. Remove isolated markers
     cleaned = cleaned.replace(/END_STRUCTURED_JSON/gi, '');
+    // 5. Unwrap markdown code fence wrapper if present
+    cleaned = cleaned.replace(/^```(?:markdown)?\s*\n/i, '').replace(/\n```\s*$/i, '');
     return cleaned.trim();
   }
 
@@ -520,13 +547,20 @@
     let mainText = role === 'assistant' ? cleanAssistantText(content) : content;
     let followups = [];
 
-    const followupMatch = content.match(/###\s*💡\s*Suggested Follow[‑-]Up Questions:?([\s\S]*)/i);
+    const followupMatch = mainText.match(/###?\s*(?:💡\s*)?(?:Suggested\s+)?Follow[‑-]?[Uu]p\s*(?:Questions)?:?([\s\S]*)/i);
     if (followupMatch) {
-      mainText = content.substring(0, followupMatch.index).trim();
-      const rawLines = followupMatch[1].split('\n');
+      const followupSection = followupMatch[1];
+      mainText = mainText.substring(0, followupMatch.index).trim();
+      const rawLines = followupSection.split('\n');
       rawLines.forEach(l => {
-        const cleanL = l.replace(/^\s*[-*•\d.]+\s*/, '').trim();
-        if (cleanL && cleanL.length > 5) {
+        const cleanL = l
+          .replace(/^\s*[-*•\d.]+\s*/, '')
+          .replace(/\*\*/g, '')
+          .replace(/\*/g, '')
+          .replace(/__/g, '')
+          .replace(/_/g, '')
+          .trim();
+        if (cleanL && cleanL.length > 5 && !cleanL.startsWith('#')) {
           followups.push(cleanL);
         }
       });
@@ -548,7 +582,10 @@
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
+        .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
         .replace(/^---$/gm, '<hr />');
 
       const lines = formatted.split('\n');
@@ -660,6 +697,7 @@
         lat: state.lat,
         lon: state.lon,
         location: state.locationName,
+        stage: state.stage,
         chat_history: historyPayload,
         mode: 'chat'
       };
@@ -866,7 +904,7 @@
         lat: state.lat,
         lon: state.lon,
         stage: state.stage,
-        advisory_text: state.initialAdvisoryText || 'Sarva Mitra Agronomic Field Advisory Report',
+        advisory_text: (state.initialAdvisoryText && state.initialAdvisoryText.length > 200) ? state.initialAdvisoryText : undefined,
       };
 
       const res = await apiFetch('/api/report/pdf', {

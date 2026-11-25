@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import threading
+
+logger = logging.getLogger("sarva_mitra_rag")
 
 from langchain_core.documents import Document
 from pymongo import MongoClient
@@ -280,13 +283,16 @@ def clean_advisory_text(text: str) -> str:
     # 1. Strip complete or unclosed BEGIN_STRUCTURED_JSON blocks
     cleaned = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*?END_STRUCTURED_JSON", "", text, flags=re.IGNORECASE)
     cleaned = re.sub(r"BEGIN_STRUCTURED_JSON[\s\S]*$", "", cleaned, flags=re.IGNORECASE)
-    # 2. Strip code block json (complete or unclosed)
+    # 2. Strip code block json (complete or unclosed only when containing JSON '{')
     cleaned = re.sub(r"```(?:json)?\s*\{[\s\S]*?\}\s*```", "", cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r"```(?:json)?[\s\S]*$", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"```(?:json)?\s*\{[\s\S]*$", "", cleaned, flags=re.IGNORECASE)
     # 3. Strip standalone JSON objects with response_mode or overview to end of text
     cleaned = re.sub(r'\{\s*"response_mode"[\s\S]*$', '', cleaned, flags=re.IGNORECASE)
     # 4. Remove standalone markers
     cleaned = re.sub(r"END_STRUCTURED_JSON", "", cleaned, flags=re.IGNORECASE)
+    # 5. If wrapped in markdown code fence (```markdown ... ```), strip the wrapper fences but keep content
+    cleaned = re.sub(r"^```(?:markdown)?\s*\n", "", cleaned.strip(), flags=re.IGNORECASE)
+    cleaned = re.sub(r"\n```\s*$", "", cleaned.strip())
     return cleaned.strip()
 
 
@@ -795,13 +801,12 @@ class RAGPipeline:
                 f"RETRIEVED DOCUMENTS:\n{context}\n\n"
                 "INSTRUCTIONS:\n"
                 "Generate a complete, professional agronomic field advisory report in clean Markdown covering:\n"
-                "1. What the sensors show (with exact units & status)\n"
-                "2. What the model signal means (environmental risk warning, not a diagnosis)\n"
-                "3. Possible things to check in the field (ranked with citations DOC_ID, S#)\n"
-                "4. Practical agronomic actions to take now (irrigation, canopy airflow, non-chemical field hygiene)\n"
-                "5. What the sensors cannot tell (limitations & verification needs)\n"
-                "6. Immediate next steps & local KVK extension recommendations.\n"
-                "Do NOT output raw JSON blocks, codeblocks, or delimiter tags. Deliver the complete advisory report with full sentences."
+                "1. Executive Microclimate & Pathogen Risk Assessment (exact readings, status, model risk index)\n"
+                "2. High-Priority Field Scouting & Disease Checklist formatted as a clean Markdown table with columns: | Crop Disease / Suspect Pathogen | Diagnostic Symptoms in Field | Priority Level |\n"
+                "3. Practical Agronomic Field Interventions formatted as a clean Markdown table with columns: | Management Area | Recommended Field Action | Operational Timing |\n"
+                "4. Preventive Non-Chemical & Biological Plant Protection (hygiene, bioprotectants, traps)\n"
+                "5. Critical Boundaries & Local KVK Extension Advisory (limitations, laboratory diagnostics)\n"
+                "Format tables using standard Markdown pipe syntax (`| Col 1 | Col 2 |`). Do NOT output raw JSON blocks, codeblocks, or delimiter tags. Deliver the complete advisory report with full sentences."
             )
         last_error: Exception | None = None
         content = ""

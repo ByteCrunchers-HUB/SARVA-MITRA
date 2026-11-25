@@ -6,9 +6,9 @@ export const FARM_STORAGE_KEY = "sarva.farm.v1";
 
 export const DEFAULT_FARM: FarmConfig = {
   name: "Farmer User",
-  location: "Kakinada, AP",
-  lat: 16.98,
-  lon: 82.24,
+  location: "Vijayawada, AP",
+  lat: 16.51,
+  lon: 80.52,
   crop: "tomato",
   stage: "flowering",
 };
